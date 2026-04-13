@@ -121,6 +121,28 @@
   }
   .btn-reset:hover { background: rgba(255,255,255,0.15); color: white; }
 
+  /* VIEW TOGGLE BUTTONS */
+  .view-toggle {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .view-btn {
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .view-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+  .view-btn.active { background: var(--gold); color: var(--navy); font-weight: 700; }
+
   /* TIMELINE MODAL */
   .timeline-modal {
     display: none;
@@ -485,13 +507,54 @@
     border-bottom: 0.5px solid var(--border);
   }
 
-  /* CARDS GRID */
+  /* CARDS GRID - CARD VIEW */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
   @media (max-width: 780px) { .cards-grid { grid-template-columns: 1fr; } }
+
+  /* TABLE VIEW */
+  .table-view {
+    display: none;
+  }
+  .table-view.active {
+    display: block;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .data-table thead {
+    background: var(--navy);
+  }
+  .data-table th {
+    color: var(--gold);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .data-table tr:hover {
+    background: #fafbfd;
+  }
+  .data-table tr.done {
+    opacity: 0.6;
+    background: #f5f5f5;
+  }
 
   /* CARD */
   .card {
@@ -836,6 +899,10 @@
     <div class="header-actions">
       <button class="btn-reset" onclick="openTimeline()">📅 Timeline</button>
       <button class="btn-reset" onclick="openNewModal()">+ Ny anbefaling</button>
+      <div class="view-toggle">
+        <button class="view-btn active" id="cardViewBtn" onclick="switchToCardView()">🃏 Kort</button>
+        <button class="view-btn" id="tableViewBtn" onclick="switchToTableView()">📊 Tabel</button>
+      </div>
     </div>
   </div>
 
@@ -982,6 +1049,23 @@
   <div class="section-title" id="active-label">Aktive anbefalinger</div>
   <div class="cards-grid" id="cards-container"></div>
 
+  <div class="table-view" id="table-view">
+    <table class="data-table" id="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Titel</th>
+          <th>Målgruppe</th>
+          <th>Prioritet</th>
+          <th>Kompleksitet</th>
+          <th>Pris</th>
+          <th>ROI</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+
   <div class="done-section" id="done-section" style="display:none">
     <div class="section-title">Afsluttede</div>
     <div class="cards-grid" id="done-container"></div>
@@ -995,572 +1079,63 @@
 </footer>
 
 <script>
+// VIEW MODE MANAGEMENT
+function switchToCardView() {
+  document.getElementById('cards-container').style.display = 'grid';
+  document.getElementById('table-view').classList.remove('active');
+  document.getElementById('cardViewBtn').classList.add('active');
+  document.getElementById('tableViewBtn').classList.remove('active');
+  localStorage.setItem('viewMode', 'card');
+  renderCards();
+}
+
+function switchToTableView() {
+  document.getElementById('cards-container').style.display = 'none';
+  document.getElementById('table-view').classList.add('active');
+  document.getElementById('cardViewBtn').classList.remove('active');
+  document.getElementById('tableViewBtn').classList.add('active');
+  localStorage.setItem('viewMode', 'table');
+  renderTableView();
+}
+
+function loadViewPreference() {
+  const savedView = localStorage.getItem('viewMode') || 'card';
+  if (savedView === 'table') {
+    switchToTableView();
+  } else {
+    switchToCardView();
+  }
+}
+
+function renderTableView() {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+  
+  const activeCards = document.querySelectorAll('#cards-container .card:not(.hidden-card):not(.done)');
+  
+  activeCards.forEach(card => {
+    const num = card.querySelector('.card-num').textContent;
+    const title = card.querySelector('.card-title').textContent;
+    const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent).join(', ');
+    const priority = card.querySelector('[class*="pri-"]').textContent;
+    const complexity = card.querySelector('[class*="impl-"]').textContent;
+    const cost = card.querySelector('.cost-txt span').textContent;
+    const roi = card.querySelector('.roi-score').textContent;
+    
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${num}</td>
+      <td>${title}</td>
+      <td>${tags}</td>
+      <td>${priority}</td>
+      <td>${complexity}</td>
+      <td>${cost}</td>
+      <td>${roi}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
 const ORIGINAL_DATA = [
   {
     id: 1,
-    title: "Stat-bar med live resultater",
-    audience: ["sponsor","fan"],
-    roi: 10,
-    priority: "now",
-    complexity: "low",
-    cost: "0–3.000 kr.",
-    shortDesc: "Skaber øjeblikkelig troværdighed. Sponsorer ser dokumentation på 10 sekunder. Giver urgency med OL-nedtælling.",
-    detail: "En synlig stat-bar øverst på forsiden kommunikerer øjeblikkeligt, at dette er et projekt på verdensklasseniveau. Rasmus' top 6-placering på verdensranglisten og Nannas første senior-vægt er verdensklasse.",
-    impact: "Øget tillid fra første sekund. Lavere bounce rate. Stærkere pitch til potentielle partnere.",
-    done: false
-  },
-  {
-    id: 2,
-    title: "Konkrete sponsorpakker med priser",
-    audience: ["sponsor"],
-    roi: 9.5,
-    priority: "now",
-    complexity: "low",
-    cost: "0 kr.",
-    shortDesc: "Fjerner usikkerhed og giver salgschefer noget konkret at præsentere internt.",
-    detail: "Den nuværende partnerskabsside beskriver filosofien bag samarbejde, men giver ingen konkret information om hvad et partnerskab indeholder eller koster. Det er en barriere.",
-    impact: "Flere indgående sponsorhenvendelser. Kortere salgsproces. Større konvertering fra besøg til dialog.",
-    done: false
-  },
-  {
-    id: 3,
-    title: "Dedikeret frivilligtekst med roller",
-    audience: ["frivillig"],
-    roi: 8.5,
-    priority: "now",
-    complexity: "low",
-    cost: "0 kr.",
-    shortDesc: "Motiverer og præciserer hvad man tilbyder sig til som frivillig.",
-    detail: "Den nuværende frivilligtekst er en direkte kopi af fanklubsteksten, hvilket signalerer at siden ikke er færdigudviklet.",
-    impact: "Flere og mere motiverede frivillige. Stærkere fællesskabsfølelse. Mere organisk spredning af projektet.",
-    done: false
-  },
-  {
-    id: 4,
-    title: "Live OL-kvalifikationsstatus",
-    audience: ["fan","sponsor"],
-    roi: 8,
-    priority: "now",
-    complexity: "low",
-    cost: "0 kr.",
-    shortDesc: "Forvandler forsiden fra statisk præsentation til levende fortælling med real-time relevans.",
-    detail: "OL-kvalifikationen er i fuld gang – men det fremgår ikke tydeligt af forsiden.",
-    impact: "Øget gentagne besøg. Stærkere emotionel investering fra fans. Mere overbevisende sponsor-pitch.",
-    done: false
-  },
-  {
-    id: 5,
-    title: "Tydelige fanklubniveauer",
-    audience: ["fan"],
-    roi: 7.5,
-    priority: "now",
-    complexity: "low",
-    cost: "0–1.500 kr.",
-    shortDesc: "Fjerner gætteri og øger betalingsvilje ved tilmelding til More Than One.",
-    detail: "Fanklubben More Than One præsenteres med en stærk fortælling, men tilmeldingsprocessen beder brugeren om at vælge mellem Basis, Plus og Premium – uden at forklare hvad de betyder.",
-    impact: "Flere tilmeldinger. Højere gennemsnitlig betalingsvilje. Mindre usikkerhed ved konverteringstrinnet.",
-    done: false
-  },
-  {
-    id: 6,
-    title: "MobilePay og Stripe-integration",
-    audience: ["fan","sponsor"],
-    roi: 9,
-    priority: "now",
-    complexity: "mid",
-    cost: "2.000–8.000 kr.",
-    shortDesc: "Eliminerer friktion og muliggør impulsdonation med ét klik.",
-    detail: "Den nuværende støtteformular beder brugere om at lave en bankoverførsel eller bestille en faktura. Det er en massiv friktion i 2025.",
-    impact: "Sandsynligvis fordobling af konverteringsraten fra støttesiden. Øget impulsdonation. Stabil månedlig indkomst fra abonnementer.",
-    done: false
-  },
-  {
-    id: 7,
-    title: "Dybe atletprofiler",
-    audience: ["sponsor","fan"],
-    roi: 7,
-    priority: "soon",
-    complexity: "mid",
-    cost: "0–5.000 kr.",
-    shortDesc: "Skaber menneskelig forbindelse – sponsorer investerer i mennesker, ikke kun eksponering.",
-    detail: "Nanna og Rasmus præsenteres primært via deres Instagram-feeds, som er levende og autentiske, men ustrukturerede.",
-    impact: "Stærkere emotionel forbindelse. Mere tid på siden. Bedre forudsætning for sponsorkonvertering.",
-    done: false
-  },
-  {
-    id: 8,
-    title: "Resultatnotifikationer og løbsopdateringer",
-    audience: ["fan"],
-    roi: 7,
-    priority: "soon",
-    complexity: "mid",
-    cost: "0–500 kr./md.",
-    shortDesc: "Bygger vane hos fans og skaber en kommunikationskanal teamet ejer selv.",
-    detail: "Løbsplanen sender i dag fans direkte til IBSF's hjemmeside – og de vender ikke nødvendigvis tilbage til prosliding.dk.",
-    impact: "Gentagne besøg. Voksende community. Direkte kanal til fans uafhængigt af sociale medier.",
-    done: false
-  },
-  {
-    id: 9,
-    title: "Aktiv crowdfunding-kampagne",
-    audience: ["fan"],
-    roi: 6,
-    priority: "ongoing",
-    complexity: "mid",
-    cost: "500–2.000 kr.",
-    shortDesc: "Konkret mål og synlig fremdrift aktiverer social proof-effekten.",
-    detail: "Crowdfunding beskrives på siden som et koncept, men der er ingen aktiv kampagne, ingen progress bar og intet konkret mål.",
-    impact: "Højere konvertering fra passive besøgende. Gentagende bidrag. Stærkere fællesskabsfølelse.",
-    done: false
-  },
-  {
-    id: 10,
-    title: "Social proof og presseomtale",
-    audience: ["sponsor","fan"],
-    roi: 7.5,
-    priority: "soon",
-    complexity: "low",
-    cost: "0 kr.",
-    shortDesc: "Reducerer skepsis og validerer projektet eksternt fra første sekund.",
-    detail: "En ny besøgende – og især en potentiel sponsor – ser ingen dokumentation for at andre allerede tror på dette projekt.",
-    impact: "Hurtigere tillid. Stærkere første indtryk. Lavere barriere for sponsorkontakt.",
-    done: false
-  }
-];
-
-const STORAGE_KEY = 'prosliding_recs_v1';
-let data = [];
-let audFilter = 'all';
-let priFilter = 'all';
-
-function loadData() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) { data = JSON.parse(saved); return; }
-  } catch(e) {}
-  data = JSON.parse(JSON.stringify(ORIGINAL_DATA));
-}
-
-function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
-}
-
-function openTimeline() {
-  const modal = document.getElementById('timelineModal');
-  const timelineItems = document.getElementById('timelineItems');
-  timelineItems.innerHTML = '';
-
-  const now = data.filter(d => !d.done && d.priority === 'now');
-  const soon = data.filter(d => !d.done && d.priority === 'soon');
-  const ongoing = data.filter(d => !d.done && d.priority === 'ongoing');
-
-  let html = '';
-  let isLeft = true;
-
-  if (now.length > 0) {
-    html += '<div style="text-align:center; margin:1rem 0; font-family: Barlow Condensed; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:2px;">DENNE MÅNED</div>';
-    now.forEach(item => {
-      html += `
-        <div class="timeline-item ${isLeft ? 'left' : 'right'}">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content-box">
-            <div class="timeline-period">Nu - Implementér denne måned</div>
-            <h3>${item.title}</h3>
-            <p>${item.shortDesc}</p>
-            <span class="timeline-badge now">Prioritet Nu</span>
-          </div>
-        </div>
-      `;
-      isLeft = !isLeft;
-    });
-  }
-
-  if (soon.length > 0) {
-    html += '<div style="text-align:center; margin:2rem 0 1rem 0; font-family: Barlow Condensed; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:2px;">30–60 DAGE</div>';
-    soon.forEach(item => {
-      html += `
-        <div class="timeline-item ${isLeft ? 'left' : 'right'}">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content-box">
-            <div class="timeline-period">Snart - Næste kvarter</div>
-            <h3>${item.title}</h3>
-            <p>${item.shortDesc}</p>
-            <span class="timeline-badge soon">Prioritet Snart</span>
-          </div>
-        </div>
-      `;
-      isLeft = !isLeft;
-    });
-  }
-
-  if (ongoing.length > 0) {
-    html += '<div style="text-align:center; margin:2rem 0 1rem 0; font-family: Barlow Condensed; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:2px;">LØBENDE DRIFT</div>';
-    ongoing.forEach(item => {
-      html += `
-        <div class="timeline-item ${isLeft ? 'left' : 'right'}">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content-box">
-            <div class="timeline-period">Løbende - Vedligehold & udvikling</div>
-            <h3>${item.title}</h3>
-            <p>${item.shortDesc}</p>
-            <span class="timeline-badge ongoing">Løbende drift</span>
-          </div>
-        </div>
-      `;
-      isLeft = !isLeft;
-    });
-  }
-
-  if (html === '') {
-    html = '<div style="text-align:center; padding:2rem; color:var(--text-muted);">Ingen anbefalinger at vise på tidslinjen</div>';
-  }
-
-  timelineItems.innerHTML = html;
-  modal.style.display = 'block';
-}
-
-function closeTimeline() {
-  document.getElementById('timelineModal').style.display = 'none';
-}
-
-function openNewModal() {
-  document.getElementById('newRecommendationModal').style.display = 'block';
-}
-
-function closeNewModal() {
-  document.getElementById('newRecommendationModal').style.display = 'none';
-  document.getElementById('newTitle').value = '';
-  document.getElementById('newAudSponsor').checked = false;
-  document.getElementById('newAudFan').checked = false;
-  document.getElementById('newAudFrivillig').checked = false;
-  document.getElementById('newPriority').value = 'now';
-  document.getElementById('newComplexity').value = 'low';
-  document.getElementById('newCost').value = '';
-  document.getElementById('newROI').value = 5;
-  document.getElementById('newROIVal').textContent = '5/10';
-  document.getElementById('newShortDesc').value = '';
-  document.getElementById('newDetail').value = '';
-  document.getElementById('newImpact').value = '';
-}
-
-function saveNewRecommendation() {
-  const title = document.getElementById('newTitle').value.trim();
-  if (!title) {
-    alert('Indtast venligst en titel');
-    return;
-  }
-
-  const audience = [];
-  if (document.getElementById('newAudSponsor').checked) audience.push('sponsor');
-  if (document.getElementById('newAudFan').checked) audience.push('fan');
-  if (document.getElementById('newAudFrivillig').checked) audience.push('frivillig');
-
-  if (audience.length === 0) {
-    alert('Vælg venligst mindst en målgruppe');
-    return;
-  }
-
-  const newId = data.length > 0 ? Math.max(...data.map(d => d.id)) + 1 : 1;
-  
-  const newRec = {
-    id: newId,
-    title: title,
-    audience: audience,
-    roi: parseFloat(document.getElementById('newROI').value),
-    priority: document.getElementById('newPriority').value,
-    complexity: document.getElementById('newComplexity').value,
-    cost: document.getElementById('newCost').value || '0 kr.',
-    shortDesc: document.getElementById('newShortDesc').value || 'Ny anbefaling',
-    detail: document.getElementById('newDetail').value || 'Ingen detaljer tilgivet endnu',
-    impact: document.getElementById('newImpact').value || 'Ingen forventet effekt specificeret endnu',
-    done: false
-  };
-
-  data.push(newRec);
-  saveData();
-  renderCards();
-  updateDashboard();
-  closeNewModal();
-}
-
-function getAudTags(aud) {
-  return aud.map(a => {
-    if (a === 'sponsor') return '<span class="tag tag-sponsor">Sponsor</span>';
-    if (a === 'fan') return '<span class="tag tag-fan">Fan</span>';
-    if (a === 'frivillig') return '<span class="tag tag-vol">Frivillig</span>';
-    return '';
-  }).join('');
-}
-
-function getPriBadge(p) {
-  if (p === 'now') return '<span class="pri-badge pri-now">Nu</span>';
-  if (p === 'soon') return '<span class="pri-badge pri-soon">Snart</span>';
-  if (p === 'ongoing') return '<span class="pri-badge pri-ongoing">Løbende</span>';
-  return '<span class="pri-badge pri-done">Afsluttet</span>';
-}
-
-function getComplexBadge(c) {
-  if (c === 'low') return '<span class="impl-badge impl-low">Lav</span>';
-  return '<span class="impl-badge impl-mid">Middel</span>';
-}
-
-function getPriOrder(p) {
-  if (p === 'now') return 0;
-  if (p === 'soon') return 1;
-  if (p === 'ongoing') return 2;
-  return 3;
-}
-
-function getMinCost(costStr) {
-  const nums = costStr.replace(/\./g,'').match(/\d+/g);
-  return nums ? parseInt(nums[0]) : 0;
-}
-
-function getSortedData(items) {
-  const sort = document.getElementById('sort-select').value;
-  const arr = [...items];
-  if (sort === 'roi') arr.sort((a,b) => b.roi - a.roi);
-  else if (sort === 'cost') arr.sort((a,b) => getMinCost(a.cost) - getMinCost(b.cost));
-  else if (sort === 'priority') arr.sort((a,b) => getPriOrder(a.priority) - getPriOrder(b.priority));
-  else arr.sort((a,b) => a.id - b.id);
-  return arr;
-}
-
-function cardMatchesFilter(item) {
-  if (audFilter !== 'all' && !item.audience.includes(audFilter)) return false;
-  if (priFilter !== 'all' && item.priority !== priFilter) return false;
-  return true;
-}
-
-function buildCard(item) {
-  const num = String(item.id).padStart(2,'0');
-  const roiPct = (item.roi / 10 * 100).toFixed(0);
-  return `
-  <div class="card${item.done?' done':''}" id="card-${item.id}">
-    <div class="card-header" onclick="toggleCard(${item.id})">
-      <div class="card-num">${num}</div>
-      <div class="card-header-content">
-        <div class="card-title">${item.title}</div>
-        <div class="card-tags">${getAudTags(item.audience)}</div>
-      </div>
-      <div class="card-header-right">
-        ${getPriBadge(item.priority)}
-        <div class="chevron">▾</div>
-      </div>
-    </div>
-    <div class="card-roi" onclick="toggleCard(${item.id})">
-      <span class="roi-label-txt">ROI</span>
-      <div class="roi-track"><div class="roi-fill" id="roi-fill-${item.id}" style="width:${roiPct}%"></div></div>
-      <span class="roi-score" id="roi-score-${item.id}">${item.roi}/10</span>
-      ${getComplexBadge(item.complexity)}
-    </div>
-    <div class="card-footer-meta" onclick="toggleCard(${item.id})">
-      <span class="cost-txt">Estimat: <span>${item.cost}</span></span>
-      <div class="card-actions" onclick="event.stopPropagation()">
-        <button class="action-btn edit-btn" title="Rediger" onclick="toggleEdit(${item.id})">✏️</button>
-        <button class="action-btn done-btn" title="${item.done?'Genåbn':'Markér afsluttet'}" onclick="toggleDone(${item.id})">${item.done?'↩':'✓'}</button>
-        <button class="action-btn reset-btn" title="Nulstil dette kort" onclick="resetCard(${item.id})">↺</button>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="view-section">
-        <div class="short-desc">${item.shortDesc}</div>
-        <div class="detail-text">${item.detail}</div>
-        <div class="impact-block">
-          <div class="impact-label">Forventet effekt</div>
-          ${item.impact}
-        </div>
-      </div>
-      <div class="edit-section">
-        <div class="edit-grid">
-          <div class="edit-field edit-full">
-            <label class="edit-label">Titel</label>
-            <input class="edit-input" id="e-title-${item.id}" value="${item.title}">
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Prioritet</label>
-            <select class="edit-select" id="e-pri-${item.id}">
-              <option value="now" ${item.priority==='now'?'selected':''}>Nu</option>
-              <option value="soon" ${item.priority==='soon'?'selected':''}>Snart</option>
-              <option value="ongoing" ${item.priority==='ongoing'?'selected':''}>Løbende</option>
-            </select>
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Kompleksitet</label>
-            <select class="edit-select" id="e-comp-${item.id}">
-              <option value="low" ${item.complexity==='low'?'selected':''}>Lav</option>
-              <option value="mid" ${item.complexity==='mid'?'selected':''}>Middel</option>
-            </select>
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Estimeret pris</label>
-            <input class="edit-input" id="e-cost-${item.id}" value="${item.cost}">
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">ROI-indeks (${item.roi}/10)</label>
-            <div class="roi-slider-wrap">
-              <input type="range" class="roi-slider" id="e-roi-${item.id}" min="1" max="10" step="0.5" value="${item.roi}"
-                oninput="document.getElementById('e-roi-val-${item.id}').textContent=this.value+'/10'">
-              <span class="roi-slider-val" id="e-roi-val-${item.id}">${item.roi}/10</span>
-            </div>
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Kort beskrivelse</label>
-            <textarea class="edit-textarea" id="e-short-${item.id}">${item.shortDesc}</textarea>
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Detaljeret tekst</label>
-            <textarea class="edit-textarea" style="min-height:120px" id="e-detail-${item.id}">${item.detail}</textarea>
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Forventet effekt</label>
-            <textarea class="edit-textarea" id="e-impact-${item.id}">${item.impact}</textarea>
-          </div>
-        </div>
-        <button class="edit-save-btn" onclick="saveCard(${item.id})">Gem ændringer</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderCards() {
-  const container = document.getElementById('cards-container');
-  const doneContainer = document.getElementById('done-container');
-  const doneSection = document.getElementById('done-section');
-
-  const active = getSortedData(data.filter(d => !d.done && cardMatchesFilter(d)));
-  const done = data.filter(d => d.done);
-
-  container.innerHTML = active.length
-    ? active.map(buildCard).join('')
-    : '<div class="empty-state">Ingen anbefalinger matcher det valgte filter.</div>';
-
-  if (done.length) {
-    doneContainer.innerHTML = done.map(buildCard).join('');
-    doneSection.style.display = 'block';
-  } else {
-    doneSection.style.display = 'none';
-  }
-
-  expandedCards.forEach(id => {
-    const el = document.getElementById('card-'+id);
-    if (el) el.classList.add('expanded');
-  });
-  editCards.forEach(id => {
-    const el = document.getElementById('card-'+id);
-    if (el) { el.classList.add('expanded'); el.classList.add('edit-mode'); }
-  });
-
-  updateDashboard();
-}
-
-let expandedCards = new Set();
-let editCards = new Set();
-
-function toggleCard(id) {
-  const el = document.getElementById('card-'+id);
-  if (el.classList.contains('expanded')) {
-    el.classList.remove('expanded');
-    expandedCards.delete(id);
-  } else {
-    el.classList.add('expanded');
-    expandedCards.add(id);
-  }
-}
-
-function toggleEdit(id) {
-  const el = document.getElementById('card-'+id);
-  if (el.classList.contains('edit-mode')) {
-    el.classList.remove('edit-mode');
-    editCards.delete(id);
-  } else {
-    el.classList.add('edit-mode');
-    editCards.add(id);
-  }
-}
-
-function toggleDone(id) {
-  const item = data.find(d => d.id === id);
-  if (item) {
-    item.done = !item.done;
-    saveData();
-    renderCards();
-  }
-}
-
-function resetCard(id) {
-  const idx = data.findIndex(d => d.id === id);
-  if (idx >= 0) {
-    const original = ORIGINAL_DATA.find(d => d.id === id);
-    if (original) {
-      data[idx] = JSON.parse(JSON.stringify(original));
-      saveData();
-      renderCards();
-    }
-  }
-}
-
-function saveCard(id) {
-  const item = data.find(d => d.id === id);
-  if (item) {
-    item.title = document.getElementById('e-title-'+id).value;
-    item.priority = document.getElementById('e-pri-'+id).value;
-    item.complexity = document.getElementById('e-comp-'+id).value;
-    item.cost = document.getElementById('e-cost-'+id).value;
-    item.roi = parseFloat(document.getElementById('e-roi-'+id).value);
-    item.shortDesc = document.getElementById('e-short-'+id).value;
-    item.detail = document.getElementById('e-detail-'+id).value;
-    item.impact = document.getElementById('e-impact-'+id).value;
-    saveData();
-    editCards.delete(id);
-    renderCards();
-  }
-}
-
-function updateDashboard() {
-  const active = data.filter(d => !d.done);
-  const now = active.filter(d => d.priority === 'now').length;
-  const cost = active.reduce((sum, d) => sum + getMinCost(d.cost), 0);
-  const roi = active.length ? (active.reduce((sum, d) => sum + d.roi, 0) / active.length).toFixed(1) : 0;
-
-  document.getElementById('d-active').textContent = active.length;
-  document.getElementById('d-now').textContent = now;
-  document.getElementById('d-cost').textContent = cost.toLocaleString('da-DK') + ' kr.';
-  document.getElementById('d-roi').textContent = roi;
-}
-
-function setupFilters() {
-  document.querySelectorAll('#aud-filters .fbtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#aud-filters .fbtn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      audFilter = btn.dataset.aud;
-      renderCards();
-    });
-  });
-
-  document.querySelectorAll('#pri-filters .fbtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#pri-filters .fbtn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      priFilter = btn.dataset.pri;
-      renderCards();
-    });
-  });
-}
-
-window.addEventListener('click', function(e) {
-  const modal = document.getElementById('newRecommendationModal');
-  const timelineModal = document.getElementById('timelineModal');
-  if (e.target === modal) closeNewModal();
-  if (e.target === timelineModal) closeTimeline();
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  loadData();
-  setupFilters();
-  renderCards();
-});
-</script>
-</body>
-</html>
