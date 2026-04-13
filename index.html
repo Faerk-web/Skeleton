@@ -653,7 +653,7 @@
     <div class="form-grid">
       <div class="form-field full">
         <label class="form-label">Ikon (emoji)</label>
-        <input class="form-input" id="wsIcon" type="text" maxlength="4" value="&#x1F4CB;" placeholder="&#x1F4CB;">
+        <input class="form-input" id="wsIcon" type="text" maxlength="4" value="📋" placeholder="📋">
       </div>
       <div class="form-field full">
         <label class="form-label">Navn</label>
@@ -1249,7 +1249,7 @@ function resetFilters() {
 
 // ===== WORKSPACE CRUD =====
 function openNewWorkspaceModal() {
-  document.getElementById('wsIcon').value = '\uD83D\uDCCB';
+  document.getElementById('wsIcon').value = '📋';
   document.getElementById('wsName').value = '';
   document.getElementById('wsDesc').value = '';
   document.getElementById('newWorkspaceModal').style.display = 'block';
@@ -1265,7 +1265,7 @@ function saveNewWorkspace() {
   if (!name) { alert('Angiv et navn for arbejdsområdet.'); return; }
   workspaces.push({
     id:          nextWorkspaceId++,
-    icon:        document.getElementById('wsIcon').value.trim() || '\uD83D\uDCCB',
+    icon:        document.getElementById('wsIcon').value.trim() || '📋',
     name:        name,
     description: document.getElementById('wsDesc').value.trim(),
     initiatives: [],
