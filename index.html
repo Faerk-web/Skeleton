@@ -3,1748 +3,1377 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prosliding.dk – Anbefalinger</title>
+<title>Prosliding.dk – Initiativer</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --accent: #da253c;
-    --accent-light: #f04056;
-    --accent-pale: #fdeaed;
-    --white: #ffffff;
-    --bg: #f5f6f8;
-    --card-bg: #ffffff;
-    --text: #1a1a2e;
-    --text-muted: #6b7280;
-    --border: #e5e7eb;
-    --header-bg: #1f2937;
-    --header-mid: #111827;
-    --sponsor-bg: #eff6ff; --sponsor-text: #1d4ed8;
-    --fan-bg: #f0fdf4; --fan-text: #166534;
-    --vol-bg: #fff7ed; --vol-text: #9a3412;
-    --ongoing-bg: #eff6ff; --ongoing-text: #1d4ed8;
-    --done-bg: #f3f4f6; --done-text: #9ca3af;
-    --low-bg: #f0fdf4; --low-text: #15803d;
-    --mid-bg: #fffbeb; --mid-text: #b45309;
-    --high-bg: #fef2f2; --high-text: #b91c1c;
-    --shadow: 0 2px 12px rgba(0,0,0,0.07);
-    --shadow-hover: 0 8px 28px rgba(0,0,0,0.13);
-    --radius: 12px;
-  }
+/* ─── TOKENS ─────────────────────────────────────────────────────────────── */
+:root {
+  --accent:      #da253c;
+  --accent-l:    #f04056;
+  --accent-pale: #fdeaed;
+  --white:       #ffffff;
+  --bg:          #f5f6f8;
+  --card-bg:     #ffffff;
+  --text:        #111827;
+  --muted:       #6b7280;
+  --border:      #e5e7eb;
+  --hdr:         #1f2937;
+  --hdr-dark:    #111827;
+  --low-bg:  #f0fdf4; --low-txt:  #15803d;
+  --mid-bg:  #fffbeb; --mid-txt:  #b45309;
+  --high-bg: #fef2f2; --high-txt: #b91c1c;
+  --done-bg: #f3f4f6; --done-txt: #9ca3af;
+  --on-bg:   #eff6ff; --on-txt:   #1d4ed8;
+  --shadow:      0 2px 12px rgba(0,0,0,0.07);
+  --shadow-h:    0 8px 28px rgba(0,0,0,0.13);
+  --radius:      12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── HEADER ──────────────────────────────────────────────────────────────── */
+header {
+  background: var(--hdr);
+  padding: 2rem 2rem 0;
+  position: relative; overflow: hidden;
+}
+header::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--accent);
+}
+header::after {
+  content: 'PROSLIDING';
+  position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 110px; font-weight: 800;
+  color: rgba(255,255,255,0.025); letter-spacing: 8px; pointer-events: none; user-select: none;
+}
+.header-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; max-width: 1200px; margin: 0 auto; padding-bottom: 1.5rem;
+}
+.header-title { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:600; color:var(--accent); letter-spacing:3px; text-transform:uppercase; margin-bottom:0.4rem; }
+.header-main  { font-family:'Barlow Condensed',sans-serif; font-size:36px; font-weight:800; color:white; line-height:1.1; letter-spacing:1px; }
+.header-sub   { font-size:13px; color:rgba(255,255,255,0.45); margin-top:0.4rem; font-weight:300; }
+.header-actions { display:flex; gap:8px; align-items:center; flex-shrink:0; flex-wrap:wrap; }
+.btn-new {
+  background: var(--accent); border: none; color: white;
+  padding: 9px 18px; border-radius: 8px; cursor: pointer;
+  font-size: 13px; font-family:'Barlow',sans-serif; font-weight:600; transition: all 0.2s;
+}
+.btn-new:hover { background: var(--accent-l); }
 
-  body {
-    font-family: 'Barlow', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+/* ─── DASHBOARD ───────────────────────────────────────────────────────────── */
+.dashboard {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; padding-bottom: 1.5rem;
+}
+.dash-card { background:rgba(255,255,255,0.06); border:0.5px solid rgba(255,255,255,0.1); border-radius:10px; padding:1rem 1.25rem; text-align:center; }
+.dash-label { font-size:10px; color:rgba(255,255,255,0.4); letter-spacing:2px; text-transform:uppercase; font-weight:600; margin-bottom:6px; }
+.dash-value { font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:700; color:var(--accent); line-height:1; }
+.dash-sub   { font-size:11px; color:rgba(255,255,255,0.3); margin-top:3px; }
 
-  /* HEADER */
-  header {
-    background: var(--header-bg);
-    padding: 2rem 2rem 0;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: var(--accent);
-  }
-  header::after {
-    content: 'PROSLIDING';
-    position: absolute;
-    right: -10px; top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 100px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.02);
-    letter-spacing: 8px;
-    pointer-events: none;
-    user-select: none;
-  }
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-bottom: 1.5rem;
-  }
-  .header-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-  }
-  .header-main {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--white);
-    line-height: 1.1;
-    letter-spacing: 1px;
-  }
-  .header-sub {
-    font-size: 13px;
-    color: rgba(255,255,255,0.45);
-    margin-top: 0.4rem;
-    font-weight: 300;
-  }
-  .header-actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-shrink: 0;
-    flex-wrap: wrap;
-  }
-  .btn-new {
-    background: var(--accent);
-    border: none;
-    color: white;
-    padding: 9px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 13px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 600;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-  }
-  .btn-new:hover { background: var(--accent-light); }
+/* ─── FILTER PANEL ────────────────────────────────────────────────────────── */
+.filter-panel { background: var(--hdr-dark); border-top: 1px solid rgba(255,255,255,0.07); padding: 0.85rem 2rem; }
+.filter-panel-inner { max-width:1200px; margin:0 auto; display:flex; flex-direction:column; gap:6px; }
+.filter-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.filter-row-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.32); min-width:86px; flex-shrink:0; }
+.fchips { display:flex; gap:4px; flex-wrap:wrap; align-items:center; flex:1; }
+.fchip {
+  padding:4px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.14);
+  background:transparent; color:rgba(255,255,255,0.48);
+  cursor:pointer; font-size:11px; font-family:'Barlow',sans-serif; font-weight:500; transition:all 0.15s;
+  display:inline-flex; align-items:center; gap:5px;
+}
+.fchip:hover { border-color:var(--accent); color:var(--accent); }
+.fchip.active { background:var(--accent); border-color:var(--accent); color:white; font-weight:700; }
+.fchip .dot { width:7px; height:7px; border-radius:50%; display:inline-block; flex-shrink:0; }
+.view-chips { display:flex; gap:4px; }
+.vchip {
+  padding:4px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.14);
+  background:transparent; color:rgba(255,255,255,0.48);
+  cursor:pointer; font-size:11px; font-family:'Barlow',sans-serif; font-weight:500; transition:all 0.15s;
+}
+.vchip:hover { border-color:rgba(255,255,255,0.4); color:rgba(255,255,255,0.8); }
+.vchip.active { background:white; border-color:white; color:var(--text); font-weight:700; }
+.sort-sel {
+  padding:4px 10px; border-radius:20px; border:1px solid rgba(255,255,255,0.14);
+  background:transparent; color:rgba(255,255,255,0.55); font-size:11px; font-family:'Barlow',sans-serif;
+  cursor:pointer; outline:none; margin-left:auto;
+}
+.sort-sel option { background:#1f2937; color:white; }
 
-  /* DASHBOARD */
-  .dashboard {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 0 0 1.5rem;
-  }
-  .dash-card {
-    background: rgba(255,255,255,0.06);
-    border: 0.5px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    text-align: center;
-  }
-  .dash-label {
-    font-size: 10px;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .dash-value {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-  }
-  .dash-sub {
-    font-size: 11px;
-    color: rgba(255,255,255,0.3);
-    margin-top: 3px;
-  }
+/* ─── WORKSPACE SELECTION BAR ──────────────────────────────────────────────── */
+.ws-bar {
+  background: var(--hdr-dark);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 0.6rem 2rem;
+}
+.ws-bar-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.ws-bar-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.32); flex-shrink:0; margin-right:4px; }
+.wsbtn {
+  padding:5px 14px; border-radius:20px; border:1px solid rgba(255,255,255,0.14);
+  background:transparent; color:rgba(255,255,255,0.55);
+  cursor:pointer; font-size:12px; font-family:'Barlow',sans-serif; font-weight:500; transition:all 0.15s;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.wsbtn:hover { border-color:rgba(255,255,255,0.4); color:rgba(255,255,255,0.9); }
+.wsbtn.active { background:white; border-color:white; color:var(--text); font-weight:700; }
+.wsbtn-ikon { font-size:14px; }
 
-  /* FILTER PANEL */
-  .filter-panel {
-    background: var(--header-mid);
-    border-top: 1px solid rgba(255,255,255,0.07);
-    padding: 1rem 2rem;
-  }
-  .filter-panel-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .filter-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .filter-row-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    min-width: 80px;
-    flex-shrink: 0;
-  }
-  .filter-chips {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    align-items: center;
-    flex: 1;
-  }
-  .fchip {
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: transparent;
-    color: rgba(255,255,255,0.5);
-    cursor: pointer;
-    font-size: 11px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .fchip:hover { border-color: var(--accent); color: var(--accent); }
-  .fchip.active { background: var(--accent); border-color: var(--accent); color: white; font-weight: 700; }
-  .fchip .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+/* ─── MODALS ──────────────────────────────────────────────────────────────── */
+.modal {
+  display: none; position: fixed; inset:0; z-index:1000;
+  background: rgba(0,0,0,0.45); align-items:center; justify-content:center;
+}
+.modal.open { display:flex; }
+.modal-box {
+  background:white; border-radius:var(--radius);
+  width:92%; max-width:600px; max-height:90vh; overflow-y:auto;
+  box-shadow:0 8px 40px rgba(0,0,0,0.2); animation:modalIn 0.2s ease;
+}
+@keyframes modalIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:none} }
+.modal-head { display:flex; justify-content:space-between; align-items:center; padding:1.5rem 1.75rem 1rem; border-bottom:1px solid var(--border); }
+.modal-head h2 { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:700; }
+.modal-body { padding:1.25rem 1.75rem; }
+.modal-foot { display:flex; gap:8px; justify-content:flex-end; padding:1rem 1.75rem 1.5rem; border-top:1px solid var(--border); }
+.close-x { background:none; border:none; font-size:26px; cursor:pointer; color:var(--muted); line-height:1; }
+.close-x:hover { color:var(--text); }
 
-  /* View + Sort row */
-  .filter-row-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    flex: 1;
-    justify-content: flex-end;
-  }
-  .view-chips {
-    display: flex;
-    gap: 4px;
-  }
-  .view-chip {
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: transparent;
-    color: rgba(255,255,255,0.5);
-    cursor: pointer;
-    font-size: 11px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    transition: all 0.15s;
-  }
-  .view-chip:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.8); }
-  .view-chip.active { background: white; border-color: white; color: var(--text); font-weight: 700; }
+/* ─── FORM ELEMENTS ───────────────────────────────────────────────────────── */
+.form-field { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+.form-field.last { margin-bottom:0; }
+.form-lbl { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); }
+.form-inp, .form-ta {
+  font-family:'Barlow',sans-serif; font-size:13px; color:var(--text);
+  background:white; border:1px solid var(--border); border-radius:8px;
+  padding:8px 12px; outline:none; transition:border-color 0.2s; width:100%;
+}
+.form-inp:focus, .form-ta:focus { border-color:var(--accent); }
+.form-ta { resize:vertical; min-height:72px; line-height:1.55; }
+.form-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.btn-save   { background:var(--accent); color:white; border:none; padding:9px 20px; border-radius:8px; font-family:'Barlow',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-save:hover { background:var(--accent-l); }
+.btn-cancel { background:var(--border); color:var(--text); border:none; padding:9px 20px; border-radius:8px; font-family:'Barlow',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-cancel:hover { background:#d1d5db; }
+.btn-danger { background:var(--accent-pale); color:var(--accent); border:1px solid #fca5a5; padding:9px 20px; border-radius:8px; font-family:'Barlow',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+.btn-danger:hover { background:var(--accent); color:white; }
 
-  .sort-select {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.6);
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-family: 'Barlow', sans-serif;
-    cursor: pointer;
-    outline: none;
-  }
-  .sort-select option { background: #1f2937; color: white; }
+/* ROI slider */
+.roi-wrap { display:flex; align-items:center; gap:10px; }
+.roi-slider { flex:1; accent-color:var(--accent); cursor:pointer; }
+.roi-val { font-family:'Barlow Condensed',sans-serif; font-size:17px; font-weight:700; color:var(--accent); min-width:34px; text-align:right; }
 
-  /* TIMELINE MODAL */
-  .timeline-modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.55);
-    overflow-y: auto;
-  }
-  .timeline-content {
-    background-color: var(--card-bg);
-    margin: 40px auto;
-    padding: 2rem;
-    border-radius: var(--radius);
-    width: 90%;
-    max-width: 960px;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.25);
-  }
-  .timeline-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 1rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .timeline-header h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .timeline-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text-muted);
-  }
-  .timeline-close:hover { color: var(--text); }
+/* Horizon slider */
+.hor-wrap { display:flex; flex-direction:column; gap:4px; }
+.hor-slider { width:100%; accent-color:var(--accent); cursor:pointer; }
+.hor-lbls { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); font-weight:600; text-transform:uppercase; }
+.hor-cur  { font-size:12px; font-weight:700; color:var(--accent); text-align:center; }
 
-  /* Timeline filters */
-  .timeline-filters {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .tl-filter-group { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
-  .tl-filter-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-right: 4px; }
-  .tl-chip {
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 11px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    transition: all 0.15s;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .tl-chip:hover { border-color: var(--accent); color: var(--accent); }
-  .tl-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
-  .tl-chip .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+/* Circle selector */
+.circle-sel { display:flex; gap:14px; }
+.circle-opt { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
+.circle-opt input[type="radio"] { display:none; }
+.cdot { width:26px; height:26px; border-radius:50%; border:2px solid transparent; transition:all 0.15s; opacity:0.35; }
+.circle-opt input[type="radio"]:checked + .cdot { opacity:1; border-color:#111; transform:scale(1.18); box-shadow:0 2px 8px rgba(0,0,0,0.18); }
+.cdot.g { background:#22c55e; }
+.cdot.y { background:#f59e0b; }
+.cdot.r { background:#ef4444; }
+.clbl { font-size:10px; color:var(--muted); font-weight:600; letter-spacing:0.5px; text-transform:uppercase; }
 
-  .timeline-track { position: relative; padding: 2rem 0; }
-  .timeline-line {
-    position: absolute;
-    left: 50%;
-    top: 0; bottom: 0;
-    width: 3px;
-    background: var(--border);
-    transform: translateX(-50%);
-  }
-  .timeline-items { display: flex; flex-direction: column; gap: 3rem; }
-  .timeline-item { position: relative; display: flex; gap: 2rem; }
-  .timeline-item.left { flex-direction: row; }
-  .timeline-item.right { flex-direction: row-reverse; }
-  .timeline-marker {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 20px; height: 20px;
-    background: var(--accent);
-    border: 3px solid var(--card-bg);
-    border-radius: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-  }
-  .timeline-content-box {
-    flex: 1;
-    padding: 1.25rem;
-    background: #fafbfc;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-  }
-  .timeline-content-box h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 0.4rem;
-    color: var(--text);
-  }
-  .timeline-content-box p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-  .timeline-period {
-    font-size: 11px; font-weight: 700; letter-spacing: 1px;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem;
-  }
-  .timeline-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10px; font-weight: 600; padding: 3px 10px;
-    border-radius: 20px; margin-top: 0.5rem; text-transform: uppercase;
-  }
-  .timeline-badge.ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
-  .tl-meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+/* Ikon picker */
+.ikon-picker { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
+.ikon-opt {
+  width:34px; height:34px; border-radius:8px; border:1.5px solid var(--border);
+  background:white; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s;
+}
+.ikon-opt:hover { border-color:var(--accent); }
+.ikon-opt.sel   { border-color:var(--accent); background:var(--accent-pale); }
 
-  /* MODAL */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.45);
-  }
-  .modal-content {
-    background-color: var(--card-bg);
-    margin: 4% auto;
-    padding: 2rem;
-    border-radius: var(--radius);
-    width: 90%;
-    max-width: 640px;
-    max-height: 88vh;
-    overflow-y: auto;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.2);
-  }
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 1rem;
-  }
-  .modal-header h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.5px;
-  }
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: color 0.2s;
-  }
-  .close-btn:hover { color: var(--text); }
+/* Workspace delete modal */
+#wsDeleteModal .modal-box { max-width:400px; }
+#initDeleteModal .modal-box { max-width:400px; }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .form-field { display: flex; flex-direction: column; gap: 6px; }
-  .form-field.full { grid-column: 1 / -1; }
-  .form-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .form-input, .form-select, .form-textarea {
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
-  .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+/* ─── MAIN ────────────────────────────────────────────────────────────────── */
+.main { max-width:1200px; margin:1.5rem auto 2rem; padding:0 2rem; }
+.section-title {
+  font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase; color:var(--muted);
+  margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border);
+}
 
-  .form-checkboxes {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .form-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-  .form-checkbox input { cursor: pointer; accent-color: var(--accent); }
-  .form-checkbox label { cursor: pointer; font-size: 13px; }
+/* ─── WORKSPACE GRID (home view) ───────────────────────────────────��──────── */
+.ws-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px; }
+.ws-card {
+  background:white; border-radius:var(--radius); border:1px solid var(--border);
+  box-shadow:var(--shadow); cursor:pointer; transition:all 0.2s;
+  display:flex; flex-direction:column; overflow:hidden; animation:fadeIn 0.3s ease both;
+}
+.ws-card:hover { box-shadow:var(--shadow-h); border-color:#d1d5db; transform:translateY(-2px); }
+.ws-card-top { display:flex; align-items:center; gap:12px; padding:1.25rem 1.25rem 0.9rem; flex:1; }
+.ws-ikon { width:44px; height:44px; border-radius:10px; background:var(--accent-pale); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.ws-name { font-family:'Barlow Condensed',sans-serif; font-size:19px; font-weight:700; line-height:1.2; }
+.ws-desc { font-size:12px; color:var(--muted); margin-top:2px; line-height:1.4; }
+.ws-card-foot { display:flex; align-items:center; justify-content:space-between; padding:0.65rem 1.25rem; border-top:1px solid var(--border); background:#fafbfc; }
+.ws-count { font-size:12px; color:var(--muted); }
+.ws-count strong { color:var(--text); font-weight:700; }
+.ws-card-btns { display:flex; gap:4px; }
+.icon-btn {
+  width:28px; height:28px; border-radius:7px; border:1px solid var(--border);
+  background:transparent; cursor:pointer; font-size:13px; color:var(--muted);
+  display:flex; align-items:center; justify-content:center; transition:all 0.15s;
+}
+.icon-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-pale); }
+.ws-add-card {
+  background:transparent; border:2px dashed var(--border); border-radius:var(--radius);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  padding:2.5rem 1rem; cursor:pointer; transition:all 0.2s; color:var(--muted); min-height:140px;
+}
+.ws-add-card:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-pale); }
+.ws-add-icon { font-size:28px; }
+.ws-add-txt  { font-size:13px; font-weight:600; }
 
-  /* Circle selector (difficulty & effect) */
-  .circle-selector { display: flex; gap: 10px; }
-  .circle-option { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-  .circle-option input[type="radio"] { display: none; }
-  .circle-dot {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    transition: all 0.15s;
-    opacity: 0.4;
-  }
-  .circle-option input[type="radio"]:checked + .circle-dot { opacity: 1; border-color: #1a1a2e; transform: scale(1.15); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-  .circle-dot.green { background: #22c55e; }
-  .circle-dot.yellow { background: #f59e0b; }
-  .circle-dot.red { background: #ef4444; }
-  .circle-label { font-size: 10px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+/* ─── EMPTY STATES ────────────────────────────────────────────────────────── */
+.empty-state { text-align:center; padding:4rem 2rem; display:flex; flex-direction:column; align-items:center; gap:1rem; }
+.empty-icon  { font-size:52px; }
+.empty-title { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700; }
+.empty-desc  { font-size:14px; color:var(--muted); max-width:360px; line-height:1.6; }
+.empty-cta   { background:var(--accent); color:white; border:none; padding:10px 22px; border-radius:8px; font-family:'Barlow',sans-serif; font-size:13px; font-weight:600; cursor:pointer; margin-top:0.5rem; transition:all 0.2s; }
+.empty-cta:hover { background:var(--accent-l); }
 
-  /* Horizon slider */
-  .horizon-slider-wrap { display: flex; flex-direction: column; gap: 6px; }
-  .horizon-slider {
-    width: 100%;
-    accent-color: var(--accent);
-    cursor: pointer;
-  }
-  .horizon-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--text-muted);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .horizon-val {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    text-align: center;
-  }
+/* ─── CARDS GRID ──────────────────────────────────────────────────────────── */
+.cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+@media(max-width:780px) { .cards-grid { grid-template-columns:1fr; } }
 
-  .modal-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 1.5rem;
-    justify-content: flex-end;
-  }
-  .modal-actions button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .btn-save { background: var(--accent); color: white; }
-  .btn-save:hover { background: var(--accent-light); }
-  .btn-cancel { background: var(--border); color: var(--text); }
-  .btn-cancel:hover { background: var(--text-muted); color: white; }
+/* ─── TABLE VIEW ──────────────────────────────────────────────────────────── */
+.table-view-container { display:none; }
+.table-view-container.active { display:block; overflow-x:auto; }
+.data-table { width:100%; border-collapse:collapse; background:white; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); }
+.data-table thead { background:var(--hdr); }
+.data-table th { color:white; padding:0.9rem 1.1rem; text-align:left; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; }
+.data-table td { padding:0.85rem 1.1rem; border-bottom:1px solid var(--border); font-size:13px; vertical-align:middle; }
+.data-table tr:hover { background:#fafbfc; }
+.data-table tr.done { opacity:0.6; background:#f9f9f9; }
 
-  /* MAIN CONTENT */
-  .main {
-    max-width: 1200px;
-    margin: 1.5rem auto 2rem;
-    padding: 0 2rem;
-  }
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
+/* ─── CARD ────────────────────────────────────────────────────────────────── */
+.card {
+  background:var(--card-bg); border-radius:var(--radius); border:1px solid var(--border);
+  box-shadow:var(--shadow); transition:box-shadow 0.2s, border-color 0.2s;
+  overflow:hidden; position:relative; animation:fadeIn 0.3s ease both;
+}
+.card:hover { box-shadow:var(--shadow-h); border-color:#d1d5db; }
+.card.done  { opacity:0.65; }
+.card.done .card-title { text-decoration:line-through; color:var(--muted); }
+.card.hidden-card { display:none; }
 
-  /* CARDS GRID */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 780px) { .cards-grid { grid-template-columns: 1fr; } }
+.card-header {
+  padding:1rem 1.25rem 0.75rem; display:flex; align-items:flex-start; gap:12px;
+  cursor:pointer; user-select:none;
+}
+.card-num {
+  font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700;
+  background:var(--text); color:white; width:30px; height:30px; border-radius:7px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.card.done .card-num { background:var(--done-bg); color:var(--done-txt); }
+.card-header-content { flex:1; min-width:0; }
+.card-title { font-family:'Barlow Condensed',sans-serif; font-size:17px; font-weight:700; line-height:1.2; letter-spacing:0.3px; }
+.card-header-right { display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink:0; }
+.chevron { font-size:13px; color:var(--muted); transition:transform 0.25s; line-height:1; margin-top:2px; }
+.card.expanded .chevron { transform:rotate(180deg); }
 
-  /* TABLE VIEW */
-  .table-view-container { display: none; }
-  .table-view-container.active { display: block; }
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-  .data-table thead { background: var(--header-bg); }
-  .data-table th {
-    color: white;
-    padding: 1rem 1.25rem;
-    text-align: left;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .data-table td {
-    padding: 0.85rem 1.25rem;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .data-table tr:hover { background: #fafbfc; }
-  .data-table tr.done { opacity: 0.6; background: #f9f9f9; }
+/* ROI bar */
+.card-roi { padding:0 1.25rem 0.85rem; display:flex; align-items:center; gap:10px; cursor:pointer; }
+.roi-lbl  { font-size:11px; color:var(--muted); font-weight:500; min-width:26px; }
+.roi-track { flex:1; height:4px; background:#e9ecef; border-radius:3px; overflow:hidden; }
+.roi-fill  { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-l)); border-radius:3px; transition:width 0.4s ease; }
+.roi-score { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; color:var(--accent); min-width:36px; text-align:right; }
 
-  /* CARD */
-  .card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    transition: box-shadow 0.2s, border-color 0.2s;
-    overflow: hidden;
-    position: relative;
-  }
-  .card:hover { box-shadow: var(--shadow-hover); border-color: #d1d5db; }
-  .card.done { opacity: 0.65; }
-  .card.done .card-title { text-decoration: line-through; color: var(--text-muted); }
-  .card.editing { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(218,37,60,0.15); }
-  .card.hidden-card { display: none; }
+/* meta row */
+.card-meta { padding:0 1.25rem 0.85rem; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+.meta-badges { display:flex; gap:5px; flex-wrap:wrap; align-items:center; }
+.badge {
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px;
+  text-transform:uppercase; letter-spacing:0.5px;
+}
+.badge .dot { width:7px; height:7px; border-radius:50%; display:inline-block; }
+.b-low    { background:var(--low-bg);  color:var(--low-txt); }
+.b-mid    { background:var(--mid-bg);  color:var(--mid-txt); }
+.b-high   { background:var(--high-bg); color:var(--high-txt); }
+.b-done   { background:var(--done-bg); color:var(--done-txt); }
+.b-ongoing{ background:var(--on-bg);   color:var(--on-txt); }
+.meta-txt  { font-size:11px; color:var(--muted); }
+.meta-txt.near { color:var(--accent); font-weight:700; }
+.card-actions { display:flex; gap:5px; }
+.action-btn {
+  width:28px; height:28px; border-radius:7px; border:1px solid var(--border);
+  background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:13px; transition:all 0.15s; color:var(--muted);
+}
+.action-btn:hover { background:var(--bg); border-color:var(--accent); color:var(--accent); }
+.action-btn.done-btn:hover  { background:var(--low-bg);  border-color:var(--low-txt);  color:var(--low-txt); }
+.action-btn.del-btn:hover   { background:var(--accent-pale); border-color:var(--accent); color:var(--accent); }
 
-  .card-header {
-    padding: 1rem 1.25rem 0.75rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .card-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    background: var(--text);
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    letter-spacing: 0.5px;
-  }
-  .card.done .card-num { background: var(--done-bg); color: var(--done-text); }
-  .card-header-content { flex: 1; min-width: 0; }
-  .card-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.2;
-    letter-spacing: 0.3px;
-  }
-  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-  .tag {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .tag-sponsor { background: var(--sponsor-bg); color: var(--sponsor-text); }
-  .tag-fan { background: var(--fan-bg); color: var(--fan-text); }
-  .tag-vol { background: var(--vol-bg); color: var(--vol-text); }
-  .card-header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 5px;
-    flex-shrink: 0;
-  }
-  .pri-badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .pri-ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
-  .pri-done { background: var(--done-bg); color: var(--done-text); }
-  .chevron {
-    font-size: 14px;
-    color: var(--text-muted);
-    transition: transform 0.25s;
-    line-height: 1;
-    margin-top: 2px;
-  }
-  .card.expanded .chevron { transform: rotate(180deg); }
+/* expanded body */
+.card-body {
+  display:none; padding:0 1.25rem 1.25rem;
+  border-top:1px solid var(--border); background:#fafbfc;
+}
+.card.expanded .card-body { display:block; animation:slideDown 0.2s ease; }
+.short-desc { font-size:13px; color:var(--muted); padding:1rem 0 0.75rem; font-style:italic; border-bottom:1px dashed var(--border); margin-bottom:0.75rem; }
+.detail-text { font-size:13.5px; line-height:1.75; color:var(--text); margin-bottom:1rem; }
+.impact-block { background:var(--accent-pale); border-left:3px solid var(--accent); border-radius:0 8px 8px 0; padding:0.75rem 1rem; font-size:12.5px; color:var(--text); line-height:1.6; }
+.impact-lbl { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
 
-  /* ROI BAR */
-  .card-roi {
-    padding: 0 1.25rem 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-  }
-  .roi-label-txt { font-size: 11px; color: var(--text-muted); font-weight: 500; min-width: 26px; }
-  .roi-track {
-    flex: 1;
-    height: 5px;
-    background: #e9ecef;
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .roi-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent-light));
-    border-radius: 3px;
-    transition: width 0.4s ease;
-  }
-  .roi-score {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 36px;
-    text-align: right;
-  }
-  .impl-badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .impl-badge .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-  .impl-low { background: var(--low-bg); color: var(--low-text); }
-  .impl-mid { background: var(--mid-bg); color: var(--mid-text); }
-  .impl-high { background: var(--high-bg); color: var(--high-text); }
-  .effect-badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .effect-badge .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-  .effect-low { background: var(--low-bg); color: var(--low-text); }
-  .effect-mid { background: var(--mid-bg); color: var(--mid-text); }
-  .effect-high { background: var(--high-bg); color: var(--high-text); }
+/* edit mode inside card */
+.edit-section { display:none; margin-top:1rem; padding-top:1rem; border-top:1px dashed var(--accent); }
+.card.edit-mode .edit-section { display:block; }
+.card.edit-mode .view-section { display:none; }
+.edit-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+.edit-field { display:flex; flex-direction:column; gap:4px; }
+.edit-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
+.edit-inp, .edit-ta {
+  font-family:'Barlow',sans-serif; font-size:13px; color:var(--text);
+  background:white; border:1px solid var(--border); border-radius:8px;
+  padding:7px 10px; outline:none; transition:border-color 0.15s; width:100%;
+}
+.edit-inp:focus, .edit-ta:focus { border-color:var(--accent); }
+.edit-ta { resize:vertical; min-height:72px; line-height:1.6; }
+.edit-full { grid-column:1/-1; }
+.edit-save-btn {
+  margin-top:8px; background:var(--accent); color:white; border:none;
+  padding:8px 20px; border-radius:8px; font-family:'Barlow',sans-serif;
+  font-size:13px; font-weight:600; cursor:pointer; transition:background 0.15s;
+}
+.edit-save-btn:hover { background:var(--accent-l); }
 
-  .card-footer-meta {
-    padding: 0 1.25rem 0.85rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-    cursor: pointer;
-  }
-  .card-meta-badges { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
-  .cost-txt { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-  .cost-txt span { color: var(--text); font-weight: 600; }
-  .deadline-txt { font-size: 11px; color: var(--text-muted); }
-  .deadline-txt.near { color: var(--accent); font-weight: 600; }
-  .horizon-txt { font-size: 11px; color: var(--text-muted); }
-  .card-actions { display: flex; gap: 5px; }
-  .action-btn {
-    width: 28px; height: 28px;
-    border-radius: 7px;
-    border: 1px solid var(--border);
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    transition: all 0.15s;
-    color: var(--text-muted);
-  }
-  .action-btn:hover { background: var(--bg); border-color: var(--accent); color: var(--accent); }
-  .action-btn.done-btn:hover { background: var(--low-bg); border-color: var(--low-text); color: var(--low-text); }
+/* done section */
+.done-section { margin-top:2.5rem; }
+.done-section .section-title { color:#bbb; }
+.done-section .cards-grid { opacity:0.7; }
 
-  /* EXPANDED BODY */
-  .card-body {
-    display: none;
-    padding: 0 1.25rem 1.25rem;
-    border-top: 1px solid var(--border);
-    background: #fafbfc;
-  }
-  .card.expanded .card-body { display: block; }
-  .card-body .short-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    padding: 1rem 0 0.75rem;
-    font-style: italic;
-    border-bottom: 1px dashed var(--border);
-    margin-bottom: 0.75rem;
-  }
-  .card-body .detail-text {
-    font-size: 13.5px;
-    line-height: 1.75;
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-  .card-body .impact-block {
-    background: var(--accent-pale);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 0.75rem 1rem;
-    font-size: 12.5px;
-    color: var(--text);
-    line-height: 1.6;
-  }
-  .impact-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
+/* ─── TIMELINE MODAL ──────────────────────────────────────────────────────── */
+.tl-modal {
+  display:none; position:fixed; inset:0; z-index:2000;
+  background:rgba(0,0,0,0.5); overflow-y:auto;
+}
+.tl-modal.open { display:block; }
+.tl-content { background:white; margin:40px auto; padding:2rem; border-radius:var(--radius); width:90%; max-width:960px; box-shadow:0 4px 30px rgba(0,0,0,0.25); }
+.tl-header  { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid var(--border); padding-bottom:1rem; flex-wrap:wrap; gap:1rem; }
+.tl-header h2 { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:700; }
+.tl-close { background:none; border:none; font-size:28px; cursor:pointer; color:var(--muted); }
+.tl-close:hover { color:var(--text); }
 
-  /* EDIT MODE */
-  .card-body .edit-section {
-    display: none;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--accent);
-  }
-  .card.edit-mode .card-body .edit-section { display: block; }
-  .card.edit-mode .card-body .view-section { display: none; }
-  .edit-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .edit-field { display: flex; flex-direction: column; gap: 4px; }
-  .edit-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--text-muted);
-  }
-  .edit-input, .edit-select, .edit-textarea {
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px; color: var(--text);
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 7px 10px;
-    outline: none;
-    transition: border-color 0.15s;
-    width: 100%;
-  }
-  .edit-input:focus, .edit-select:focus, .edit-textarea:focus { border-color: var(--accent); }
-  .edit-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-  .edit-full { grid-column: 1 / -1; }
-  .roi-slider-wrap { display: flex; align-items: center; gap: 10px; }
-  .roi-slider { flex: 1; accent-color: var(--accent); cursor: pointer; }
-  .roi-slider-val {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px; font-weight: 700; color: var(--accent); min-width: 36px;
-  }
-  .edit-save-btn {
-    margin-top: 8px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px; font-weight: 600;
-    cursor: pointer; letter-spacing: 0.5px;
-    transition: background 0.15s;
-  }
-  .edit-save-btn:hover { background: var(--accent-light); }
+/* timeline filters */
+.tl-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border); }
+.tl-fg { display:flex; gap:4px; flex-wrap:wrap; align-items:center; }
+.tl-flbl { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-right:4px; }
+.tlchip {
+  padding:4px 10px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted);
+  cursor:pointer; font-size:11px; font-family:'Barlow',sans-serif; font-weight:500; transition:all 0.15s;
+  display:inline-flex; align-items:center; gap:4px;
+}
+.tlchip:hover { border-color:var(--accent); color:var(--accent); }
+.tlchip.active { background:var(--accent); border-color:var(--accent); color:white; }
+.tlchip .dot { width:7px; height:7px; border-radius:50%; display:inline-block; }
 
-  /* DONE SECTION */
-  .done-section { margin-top: 2.5rem; }
-  .done-section .section-title { color: #bbb; }
-  .done-section .cards-grid { opacity: 0.7; }
+.tl-track { position:relative; padding:2rem 0; }
+.tl-line  { position:absolute; left:50%; top:0; bottom:0; width:3px; background:var(--border); transform:translateX(-50%); }
+.tl-items { display:flex; flex-direction:column; gap:2.5rem; }
+.tl-item  { position:relative; display:flex; gap:2rem; }
+.tl-item.left  { flex-direction:row; }
+.tl-item.right { flex-direction:row-reverse; }
+.tl-marker { position:absolute; left:50%; top:6px; width:18px; height:18px; background:var(--accent); border:3px solid white; border-radius:50%; transform:translateX(-50%); z-index:10; }
+.tl-box {
+  flex:1; padding:1.25rem; background:#fafbfc; border-radius:8px; border:1px solid var(--border);
+  margin-right:calc(50% + 16px);
+}
+.tl-item.right .tl-box { margin-right:0; margin-left:calc(50% + 16px); }
+.tl-box h3 { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; margin-bottom:4px; }
+.tl-box p  { font-size:12px; color:var(--muted); line-height:1.5; }
+.tl-period { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+.tl-badges { display:flex; gap:5px; flex-wrap:wrap; margin-top:6px; }
 
-  /* FOOTER */
-  footer {
-    background: var(--header-bg);
-    color: rgba(255,255,255,0.4);
-    font-size: 11px;
-    padding: 1.5rem 2rem;
-    text-align: center;
-    line-height: 2;
-    margin-top: 2rem;
-  }
-  footer strong { color: rgba(255,255,255,0.65); }
+/* ─── FOOTER ──────────────────────────────────────────────────────────────── */
+footer { background:var(--hdr); color:rgba(255,255,255,0.35); font-size:11px; padding:1.5rem 2rem; text-align:center; line-height:2; margin-top:2rem; }
+footer strong { color:rgba(255,255,255,0.6); }
 
-  /* EMPTY STATE */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-muted);
-    font-size: 14px;
-  }
+/* ─── ANIMATIONS ──────────────────────────────────────────────────────────── */
+.card { animation:fadeIn 0.3s ease both; }
+@keyframes fadeIn  { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+@keyframes slideDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
 
-  /* ANIMATIONS */
-  .card { animation: fadeIn 0.3s ease both; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  .card-body { animation: slideDown 0.2s ease; }
-  @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-
-  @media (max-width: 768px) {
-    .timeline-line { left: 20px; }
-    .timeline-marker { left: 20px; }
-    .timeline-item { flex-direction: column !important; margin-left: 50px; }
-    .filter-row { flex-direction: column; align-items: flex-start; }
-    .filter-row-right { justify-content: flex-start; }
-  }
-  @media (max-width: 600px) {
-    .dashboard { grid-template-columns: repeat(2, 1fr); }
-    header, .main { padding-left: 1rem; padding-right: 1rem; }
-    .filter-panel { padding: 0.75rem 1rem; }
-    .header-main { font-size: 26px; }
-    .edit-grid { grid-template-columns: 1fr; }
-    .form-grid { grid-template-columns: 1fr; }
-    .modal-content { width: 95%; margin: 10% auto; }
-  }
+/* ─── RESPONSIVE ──────────────────────────────────────────────────────────── */
+@media(max-width:768px){
+  .tl-line,.tl-marker { left:20px; }
+  .tl-item { flex-direction:column!important; margin-left:46px; }
+  .tl-box  { margin:0!important; }
+  .filter-row { flex-direction:column; align-items:flex-start; }
+}
+@media(max-width:600px){
+  .dashboard { grid-template-columns:repeat(2,1fr); }
+  header,.filter-panel,.main { padding-left:1rem; padding-right:1rem; }
+  .ws-bar { padding-left:1rem; padding-right:1rem; }
+  .header-main { font-size:26px; }
+  .edit-grid,.form-grid2 { grid-template-columns:1fr; }
+  .modal-box { max-width:95%; margin:1rem; }
+}
 </style>
 </head>
 <body>
 
+<!-- ═══════════════════ HEADER ════════════════════════════════════════════════ -->
 <header>
   <div class="header-top">
     <div>
       <div class="header-title">Prosliding.dk</div>
-      <div class="header-main">Anbefalede<br>Forbedringer</div>
-      <div class="header-sub">Sponsor-tiltrækning · Fan engagement · Frivilligrekruttering</div>
+      <div class="header-main">Initiativer</div>
+      <div class="header-sub" id="header-sub">Vælg et arbejdsområde nedenfor</div>
     </div>
     <div class="header-actions">
-      <button class="btn-new" onclick="openNewModal()">+ Ny anbefaling</button>
+      <button class="btn-new" id="btn-new-ws"  onclick="openWsModal()">＋ Arbejdsområde</button>
+      <button class="btn-new" id="btn-new-init" onclick="openInitModal()" style="display:none">＋ Initiativ</button>
     </div>
   </div>
 
   <div class="dashboard" id="dashboard">
-    <div class="dash-card">
-      <div class="dash-label">Aktive</div>
-      <div class="dash-value" id="d-active">—</div>
-      <div class="dash-sub">anbefalinger</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-label">Igangværende</div>
-      <div class="dash-value" id="d-ongoing">—</div>
-      <div class="dash-sub">projekter</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-label">Min. budget</div>
-      <div class="dash-value" id="d-cost">—</div>
-      <div class="dash-sub">estimeret</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-label">Gns. ROI</div>
-      <div class="dash-value" id="d-roi">—</div>
-      <div class="dash-sub">ud af 10</div>
-    </div>
+    <div class="dash-card"><div class="dash-label">Arbejdsområder</div><div class="dash-value" id="d-ws">—</div><div class="dash-sub">i alt</div></div>
+    <div class="dash-card"><div class="dash-label">Aktive</div><div class="dash-value" id="d-active">—</div><div class="dash-sub">initiativer</div></div>
+    <div class="dash-card"><div class="dash-label">Budget</div><div class="dash-value" id="d-cost">—</div><div class="dash-sub">kr estimeret</div></div>
+    <div class="dash-card"><div class="dash-label">Gns. ROI</div><div class="dash-value" id="d-roi">—</div><div class="dash-sub">ud af 10</div></div>
   </div>
 </header>
 
+<!-- WORKSPACE SELECTION BAR -->
+<div class="ws-bar" id="ws-bar">
+  <div class="ws-bar-inner" id="ws-bar-inner">
+    <span class="ws-bar-lbl">Område</span>
+    <!-- filled by JS -->
+  </div>
+</div>
+
 <!-- FILTER PANEL -->
-<div class="filter-panel">
+<div class="filter-panel" id="filter-panel" style="display:none">
   <div class="filter-panel-inner">
 
-    <!-- Row 1: View + Sort -->
     <div class="filter-row">
-      <span class="filter-row-label">Visning</span>
-      <div class="filter-chips">
+      <span class="filter-row-lbl">Visning</span>
+      <div class="fchips">
         <div class="view-chips">
-          <button class="view-chip active" id="cardViewBtn" onclick="switchToCardView()">🃏 Kort</button>
-          <button class="view-chip" id="tableViewBtn" onclick="switchToTableView()">📊 Tabel</button>
-          <button class="view-chip" onclick="openTimeline()">📅 Tidslinje</button>
+          <button class="vchip active" id="vbtn-card"     onclick="setView('card')">🃏 Kort</button>
+          <button class="vchip"        id="vbtn-table"    onclick="setView('table')">📊 Tabel</button>
+          <button class="vchip"        id="vbtn-timeline" onclick="openTimeline()">📅 Tidslinje</button>
         </div>
       </div>
-      <div class="filter-row-right">
-        <span style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase;font-weight:700;">Sortér</span>
-        <select class="sort-select" id="sort-select" onchange="renderCards()">
-          <option value="default">Standard (#)</option>
-          <option value="roi">ROI (høj → lav)</option>
-          <option value="cost">Pris (lav → høj)</option>
-          <option value="deadline">Deadline (tidligst)</option>
-          <option value="horizon">Tidshorisont (kort → lang)</option>
-        </select>
+      <select class="sort-sel" id="sort-select" onchange="renderAll()">
+        <option value="default">Standard (#)</option>
+        <option value="roi">ROI (høj → lav)</option>
+        <option value="cost">Pris (lav → høj)</option>
+        <option value="deadline">Deadline (tidligst)</option>
+        <option value="horizon">Horisont (kort → lang)</option>
+      </select>
+    </div>
+
+    <div class="filter-row">
+      <span class="filter-row-lbl">Status</span>
+      <div class="fchips" id="f-status">
+        <button class="fchip active" data-val="all">Alle</button>
+        <button class="fchip" data-val="ongoing">Igangværende</button>
+        <button class="fchip" data-val="done">Afsluttet</button>
       </div>
     </div>
 
-    <!-- Row 2: Målgruppe -->
     <div class="filter-row">
-      <span class="filter-row-label">Målgruppe</span>
-      <div class="filter-chips" id="aud-filters">
-        <button class="fchip active" data-aud="all">Alle</button>
-        <button class="fchip" data-aud="sponsor">Sponsor</button>
-        <button class="fchip" data-aud="fan">Fan</button>
-        <button class="fchip" data-aud="frivillig">Frivillig</button>
+      <span class="filter-row-lbl">Vanskelighed</span>
+      <div class="fchips" id="f-diff">
+        <button class="fchip active" data-val="all">Alle</button>
+        <button class="fchip" data-val="low"><span class="dot" style="background:#22c55e;width:8px;height:8px;border-radius:50%;display:inline-block;"></span>Lav</button>
+        <button class="fchip" data-val="mid"><span class="dot" style="background:#f59e0b;width:8px;height:8px;border-radius:50%;display:inline-block;"></span>Middel</button>
+        <button class="fchip" data-val="high"><span class="dot" style="background:#ef4444;width:8px;height:8px;border-radius:50%;display:inline-block;"></span>Høj</button>
       </div>
     </div>
 
-    <!-- Row 3: Status -->
     <div class="filter-row">
-      <span class="filter-row-label">Status</span>
-      <div class="filter-chips" id="pri-filters">
-        <button class="fchip active" data-pri="all">Alle</button>
-        <button class="fchip" data-pri="ongoing">Igangværende</button>
-        <button class="fchip" data-pri="done">Afsluttet</button>
+      <span class="filter-row-lbl">Effekt</span>
+      <div class="fchips" id="f-effect">
+        <button class="fchip active" data-val="all">Alle</button>
+        <button class="fchip" data-val="low"><span class="dot" style="background:#22c55e;width:8px;height:8px;border-radius:50%;display:inline-block;"></span>Lav</button>
+        <button class="fchip" data-val="mid"><span class="dot" style="background:#f59e0b;width:8px;height:8px;border-radius:50%;display:inline-block;"></span>Middel</button>
+        <button class="fchip" data-val="high"><span class="dot" style="background:#ef4444;width:8px;height:8px;border-radius:50%;display:inline-block;"></span>Høj</button>
       </div>
     </div>
 
-    <!-- Row 4: Vanskelighed -->
     <div class="filter-row">
-      <span class="filter-row-label">Vanskelighed</span>
-      <div class="filter-chips" id="diff-filters">
-        <button class="fchip active" data-diff="all">Alle</button>
-        <button class="fchip" data-diff="low"><span class="dot" style="background:#22c55e;width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Lav</button>
-        <button class="fchip" data-diff="mid"><span class="dot" style="background:#f59e0b;width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Middel</button>
-        <button class="fchip" data-diff="high"><span class="dot" style="background:#ef4444;width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Høj</button>
-      </div>
-    </div>
-
-    <!-- Row 5: Effekt -->
-    <div class="filter-row">
-      <span class="filter-row-label">Effekt</span>
-      <div class="filter-chips" id="effect-filters">
-        <button class="fchip active" data-effect="all">Alle</button>
-        <button class="fchip" data-effect="low"><span class="dot" style="background:#22c55e;width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Lav</button>
-        <button class="fchip" data-effect="mid"><span class="dot" style="background:#f59e0b;width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Middel</button>
-        <button class="fchip" data-effect="high"><span class="dot" style="background:#ef4444;width:8px;height:8px;border-radius:50%;display:inline-block;"></span> Høj</button>
-      </div>
-    </div>
-
-    <!-- Row 6: Tidshorisont -->
-    <div class="filter-row">
-      <span class="filter-row-label">Horisont</span>
-      <div class="filter-chips" id="horizon-filters">
-        <button class="fchip active" data-horizon="all">Alle</button>
-        <button class="fchip" data-horizon="dage">Dage</button>
-        <button class="fchip" data-horizon="uger">Uger</button>
-        <button class="fchip" data-horizon="måneder">Måneder</button>
-        <button class="fchip" data-horizon="år">År</button>
+      <span class="filter-row-lbl">Horisont</span>
+      <div class="fchips" id="f-horizon">
+        <button class="fchip active" data-val="all">Alle</button>
+        <button class="fchip" data-val="0">Dage</button>
+        <button class="fchip" data-val="1">Uger</button>
+        <button class="fchip" data-val="2">Måneder</button>
+        <button class="fchip" data-val="3">År</button>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- TIMELINE MODAL -->
-<div id="timelineModal" class="timeline-modal">
-  <div class="timeline-content">
-    <div class="timeline-header">
+<!-- ═══════════════════ MAIN ══════════════════════════════════════════════════ -->
+<div class="main" id="main-content">
+  <!-- rendered by JS -->
+</div>
+
+<!-- ═══════════════════ TIMELINE MODAL ════════════════════════════════════════ -->
+<div class="tl-modal" id="timelineModal">
+  <div class="tl-content">
+    <div class="tl-header">
       <h2>📅 Implementeringstidslinje</h2>
-      <button class="timeline-close" onclick="closeTimeline()">×</button>
+      <button class="tl-close" onclick="closeTimeline()">×</button>
     </div>
-
-    <!-- Timeline filters -->
-    <div class="timeline-filters">
-      <div class="tl-filter-group">
-        <span class="tl-filter-label">Målgruppe</span>
-        <button class="tl-chip active" data-tl-aud="all">Alle</button>
-        <button class="tl-chip" data-tl-aud="sponsor">Sponsor</button>
-        <button class="tl-chip" data-tl-aud="fan">Fan</button>
-        <button class="tl-chip" data-tl-aud="frivillig">Frivillig</button>
+    <div class="tl-filters">
+      <div class="tl-fg">
+        <span class="tl-flbl">Status</span>
+        <button class="tlchip active" data-tl="status" data-val="all">Alle</button>
+        <button class="tlchip" data-tl="status" data-val="ongoing">Igangværende</button>
+        <button class="tlchip" data-tl="status" data-val="done">Afsluttet</button>
       </div>
-      <div class="tl-filter-group">
-        <span class="tl-filter-label">Horisont</span>
-        <button class="tl-chip active" data-tl-horizon="all">Alle</button>
-        <button class="tl-chip" data-tl-horizon="dage">Dage</button>
-        <button class="tl-chip" data-tl-horizon="uger">Uger</button>
-        <button class="tl-chip" data-tl-horizon="måneder">Måneder</button>
-        <button class="tl-chip" data-tl-horizon="år">År</button>
+      <div class="tl-fg">
+        <span class="tl-flbl">Horisont</span>
+        <button class="tlchip active" data-tl="horizon" data-val="all">Alle</button>
+        <button class="tlchip" data-tl="horizon" data-val="0">Dage</button>
+        <button class="tlchip" data-tl="horizon" data-val="1">Uger</button>
+        <button class="tlchip" data-tl="horizon" data-val="2">Måneder</button>
+        <button class="tlchip" data-tl="horizon" data-val="3">År</button>
       </div>
-      <div class="tl-filter-group">
-        <span class="tl-filter-label">Vanskelighed</span>
-        <button class="tl-chip active" data-tl-diff="all">Alle</button>
-        <button class="tl-chip" data-tl-diff="low"><span class="dot" style="background:#22c55e;width:7px;height:7px;border-radius:50%;display:inline-block;"></span> Lav</button>
-        <button class="tl-chip" data-tl-diff="mid"><span class="dot" style="background:#f59e0b;width:7px;height:7px;border-radius:50%;display:inline-block;"></span> Middel</button>
-        <button class="tl-chip" data-tl-diff="high"><span class="dot" style="background:#ef4444;width:7px;height:7px;border-radius:50%;display:inline-block;"></span> Høj</button>
+      <div class="tl-fg">
+        <span class="tl-flbl">Vanskelighed</span>
+        <button class="tlchip active" data-tl="diff" data-val="all">Alle</button>
+        <button class="tlchip" data-tl="diff" data-val="low"><span class="dot" style="background:#22c55e"></span>Lav</button>
+        <button class="tlchip" data-tl="diff" data-val="mid"><span class="dot" style="background:#f59e0b"></span>Middel</button>
+        <button class="tlchip" data-tl="diff" data-val="high"><span class="dot" style="background:#ef4444"></span>Høj</button>
       </div>
-      <div class="tl-filter-group">
-        <span class="tl-filter-label">Effekt</span>
-        <button class="tl-chip active" data-tl-effect="all">Alle</button>
-        <button class="tl-chip" data-tl-effect="low"><span class="dot" style="background:#22c55e;width:7px;height:7px;border-radius:50%;display:inline-block;"></span> Lav</button>
-        <button class="tl-chip" data-tl-effect="mid"><span class="dot" style="background:#f59e0b;width:7px;height:7px;border-radius:50%;display:inline-block;"></span> Middel</button>
-        <button class="tl-chip" data-tl-effect="high"><span class="dot" style="background:#ef4444;width:7px;height:7px;border-radius:50%;display:inline-block;"></span> Høj</button>
+      <div class="tl-fg">
+        <span class="tl-flbl">Effekt</span>
+        <button class="tlchip active" data-tl="effect" data-val="all">Alle</button>
+        <button class="tlchip" data-tl="effect" data-val="low"><span class="dot" style="background:#22c55e"></span>Lav</button>
+        <button class="tlchip" data-tl="effect" data-val="mid"><span class="dot" style="background:#f59e0b"></span>Middel</button>
+        <button class="tlchip" data-tl="effect" data-val="high"><span class="dot" style="background:#ef4444"></span>Høj</button>
       </div>
     </div>
-
-    <div class="timeline-track">
-      <div class="timeline-line"></div>
-      <div class="timeline-items" id="timelineItems"></div>
+    <div class="tl-track">
+      <div class="tl-line"></div>
+      <div class="tl-items" id="tl-items"></div>
     </div>
   </div>
 </div>
 
-<!-- NEW RECOMMENDATION MODAL -->
-<div id="newModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Ny anbefaling</h2>
-      <button class="close-btn" onclick="closeNewModal()">×</button>
+<!-- ═══════════════════ WORKSPACE MODAL ═══════════════════════════════════════ -->
+<div class="modal" id="wsModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="ws-modal-title">Nyt arbejdsområde</h2>
+      <button class="close-x" onclick="closeModal('wsModal')">×</button>
     </div>
-
-    <div class="form-grid">
-      <div class="form-field full">
-        <label class="form-label">Titel</label>
-        <input class="form-input" type="text" id="new-title" placeholder="Anbefalingens navn...">
-      </div>
-      <div class="form-field full">
-        <label class="form-label">Kort beskrivelse</label>
-        <input class="form-input" type="text" id="new-short" placeholder="Én linje opsummering...">
-      </div>
-      <div class="form-field full">
-        <label class="form-label">Detaljer</label>
-        <textarea class="form-textarea" id="new-detail" placeholder="Uddybende beskrivelse..."></textarea>
-      </div>
-      <div class="form-field full">
-        <label class="form-label">Forventet effekt</label>
-        <textarea class="form-textarea" id="new-impact" placeholder="Hvad er den forventede effekt?"></textarea>
-      </div>
-
+    <div class="modal-body">
       <div class="form-field">
-        <label class="form-label">Estimeret pris (kr)</label>
-        <input class="form-input" type="number" id="new-cost" placeholder="f.eks. 5000">
+        <label class="form-lbl">Ikon</label>
+        <div class="ikon-picker" id="ikon-picker"></div>
       </div>
-
       <div class="form-field">
-        <label class="form-label">Deadline</label>
-        <input class="form-input" type="date" id="new-deadline">
+        <label class="form-lbl">Navn *</label>
+        <input class="form-inp" id="ws-navn" placeholder="fx Hjemmeside, Sociale medier…" maxlength="60">
       </div>
+      <div class="form-field last">
+        <label class="form-lbl">Beskrivelse</label>
+        <textarea class="form-ta" id="ws-desc" placeholder="Hvad handler dette område om?" rows="2"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('wsModal')">Annuller</button>
+      <button class="btn-save"   onclick="saveWorkspace()">Gem</button>
+    </div>
+  </div>
+</div>
 
-      <div class="form-field full">
-        <label class="form-label">ROI-indeks (0–10)</label>
-        <div class="roi-slider-wrap">
-          <input type="range" class="roi-slider" id="new-roi" min="0" max="10" step="0.5" value="5" oninput="document.getElementById('new-roi-val').textContent=this.value">
-          <span class="roi-slider-val" id="new-roi-val">5</span>
+<!-- WORKSPACE DELETE CONFIRM -->
+<div class="modal" id="wsDeleteModal">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-head">
+      <h2>Slet arbejdsområde?</h2>
+      <button class="close-x" onclick="closeModal('wsDeleteModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;line-height:1.6;color:var(--muted)">
+        "<strong id="ws-delete-name" style="color:var(--text)"></strong>" og alle tilhørende initiativer slettes permanent. Dette kan ikke fortrydes.
+      </p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('wsDeleteModal')">Annuller</button>
+      <button class="btn-danger" onclick="confirmDeleteWs()">Slet permanent</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ INITIATIVE MODAL ══════════════════════════════════════ -->
+<div class="modal" id="initModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Nyt initiativ</h2>
+      <button class="close-x" onclick="closeModal('initModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label class="form-lbl">Titel *</label>
+        <input class="form-inp" id="init-titel" placeholder="Hvad skal der gøres?">
+      </div>
+      <div class="form-field">
+        <label class="form-lbl">Kort beskrivelse</label>
+        <input class="form-inp" id="init-kort" placeholder="Én linje opsummering…">
+      </div>
+      <div class="form-field">
+        <label class="form-lbl">Detaljer</label>
+        <textarea class="form-ta" id="init-detaljer" placeholder="Uddybende beskrivelse…"></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-lbl">Forventet effekt</label>
+        <textarea class="form-ta" id="init-effekt" placeholder="Hvad opnår vi?" rows="2"></textarea>
+      </div>
+      <div class="form-grid2">
+        <div class="form-field">
+          <label class="form-lbl">Estimeret pris (kr)</label>
+          <input class="form-inp" type="number" id="init-cost" placeholder="0">
+        </div>
+        <div class="form-field">
+          <label class="form-lbl">Deadline</label>
+          <input class="form-inp" type="date" id="init-deadline">
         </div>
       </div>
-
-      <div class="form-field full">
-        <label class="form-label">Tidshorisont for implementering</label>
-        <div class="horizon-slider-wrap">
-          <input type="range" class="horizon-slider" id="new-horizon" min="0" max="3" step="1" value="1" oninput="updateHorizonLabel('new-horizon-val', this.value)">
-          <div class="horizon-labels">
-            <span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span>
+      <div class="form-field">
+        <label class="form-lbl">ROI-indeks (0–10)</label>
+        <div class="roi-wrap">
+          <input type="range" class="roi-slider" id="init-roi" min="0" max="10" step="0.5" value="5"
+            oninput="document.getElementById('init-roi-val').textContent=this.value">
+          <span class="roi-val" id="init-roi-val">5</span>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-lbl">Tidshorisont for implementering</label>
+        <div class="hor-wrap">
+          <input type="range" class="hor-slider" id="init-hor" min="0" max="3" step="1" value="1"
+            oninput="setHorLbl('init-hor-lbl', this.value)">
+          <div class="hor-lbls"><span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span></div>
+          <div class="hor-cur" id="init-hor-lbl">Uger</div>
+        </div>
+      </div>
+      <div class="form-grid2">
+        <div class="form-field">
+          <label class="form-lbl">Vanskelighed</label>
+          <div class="circle-sel">
+            <label class="circle-opt"><input type="radio" name="init-diff" value="low" checked><div class="cdot g"></div><span class="clbl">Lav</span></label>
+            <label class="circle-opt"><input type="radio" name="init-diff" value="mid"><div class="cdot y"></div><span class="clbl">Middel</span></label>
+            <label class="circle-opt"><input type="radio" name="init-diff" value="high"><div class="cdot r"></div><span class="clbl">Høj</span></label>
           </div>
-          <div class="horizon-val" id="new-horizon-val">Uger</div>
         </div>
-      </div>
-
-      <div class="form-field">
-        <label class="form-label">Implementeringsvanskelighed</label>
-        <div class="circle-selector">
-          <label class="circle-option">
-            <input type="radio" name="new-difficulty" value="low" checked>
-            <div class="circle-dot green"></div>
-            <span class="circle-label">Lav</span>
-          </label>
-          <label class="circle-option">
-            <input type="radio" name="new-difficulty" value="mid">
-            <div class="circle-dot yellow"></div>
-            <span class="circle-label">Middel</span>
-          </label>
-          <label class="circle-option">
-            <input type="radio" name="new-difficulty" value="high">
-            <div class="circle-dot red"></div>
-            <span class="circle-label">Høj</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="form-field">
-        <label class="form-label">Estimeret effekt</label>
-        <div class="circle-selector">
-          <label class="circle-option">
-            <input type="radio" name="new-effect" value="low">
-            <div class="circle-dot green"></div>
-            <span class="circle-label">Lav</span>
-          </label>
-          <label class="circle-option">
-            <input type="radio" name="new-effect" value="mid" checked>
-            <div class="circle-dot yellow"></div>
-            <span class="circle-label">Middel</span>
-          </label>
-          <label class="circle-option">
-            <input type="radio" name="new-effect" value="high">
-            <div class="circle-dot red"></div>
-            <span class="circle-label">Høj</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="form-field full">
-        <label class="form-label">Målgruppe</label>
-        <div class="form-checkboxes">
-          <label class="form-checkbox"><input type="checkbox" id="new-aud-sponsor" value="sponsor"><label for="new-aud-sponsor">Sponsor</label></label>
-          <label class="form-checkbox"><input type="checkbox" id="new-aud-fan" value="fan"><label for="new-aud-fan">Fan</label></label>
-          <label class="form-checkbox"><input type="checkbox" id="new-aud-vol" value="frivillig"><label for="new-aud-vol">Frivillig</label></label>
+        <div class="form-field">
+          <label class="form-lbl">Estimeret effekt</label>
+          <div class="circle-sel">
+            <label class="circle-opt"><input type="radio" name="init-effect" value="low"><div class="cdot g"></div><span class="clbl">Lav</span></label>
+            <label class="circle-opt"><input type="radio" name="init-effect" value="mid" checked><div class="cdot y"></div><span class="clbl">Middel</span></label>
+            <label class="circle-opt"><input type="radio" name="init-effect" value="high"><div class="cdot r"></div><span class="clbl">Høj</span></label>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeNewModal()">Annuller</button>
-      <button class="btn-save" onclick="saveNewCard()">Gem anbefaling</button>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('initModal')">Annuller</button>
+      <button class="btn-save"   onclick="saveInit()">Gem initiativ</button>
     </div>
   </div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
-  <div id="active-section">
-    <div class="section-title" id="active-title">Anbefalinger</div>
-    <div class="cards-grid" id="cards-container"></div>
-    <div class="table-view-container" id="table-container">
-      <table class="data-table" id="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Titel</th>
-            <th>Målgruppe</th>
-            <th>Status</th>
-            <th>Vanskelighed</th>
-            <th>Effekt</th>
-            <th>Horisont</th>
-            <th>Deadline</th>
-            <th>ROI</th>
-            <th>Pris (kr)</th>
-          </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
+<!-- INITIATIVE DELETE CONFIRM -->
+<div class="modal" id="initDeleteModal">
+  <div class="modal-box" style="max-width:400px">
+    <div class="modal-head">
+      <h2>Slet initiativ?</h2>
+      <button class="close-x" onclick="closeModal('initDeleteModal')">×</button>
     </div>
-  </div>
-
-  <div class="done-section" id="done-section" style="display:none;">
-    <div class="section-title">Afsluttede</div>
-    <div class="cards-grid" id="done-container"></div>
+    <div class="modal-body">
+      <p style="font-size:14px;line-height:1.6;color:var(--muted)">
+        "<strong id="init-delete-name" style="color:var(--text)"></strong>" slettes permanent.
+      </p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('initDeleteModal')">Annuller</button>
+      <button class="btn-danger" onclick="confirmDeleteInit()">Slet</button>
+    </div>
   </div>
 </div>
 
 <footer>
-  <strong>Prosliding.dk</strong> · Anbefalingsoversigt ·
-  <span style="color:rgba(255,255,255,0.25);">ROI = estimeret udbytte vs. indsats · Farver: <span style="color:#22c55e;">●</span> Lav <span style="color:#f59e0b;">●</span> Middel <span style="color:#ef4444;">●</span> Høj</span>
+  <strong>Prosliding.dk</strong> · Frivilligplatform ·
+  <span style="color:rgba(255,255,255,0.2);">
+    Farver: <span style="color:#22c55e">●</span> Lav &nbsp;
+    <span style="color:#f59e0b">●</span> Middel &nbsp;
+    <span style="color:#ef4444">●</span> Høj
+  </span>
 </footer>
 
+<!-- ═══════════════════ JAVASCRIPT ════════════════════════════════════════════ -->
 <script>
-// ─── HORIZON MAPPING ─────────────────────────────────────────────────────────
-const HORIZON_LABELS = ['Dage', 'Uger', 'Måneder', 'År'];
-const HORIZON_VALS   = ['dage', 'uger', 'måneder', 'år'];
+/* ── CONSTANTS ──────────────────────────────────────────────────────────────── */
+const HOR_LBLS = ['Dage','Uger','Måneder','År'];
+const IKONER   = ['📁','🌐','📣','💼','🤝','📸','🏆','🎯','📊','✉️','🛠️','🎽','📅','💡','🏅','🧩','🎬','🗓️'];
 
-function updateHorizonLabel(elId, val) {
-  const el = document.getElementById(elId);
-  if (el) el.textContent = HORIZON_LABELS[parseInt(val)] || 'Uger';
-}
+/* ── STATE ──────────────────────────────────────────────────────────────────── */
+let workspaces    = [];   // { id, navn, beskrivelse, ikon, createdAt }
+let initiatives   = [];   // { id, wsId, titel, kort, detaljer, effekt, status, difficulty, effect, horizonIndex, deadline, roi, cost, createdAt }
+let nextWsId      = 1;
+let nextInitId    = 1;
+let activeWsId    = null; // null = home/overview
 
-// ─── DATA ────────────────────────────────────────────────────────────────────
-let cards = [
-  {
-    id: 1, title: 'Sponsorpakke-redesign',
-    short: 'Moderniser sponsorpakkerne med klare fordele og ROI-dokumentation.',
-    detail: 'Lav tre tydelige pakker (Guld, Sølv, Bronze) med konkrete leverancer, eksponeringstal og social proof fra tidligere sponsorer. Inkludér en pitch-deck skabelon.',
-    impact: 'Øger konverteringsrate på sponsorforespørgsler og letter salgsmøder.',
-    audiences: ['sponsor'], status: 'ongoing',
-    roi: 8.5, cost: 3000, difficulty: 'low', effect: 'high',
-    horizonIndex: 1, deadline: '2026-06-01'
-  },
-  {
-    id: 2, title: 'Fan-loyalty program',
-    short: 'Indfør et digitalt pointsystem for faste tilskuere.',
-    detail: 'Brugere optjener point ved køb, delinger og fremmøde. Points kan indløses til merchandise, rabatter eller VIP-adgang. Kræver simpel app eller webportal.',
-    impact: 'Øger tilbagevendende fans og skaber mersalg.',
-    audiences: ['fan'], status: 'ongoing',
-    roi: 7.0, cost: 15000, difficulty: 'mid', effect: 'high',
-    horizonIndex: 2, deadline: '2026-09-01'
-  },
-  {
-    id: 3, title: 'Frivillig onboarding-flow',
-    short: 'Struktureret velkomst og introduktionsforløb for nye frivillige.',
-    detail: 'Opret en digital onboarding med rollebeskrivelser, kontaktlister og en "buddy"-ordning. Send automatiske velkomstmails og planlæg et introduktionsmøde.',
-    impact: 'Reducerer frivillig-churn og øger engagement fra dag ét.',
-    audiences: ['frivillig'], status: 'ongoing',
-    roi: 6.5, cost: 1500, difficulty: 'low', effect: 'mid',
-    horizonIndex: 1, deadline: '2026-05-15'
-  },
-  {
-    id: 4, title: 'Live-streaming setup',
-    short: 'Stream kampe og events til fans, der ikke kan møde op.',
-    detail: 'Investér i grundlæggende streaming-udstyr (kamera, lyd, encoder) og opsæt kanal på YouTube eller Facebook Live. Markedsindré til eksisterende fans.',
-    impact: 'Udvider reach markant og skaber en ny sponsorexponeringsflades.',
-    audiences: ['fan', 'sponsor'], status: 'ongoing',
-    roi: 9.0, cost: 8000, difficulty: 'mid', effect: 'high',
-    horizonIndex: 1, deadline: '2026-07-01'
-  },
-  {
-    id: 5, title: 'Sponsor-rapport automatisering',
-    short: 'Send automatiske månedlige rapporter til sponsorer.',
-    detail: 'Brug Google Data Studio eller simpel mailchimp-rapport til at vise sponsorer eksponeringsdata, sociale medier-reach og eventnærværelse automatisk.',
-    impact: 'Styrker sponsorrelationer og øger fornyelsesrate.',
-    audiences: ['sponsor'], status: 'done',
-    roi: 7.5, cost: 500, difficulty: 'low', effect: 'mid',
-    horizonIndex: 0, deadline: ''
-  },
-];
+let fStatus   = 'all';
+let fDiff     = 'all';
+let fEffect   = 'all';
+let fHorizon  = 'all';
+let currentView = 'card'; // 'card' | 'table'
 
-let nextId = 6;
-
-// ─── STATE ───────────────────────────────────────────────────────────────────
-let activeAud      = 'all';
-let activePri      = 'all';
-let activeDiff     = 'all';
-let activeEffect   = 'all';
-let activeHorizon  = 'all';
-let currentView    = 'card'; // 'card' | 'table'
-
-// Timeline filter state
-let tlAud    = 'all';
+let tlStatus  = 'all';
 let tlHorizon = 'all';
-let tlDiff   = 'all';
-let tlEffect = 'all';
+let tlDiff    = 'all';
+let tlEffect  = 'all';
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
-function diffLabel(d) {
-  if (d === 'low')  return '<span class="impl-badge impl-low"><span class="dot" style="background:#22c55e;"></span>Lav</span>';
-  if (d === 'mid')  return '<span class="impl-badge impl-mid"><span class="dot" style="background:#f59e0b;"></span>Middel</span>';
-  if (d === 'high') return '<span class="impl-badge impl-high"><span class="dot" style="background:#ef4444;"></span>Høj</span>';
-  return '';
+let editingWsId    = null;
+let deletingWsId   = null;
+let deletingInitId = null;
+let selectedIkon   = '📁';
+
+/* ── MODAL HELPERS ──────────────────────────────────────────────────────────── */
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+/* ── IKON PICKER ─────────────────────────────────────────────────────────────── */
+function buildIkonPicker(selected) {
+  selectedIkon = selected || '📁';
+  const el = document.getElementById('ikon-picker');
+  el.innerHTML = '';
+  IKONER.forEach(ikon => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ikon-opt' + (ikon === selectedIkon ? ' sel' : '');
+    btn.textContent = ikon;
+    btn.onclick = () => {
+      el.querySelectorAll('.ikon-opt').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      selectedIkon = ikon;
+    };
+    el.appendChild(btn);
+  });
 }
-function effectLabel(e) {
-  if (e === 'low')  return '<span class="effect-badge effect-low"><span class="dot" style="background:#22c55e;"></span>Lav</span>';
-  if (e === 'mid')  return '<span class="effect-badge effect-mid"><span class="dot" style="background:#f59e0b;"></span>Middel</span>';
-  if (e === 'high') return '<span class="effect-badge effect-high"><span class="dot" style="background:#ef4444;"></span>Høj</span>';
-  return '';
+
+/* ── HORIZON LABEL ───────────────────────────────────────────────────────────── */
+function setHorLbl(elId, val) {
+  const el = document.getElementById(elId);
+  if (el) el.textContent = HOR_LBLS[parseInt(val)] || 'Uger';
 }
-function horizonLabel(idx) {
-  return HORIZON_LABELS[idx] || 'Uger';
+
+/* ── BADGE HELPERS ───────────────────────────────────────────────────────────── */
+function diffBadge(d) {
+  const m = { low:['#22c55e','b-low','Lav'], mid:['#f59e0b','b-mid','Middel'], high:['#ef4444','b-high','Høj'] };
+  const [c,cls,l] = m[d]||m.low;
+  return `<span class="badge ${cls}"><span class="dot" style="background:${c}"></span>${l}</span>`;
 }
-function horizonVal(idx) {
-  return HORIZON_VALS[idx] || 'uger';
+function effectBadge(e) {
+  const m = { low:['#22c55e','b-low','Lav'], mid:['#f59e0b','b-mid','Middel'], high:['#ef4444','b-high','Høj'] };
+  const [c,cls,l] = m[e]||m.mid;
+  return `<span class="badge ${cls}"><span class="dot" style="background:${c}"></span>${l}</span>`;
 }
-function deadlineStr(d) {
+function statusBadge(s) {
+  return s === 'done'
+    ? `<span class="badge b-done">Afsluttet</span>`
+    : `<span class="badge b-ongoing">Igangværende</span>`;
+}
+function fmtDate(d) {
   if (!d) return '';
-  const dt = new Date(d);
-  return dt.toLocaleDateString('da-DK', { day:'numeric', month:'short', year:'numeric' });
+  return new Date(d).toLocaleDateString('da-DK',{day:'numeric',month:'short',year:'numeric'});
 }
-function isNearDeadline(d) {
+function isNear(d) {
   if (!d) return false;
   const diff = new Date(d) - new Date();
-  return diff > 0 && diff < 14 * 24 * 3600 * 1000;
+  return diff > 0 && diff < 14*86400000;
 }
 
-// ─── FILTER LOGIC ─────────────────────────────────────────────────────────────
-function cardMatchesFilters(c) {
-  if (activeAud !== 'all' && !c.audiences.includes(activeAud)) return false;
-  if (activePri !== 'all' && c.status !== activePri) return false;
-  if (activeDiff !== 'all' && c.difficulty !== activeDiff) return false;
-  if (activeEffect !== 'all' && c.effect !== activeEffect) return false;
-  if (activeHorizon !== 'all' && horizonVal(c.horizonIndex) !== activeHorizon) return false;
-  return true;
+/* ── FILTER CHIPS WIRING ─────────────────────────────────────────────────────── */
+function wireFilterGroup(containerId, setter) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.querySelectorAll('.fchip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      el.querySelectorAll('.fchip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setter(btn.dataset.val);
+      renderAll();
+    });
+  });
 }
 
-// ─── SORT ─────────────────────────────────────────────────────────────────────
-function getSortedCards(arr) {
+/* ── DASHBOARD ────────────────────────────────────────────────────────────────�� */
+function updateDashboard() {
+  const wsInits = activeWsId !== null
+    ? initiatives.filter(i => i.wsId === activeWsId)
+    : initiatives;
+  const active  = wsInits.filter(i => i.status !== 'done');
+  const cost    = active.reduce((s,i) => s+(i.cost||0), 0);
+  const avgRoi  = active.length ? (active.reduce((s,i) => s+i.roi,0)/active.length).toFixed(1) : '—';
+
+  document.getElementById('d-ws').textContent     = workspaces.length;
+  document.getElementById('d-active').textContent = active.length;
+  document.getElementById('d-cost').textContent   = cost ? cost.toLocaleString('da-DK') : '0';
+  document.getElementById('d-roi').textContent    = avgRoi;
+}
+
+/* ── WORKSPACE BAR ───────────────────────────────────────────────────────────── */
+function renderWsBar() {
+  const inner = document.getElementById('ws-bar-inner');
+  inner.innerHTML = '<span class="ws-bar-lbl">Område</span>';
+
+  // "Alle" button
+  const all = document.createElement('button');
+  all.className = 'wsbtn' + (activeWsId === null ? ' active' : '');
+  all.textContent = 'Oversigt';
+  all.onclick = () => selectWorkspace(null);
+  inner.appendChild(all);
+
+  workspaces.forEach(ws => {
+    const btn = document.createElement('button');
+    btn.className = 'wsbtn' + (activeWsId === ws.id ? ' active' : '');
+    btn.innerHTML = `<span class="wsbtn-ikon">${ws.ikon}</span>${ws.navn}`;
+    btn.onclick = () => selectWorkspace(ws.id);
+    inner.appendChild(btn);
+  });
+}
+
+/* ── SELECT WORKSPACE ────────────────────────────────────────────────────────── */
+function selectWorkspace(wsId) {
+  activeWsId = wsId;
+
+  // update header sub
+  if (wsId === null) {
+    document.getElementById('header-sub').textContent = 'Vælg et arbejdsområde nedenfor';
+    document.getElementById('btn-new-init').style.display = 'none';
+    document.getElementById('btn-new-ws').style.display   = '';
+    document.getElementById('filter-panel').style.display = 'none';
+  } else {
+    const ws = workspaces.find(w => w.id === wsId);
+    document.getElementById('header-sub').textContent = ws ? ws.beskrivelse || ws.navn : '';
+    document.getElementById('btn-new-init').style.display = '';
+    document.getElementById('btn-new-ws').style.display   = 'none';
+    document.getElementById('filter-panel').style.display = '';
+    // reset filters
+    fStatus = 'all'; fDiff = 'all'; fEffect = 'all'; fHorizon = 'all';
+    ['f-status','f-diff','f-effect','f-horizon'].forEach(id => {
+      const container = document.getElementById(id);
+      if (container) {
+        container.querySelectorAll('.fchip').forEach(b => b.classList.remove('active'));
+        container.querySelector('[data-val="all"]').classList.add('active');
+      }
+    });
+    currentView = 'card';
+    document.getElementById('vbtn-card').classList.add('active');
+    document.getElementById('vbtn-table').classList.remove('active');
+  }
+
+  renderWsBar();
+  renderAll();
+}
+
+/* ── SORT + FILTER ───────────────────────────────────────────────────────────── */
+function getSorted(arr) {
   const sort = document.getElementById('sort-select').value;
   const copy = [...arr];
-  if (sort === 'roi') copy.sort((a,b) => b.roi - a.roi);
-  else if (sort === 'cost') copy.sort((a,b) => (a.cost||0) - (b.cost||0));
-  else if (sort === 'deadline') copy.sort((a,b) => {
-    if (!a.deadline) return 1;
-    if (!b.deadline) return -1;
-    return new Date(a.deadline) - new Date(b.deadline);
-  });
-  else if (sort === 'horizon') copy.sort((a,b) => (a.horizonIndex||0) - (b.horizonIndex||0));
-  else copy.sort((a,b) => a.id - b.id);
+  if      (sort==='roi')      copy.sort((a,b) => b.roi - a.roi);
+  else if (sort==='cost')     copy.sort((a,b) => (a.cost||0)-(b.cost||0));
+  else if (sort==='deadline') copy.sort((a,b) => { if(!a.deadline)return 1; if(!b.deadline)return -1; return new Date(a.deadline)-new Date(b.deadline); });
+  else if (sort==='horizon')  copy.sort((a,b) => (a.horizonIndex||0)-(b.horizonIndex||0));
+  else copy.sort((a,b) => a.id-b.id);
   return copy;
 }
+function getFiltered(arr) {
+  return arr.filter(i => {
+    if (fStatus  !== 'all' && i.status       !== fStatus)          return false;
+    if (fDiff    !== 'all' && i.difficulty   !== fDiff)            return false;
+    if (fEffect  !== 'all' && i.effect       !== fEffect)          return false;
+    if (fHorizon !== 'all' && String(i.horizonIndex) !== fHorizon) return false;
+    return true;
+  });
+}
 
-// ─── RENDER CARDS ─────────────────────────────────────────────────────────────
-function renderCards() {
-  const container  = document.getElementById('cards-container');
-  const doneContainer = document.getElementById('done-container');
-  const doneSection = document.getElementById('done-section');
-  container.innerHTML = '';
-  doneContainer.innerHTML = '';
+/* ── MAIN RENDER ─────────────────────────────────────────────────────────────── */
+function renderAll() {
+  updateDashboard();
+  renderWsBar();
+  const main = document.getElementById('main-content');
 
-  const filtered = getSortedCards(cards).filter(cardMatchesFilters);
-  const active = filtered.filter(c => c.status !== 'done');
-  const done   = filtered.filter(c => c.status === 'done');
-
-  if (currentView === 'table') {
-    renderTable(filtered);
+  if (activeWsId === null) {
+    // HOME VIEW
+    renderHome(main);
     return;
   }
 
-  if (active.length === 0) {
-    container.innerHTML = '<div class="empty-state">Ingen anbefalinger matcher de valgte filtre.</div>';
+  const wsInits   = initiatives.filter(i => i.wsId === activeWsId);
+  const filtered  = getSorted(getFiltered(wsInits));
+  const active    = filtered.filter(i => i.status !== 'done');
+  const done      = filtered.filter(i => i.status === 'done');
+
+  if (currentView === 'table') {
+    renderTable(main, filtered);
   } else {
-    active.forEach(c => container.appendChild(buildCard(c)));
+    renderCards(main, active, done, wsInits.length === 0);
+  }
+}
+
+/* ── HOME VIEW ───────────────────────────────────────────────────────────────── */
+function renderHome(main) {
+  if (workspaces.length === 0) {
+    main.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🗂️</div>
+        <div class="empty-title">Ingen arbejdsområder endnu</div>
+        <div class="empty-desc">Opret dit første arbejdsområde for at komme i gang. Arbejdsområder samler initiativer og gør det nemt for frivillige at finde relevant indhold.</div>
+        <button class="empty-cta" onclick="openWsModal()">＋ Opret første arbejdsområde</button>
+      </div>`;
+    return;
+  }
+
+  main.innerHTML = '<div class="ws-grid" id="ws-grid"></div>';
+  const grid = document.getElementById('ws-grid');
+
+  workspaces.forEach(ws => {
+    const count = initiatives.filter(i => i.wsId === ws.id).length;
+    const card  = document.createElement('div');
+    card.className = 'ws-card';
+    card.innerHTML = `
+      <div class="ws-card-top" onclick="selectWorkspace(${ws.id})">
+        <div class="ws-ikon">${ws.ikon}</div>
+        <div>
+          <div class="ws-name">${esc(ws.navn)}</div>
+          <div class="ws-desc">${esc(ws.beskrivelse||'')}</div>
+        </div>
+      </div>
+      <div class="ws-card-foot">
+        <div class="ws-count"><strong>${count}</strong> initiativ${count!==1?'er':''}</div>
+        <div class="ws-card-btns">
+          <button class="icon-btn" title="Rediger" onclick="event.stopPropagation();openWsEditModal(${ws.id})">✎</button>
+          <button class="icon-btn" title="Slet"    onclick="event.stopPropagation();openWsDeleteConfirm(${ws.id})" style="color:var(--accent)">🗑</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // add card
+  const add = document.createElement('div');
+  add.className = 'ws-add-card';
+  add.onclick = openWsModal;
+  add.innerHTML = `<div class="ws-add-icon">＋</div><div class="ws-add-txt">Tilføj arbejdsområde</div>`;
+  grid.appendChild(add);
+}
+
+/* ── CARD VIEW ───────────────────────────────────────────────────────────────── */
+function renderCards(main, active, done, isEmpty) {
+  main.innerHTML = '';
+
+  if (isEmpty) {
+    main.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">Ingen initiativer endnu</div>
+        <div class="empty-desc">Opret det første initiativ for dette arbejdsområde for at komme i gang.</div>
+        <button class="empty-cta" onclick="openInitModal()">＋ Opret første initiativ</button>
+      </div>`;
+    return;
+  }
+
+  if (active.length === 0 && done.length === 0) {
+    main.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">Ingen resultater</div><div class="empty-desc">Ingen initiativer matcher de valgte filtre.</div></div>`;
+    return;
+  }
+
+  if (active.length > 0) {
+    const sec = document.createElement('div');
+    sec.className = 'section-title';
+    sec.textContent = `Igangværende (${active.length})`;
+    main.appendChild(sec);
+    const grid = document.createElement('div');
+    grid.className = 'cards-grid';
+    active.forEach((c,i) => grid.appendChild(buildCard(c, i+1)));
+    main.appendChild(grid);
   }
 
   if (done.length > 0) {
-    doneSection.style.display = '';
-    done.forEach(c => doneContainer.appendChild(buildCard(c)));
-  } else {
-    doneSection.style.display = 'none';
+    const sec = document.createElement('div');
+    sec.className = 'section-title done-section';
+    sec.style.marginTop = '2.5rem';
+    sec.style.color = '#bbb';
+    sec.textContent = `Afsluttede (${done.length})`;
+    main.appendChild(sec);
+    const grid = document.createElement('div');
+    grid.className = 'cards-grid';
+    grid.style.opacity = '0.7';
+    done.forEach((c,i) => grid.appendChild(buildCard(c, i+1)));
+    main.appendChild(grid);
   }
-
-  updateDashboard();
 }
 
-function buildCard(c) {
+function buildCard(c, num) {
+  const pct = Math.round((c.roi/10)*100);
+  const hor = HOR_LBLS[c.horizonIndex] || 'Uger';
+  const dl  = fmtDate(c.deadline);
+  const near = isNear(c.deadline);
+
   const div = document.createElement('div');
-  div.className = 'card' + (c.status === 'done' ? ' done' : '');
+  div.className = 'card' + (c.status==='done'?' done':'');
   div.id = 'card-' + c.id;
-
-  const pct = Math.round((c.roi / 10) * 100);
-  const audTags = c.audiences.map(a =>
-    `<span class="tag tag-${a === 'frivillig' ? 'vol' : a}">${a === 'frivillig' ? 'Frivillig' : a.charAt(0).toUpperCase()+a.slice(1)}</span>`
-  ).join('');
-  const statusBadge = c.status === 'done'
-    ? `<span class="pri-badge pri-done">Afsluttet</span>`
-    : `<span class="pri-badge pri-ongoing">Igangværende</span>`;
-
-  const dlStr = deadlineStr(c.deadline);
-  const dlClass = isNearDeadline(c.deadline) ? 'near' : '';
 
   div.innerHTML = `
     <div class="card-header" onclick="toggleCard(${c.id})">
-      <div class="card-num">${c.id}</div>
+      <div class="card-num">${num}</div>
       <div class="card-header-content">
-        <div class="card-title">${c.title}</div>
-        <div class="card-tags">${audTags}</div>
+        <div class="card-title">${esc(c.titel)}</div>
+        ${c.kort ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${esc(c.kort)}</div>` : ''}
       </div>
       <div class="card-header-right">
-        ${statusBadge}
+        ${statusBadge(c.status)}
         <span class="chevron">▼</span>
       </div>
     </div>
     <div class="card-roi" onclick="toggleCard(${c.id})">
-      <span class="roi-label-txt">ROI</span>
+      <span class="roi-lbl">ROI</span>
       <div class="roi-track"><div class="roi-fill" style="width:${pct}%"></div></div>
       <span class="roi-score">${c.roi}/10</span>
     </div>
-    <div class="card-footer-meta" onclick="toggleCard(${c.id})">
-      <div class="card-meta-badges">
-        ${diffLabel(c.difficulty)}
-        ${effectLabel(c.effect)}
-        ${c.cost ? `<span class="cost-txt"><span>${c.cost.toLocaleString('da-DK')} kr</span></span>` : ''}
-        <span class="horizon-txt">⏱ ${horizonLabel(c.horizonIndex)}</span>
-        ${dlStr ? `<span class="deadline-txt ${dlClass}">📅 ${dlStr}</span>` : ''}
+    <div class="card-meta">
+      <div class="meta-badges">
+        ${diffBadge(c.difficulty)}
+        ${effectBadge(c.effect)}
+        ${c.cost ? `<span class="meta-txt">${c.cost.toLocaleString('da-DK')} kr</span>` : ''}
+        <span class="meta-txt">⏱ ${hor}</span>
+        ${dl ? `<span class="meta-txt ${near?'near':''}">📅 ${dl}</span>` : ''}
       </div>
-      <div class="card-actions" onclick="event.stopPropagation()">
-        <button class="action-btn done-btn" title="${c.status==='done'?'Genaktiver':'Markér afsluttet'}" onclick="toggleDone(${c.id})">
-          ${c.status === 'done' ? '↩' : '✓'}
-        </button>
-        <button class="action-btn edit-btn" title="Rediger" onclick="toggleEdit(${c.id})">✎</button>
+      <div class="card-actions">
+        <button class="action-btn done-btn" title="${c.status==='done'?'Genaktiver':'Afslut'}" onclick="toggleDone(${c.id})">${c.status==='done'?'↩':'✓'}</button>
+        <button class="action-btn" title="Rediger" onclick="toggleEdit(${c.id})">✎</button>
+        <button class="action-btn del-btn" title="Slet" onclick="openInitDeleteConfirm(${c.id})">🗑</button>
       </div>
     </div>
     <div class="card-body">
       <div class="view-section">
-        <div class="short-desc">${c.short}</div>
-        <div class="detail-text">${c.detail}</div>
-        <div class="impact-block">
-          <div class="impact-label">Forventet effekt</div>
-          ${c.impact}
-        </div>
+        ${c.kort ? `<div class="short-desc">${esc(c.kort)}</div>` : ''}
+        ${c.detaljer ? `<div class="detail-text">${esc(c.detaljer)}</div>` : ''}
+        ${c.effekt ? `<div class="impact-block"><div class="impact-lbl">Forventet effekt</div>${esc(c.effekt)}</div>` : ''}
       </div>
       <div class="edit-section">
         <div class="edit-grid">
-          <div class="edit-field edit-full">
-            <label class="edit-label">Titel</label>
-            <input class="edit-input" id="e-title-${c.id}" value="${c.title}">
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Kort beskrivelse</label>
-            <input class="edit-input" id="e-short-${c.id}" value="${c.short}">
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Detaljer</label>
-            <textarea class="edit-textarea" id="e-detail-${c.id}">${c.detail}</textarea>
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Forventet effekt</label>
-            <textarea class="edit-textarea" id="e-impact-${c.id}">${c.impact}</textarea>
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Pris (kr)</label>
-            <input class="edit-input" type="number" id="e-cost-${c.id}" value="${c.cost||''}">
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Deadline</label>
-            <input class="edit-input" type="date" id="e-deadline-${c.id}" value="${c.deadline||''}">
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">ROI-indeks (${c.roi})</label>
-            <div class="roi-slider-wrap">
-              <input type="range" class="roi-slider" id="e-roi-${c.id}" min="0" max="10" step="0.5" value="${c.roi}"
-                oninput="document.getElementById('e-roi-val-${c.id}').textContent=this.value">
-              <span class="roi-slider-val" id="e-roi-val-${c.id}">${c.roi}</span>
+          <div class="edit-field edit-full"><label class="edit-lbl">Titel</label><input class="edit-inp" id="e-titel-${c.id}" value="${esc(c.titel)}"></div>
+          <div class="edit-field edit-full"><label class="edit-lbl">Kort beskrivelse</label><input class="edit-inp" id="e-kort-${c.id}" value="${esc(c.kort||'')}"></div>
+          <div class="edit-field edit-full"><label class="edit-lbl">Detaljer</label><textarea class="edit-ta" id="e-det-${c.id}">${esc(c.detaljer||'')}</textarea></div>
+          <div class="edit-field edit-full"><label class="edit-lbl">Forventet effekt</label><textarea class="edit-ta" id="e-eff-${c.id}">${esc(c.effekt||'')}</textarea></div>
+          <div class="edit-field"><label class="edit-lbl">Pris (kr)</label><input class="edit-inp" type="number" id="e-cost-${c.id}" value="${c.cost||0}"></div>
+          <div class="edit-field"><label class="edit-lbl">Deadline</label><input class="edit-inp" type="date" id="e-dl-${c.id}" value="${c.deadline||''}"></div>
+          <div class="edit-field edit-full"><label class="edit-lbl">ROI (${c.roi})</label>
+            <div class="roi-wrap">
+              <input type="range" class="roi-slider" id="e-roi-${c.id}" min="0" max="10" step="0.5" value="${c.roi}" oninput="document.getElementById('e-roi-v-${c.id}').textContent=this.value">
+              <span class="roi-val" id="e-roi-v-${c.id}">${c.roi}</span>
             </div>
           </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Tidshorisont</label>
-            <div class="horizon-slider-wrap">
-              <input type="range" class="horizon-slider" id="e-horizon-${c.id}" min="0" max="3" step="1" value="${c.horizonIndex||0}"
-                oninput="updateHorizonLabel('e-horizon-val-${c.id}', this.value)">
-              <div class="horizon-labels"><span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span></div>
-              <div class="horizon-val" id="e-horizon-val-${c.id}">${horizonLabel(c.horizonIndex)}</div>
+          <div class="edit-field edit-full"><label class="edit-lbl">Tidshorisont</label>
+            <div class="hor-wrap">
+              <input type="range" class="hor-slider" id="e-hor-${c.id}" min="0" max="3" step="1" value="${c.horizonIndex||0}" oninput="setHorLbl('e-hor-lbl-${c.id}',this.value)">
+              <div class="hor-lbls"><span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span></div>
+              <div class="hor-cur" id="e-hor-lbl-${c.id}">${hor}</div>
             </div>
           </div>
-          <div class="edit-field">
-            <label class="edit-label">Vanskelighed</label>
-            <div class="circle-selector">
-              <label class="circle-option"><input type="radio" name="e-diff-${c.id}" value="low" ${c.difficulty==='low'?'checked':''}><div class="circle-dot green"></div><span class="circle-label">Lav</span></label>
-              <label class="circle-option"><input type="radio" name="e-diff-${c.id}" value="mid" ${c.difficulty==='mid'?'checked':''}><div class="circle-dot yellow"></div><span class="circle-label">Middel</span></label>
-              <label class="circle-option"><input type="radio" name="e-diff-${c.id}" value="high" ${c.difficulty==='high'?'checked':''}><div class="circle-dot red"></div><span class="circle-label">Høj</span></label>
+          <div class="edit-field"><label class="edit-lbl">Vanskelighed</label>
+            <div class="circle-sel">
+              <label class="circle-opt"><input type="radio" name="e-diff-${c.id}" value="low" ${c.difficulty==='low'?'checked':''}><div class="cdot g"></div><span class="clbl">Lav</span></label>
+              <label class="circle-opt"><input type="radio" name="e-diff-${c.id}" value="mid" ${c.difficulty==='mid'?'checked':''}><div class="cdot y"></div><span class="clbl">Middel</span></label>
+              <label class="circle-opt"><input type="radio" name="e-diff-${c.id}" value="high" ${c.difficulty==='high'?'checked':''}><div class="cdot r"></div><span class="clbl">Høj</span></label>
             </div>
           </div>
-          <div class="edit-field">
-            <label class="edit-label">Estimeret effekt</label>
-            <div class="circle-selector">
-              <label class="circle-option"><input type="radio" name="e-effect-${c.id}" value="low" ${c.effect==='low'?'checked':''}><div class="circle-dot green"></div><span class="circle-label">Lav</span></label>
-              <label class="circle-option"><input type="radio" name="e-effect-${c.id}" value="mid" ${c.effect==='mid'?'checked':''}><div class="circle-dot yellow"></div><span class="circle-label">Middel</span></label>
-              <label class="circle-option"><input type="radio" name="e-effect-${c.id}" value="high" ${c.effect==='high'?'checked':''}><div class="circle-dot red"></div><span class="circle-label">Høj</span></label>
+          <div class="edit-field"><label class="edit-lbl">Estimeret effekt</label>
+            <div class="circle-sel">
+              <label class="circle-opt"><input type="radio" name="e-effect-${c.id}" value="low" ${c.effect==='low'?'checked':''}><div class="cdot g"></div><span class="clbl">Lav</span></label>
+              <label class="circle-opt"><input type="radio" name="e-effect-${c.id}" value="mid" ${c.effect==='mid'?'checked':''}><div class="cdot y"></div><span class="clbl">Middel</span></label>
+              <label class="circle-opt"><input type="radio" name="e-effect-${c.id}" value="high" ${c.effect==='high'?'checked':''}><div class="cdot r"></div><span class="clbl">Høj</span></label>
             </div>
           </div>
         </div>
         <button class="edit-save-btn" onclick="saveEdit(${c.id})">Gem ændringer</button>
       </div>
-    </div>
-  `;
+    </div>`;
   return div;
 }
 
-// ─── TABLE RENDER ─────────────────────────────────────────────────────────────
-function renderTable(filtered) {
-  const tbody = document.getElementById('table-body');
-  tbody.innerHTML = '';
-  filtered.forEach(c => {
-    const tr = document.createElement('tr');
-    if (c.status === 'done') tr.className = 'done';
-    tr.innerHTML = `
-      <td>${c.id}</td>
-      <td><strong>${c.title}</strong><br><span style="font-size:11px;color:var(--text-muted)">${c.short}</span></td>
-      <td>${c.audiences.map(a => `<span class="tag tag-${a==='frivillig'?'vol':a}">${a}</span>`).join(' ')}</td>
-      <td>${c.status === 'done' ? '<span class="pri-badge pri-done">Afsluttet</span>' : '<span class="pri-badge pri-ongoing">Igangværende</span>'}</td>
-      <td>${diffLabel(c.difficulty)}</td>
-      <td>${effectLabel(c.effect)}</td>
-      <td>${horizonLabel(c.horizonIndex)}</td>
-      <td>${deadlineStr(c.deadline) || '—'}</td>
-      <td><strong style="color:var(--accent)">${c.roi}</strong></td>
-      <td>${c.cost ? c.cost.toLocaleString('da-DK') + ' kr' : '—'}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-  updateDashboard();
+/* ── TABLE VIEW ──────────────────────────────────────────────────────────────── */
+function renderTable(main, filtered) {
+  if (filtered.length === 0) {
+    main.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">Ingen resultater</div><div class="empty-desc">Ingen initiativer matcher de valgte filtre.</div></div>`;
+    return;
+  }
+  main.innerHTML = `
+    <div class="table-view-container active">
+      <table class="data-table">
+        <thead><tr>
+          <th>#</th><th>Titel</th><th>Status</th>
+          <th>Vanskelighed</th><th>Effekt</th>
+          <th>Horisont</th><th>Deadline</th>
+          <th>ROI</th><th>Pris (kr)</th><th></th>
+        </tr></thead>
+        <tbody>${filtered.map((c,i) => `
+          <tr class="${c.status==='done'?'done':''}">
+            <td>${i+1}</td>
+            <td><strong>${esc(c.titel)}</strong>${c.kort?`<br><span style="font-size:11px;color:var(--muted)">${esc(c.kort)}</span>`:''}</td>
+            <td>${statusBadge(c.status)}</td>
+            <td>${diffBadge(c.difficulty)}</td>
+            <td>${effectBadge(c.effect)}</td>
+            <td>${HOR_LBLS[c.horizonIndex]||'Uger'}</td>
+            <td>${fmtDate(c.deadline)||'—'}</td>
+            <td><strong style="color:var(--accent)">${c.roi}</strong></td>
+            <td>${c.cost?c.cost.toLocaleString('da-DK'):'—'}</td>
+            <td>
+              <div style="display:flex;gap:4px">
+                <button class="action-btn done-btn" onclick="toggleDone(${c.id})">${c.status==='done'?'↩':'✓'}</button>
+                <button class="action-btn del-btn"  onclick="openInitDeleteConfirm(${c.id})">🗑</button>
+              </div>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
 }
 
-// ─── DASHBOARD ────────────────────────────────────────────────────────────────
-function updateDashboard() {
-  const active  = cards.filter(c => c.status !== 'done');
-  const ongoing = cards.filter(c => c.status === 'ongoing');
-  const totalCost = active.reduce((s,c) => s + (c.cost||0), 0);
-  const avgRoi  = active.length ? (active.reduce((s,c) => s + c.roi, 0) / active.length).toFixed(1) : '—';
-  document.getElementById('d-active').textContent  = active.length;
-  document.getElementById('d-ongoing').textContent = ongoing.length;
-  document.getElementById('d-cost').textContent    = totalCost ? totalCost.toLocaleString('da-DK') : '0';
-  document.getElementById('d-roi').textContent     = avgRoi;
-}
-
-// ─── CARD INTERACTIONS ────────────────────────────────────────────────────────
-function toggleCard(id) {
-  const el = document.getElementById('card-' + id);
-  if (!el) return;
-  el.classList.toggle('expanded');
-}
-function toggleDone(id) {
-  const c = cards.find(x => x.id === id);
-  if (!c) return;
-  c.status = c.status === 'done' ? 'ongoing' : 'done';
-  renderCards();
-}
-function toggleEdit(id) {
-  const el = document.getElementById('card-' + id);
-  if (!el) return;
-  el.classList.add('expanded');
-  el.classList.toggle('edit-mode');
-}
-function saveEdit(id) {
-  const c = cards.find(x => x.id === id);
-  if (!c) return;
-  c.title   = document.getElementById('e-title-' + id).value;
-  c.short   = document.getElementById('e-short-' + id).value;
-  c.detail  = document.getElementById('e-detail-' + id).value;
-  c.impact  = document.getElementById('e-impact-' + id).value;
-  c.cost    = parseFloat(document.getElementById('e-cost-' + id).value) || 0;
-  c.roi     = parseFloat(document.getElementById('e-roi-' + id).value) || 0;
-  c.deadline = document.getElementById('e-deadline-' + id).value;
-  c.horizonIndex = parseInt(document.getElementById('e-horizon-' + id).value) || 0;
-  const diffEl = document.querySelector(`input[name="e-diff-${id}"]:checked`);
-  if (diffEl) c.difficulty = diffEl.value;
-  const effectEl = document.querySelector(`input[name="e-effect-${id}"]:checked`);
-  if (effectEl) c.effect = effectEl.value;
-  renderCards();
-}
-
-// ─── NEW MODAL ─────────────────────────────────────────────────────���──────────
-function openNewModal() {
-  document.getElementById('newModal').style.display = 'block';
-}
-function closeNewModal() {
-  document.getElementById('newModal').style.display = 'none';
-}
-function saveNewCard() {
-  const title = document.getElementById('new-title').value.trim();
-  if (!title) { alert('Titel er påkrævet.'); return; }
-  const auds = [];
-  if (document.getElementById('new-aud-sponsor').checked) auds.push('sponsor');
-  if (document.getElementById('new-aud-fan').checked) auds.push('fan');
-  if (document.getElementById('new-aud-vol').checked) auds.push('frivillig');
-  const diffEl   = document.querySelector('input[name="new-difficulty"]:checked');
-  const effectEl = document.querySelector('input[name="new-effect"]:checked');
-  cards.push({
-    id: nextId++,
-    title,
-    short:   document.getElementById('new-short').value,
-    detail:  document.getElementById('new-detail').value,
-    impact:  document.getElementById('new-impact').value,
-    audiences: auds.length ? auds : ['fan'],
-    status: 'ongoing',
-    roi: parseFloat(document.getElementById('new-roi').value) || 5,
-    cost: parseFloat(document.getElementById('new-cost').value) || 0,
-    difficulty: diffEl ? diffEl.value : 'low',
-    effect: effectEl ? effectEl.value : 'mid',
-    horizonIndex: parseInt(document.getElementById('new-horizon').value) || 0,
-    deadline: document.getElementById('new-deadline').value,
-  });
-  closeNewModal();
-  renderCards();
-  // reset form
-  ['new-title','new-short','new-detail','new-impact','new-cost','new-deadline'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
-  document.getElementById('new-roi').value = 5;
-  document.getElementById('new-roi-val').textContent = '5';
-  document.getElementById('new-horizon').value = 1;
-  document.getElementById('new-horizon-val').textContent = 'Uger';
-}
-
-// ─── VIEW SWITCH ──────────────────────────────────────────────────────────────
-function switchToCardView() {
-  currentView = 'card';
-  document.getElementById('cardViewBtn').classList.add('active');
-  document.getElementById('tableViewBtn').classList.remove('active');
-  document.getElementById('cards-container').style.display = '';
-  document.getElementById('table-container').classList.remove('active');
-  document.getElementById('done-section').style.display = '';
-  renderCards();
-}
-function switchToTableView() {
-  currentView = 'table';
-  document.getElementById('tableViewBtn').classList.add('active');
-  document.getElementById('cardViewBtn').classList.remove('active');
-  document.getElementById('cards-container').style.display = 'none';
-  document.getElementById('table-container').classList.add('active');
-  document.getElementById('done-section').style.display = 'none';
-  renderCards();
-}
-
-// ─── TIMELINE ─────────────────────────────────────────────────────────────────
+/* ── TIMELINE ────────────────────────────────────────────────────────────────── */
 function openTimeline() {
   renderTimeline();
-  document.getElementById('timelineModal').style.display = 'block';
+  document.getElementById('timelineModal').classList.add('open');
 }
 function closeTimeline() {
-  document.getElementById('timelineModal').style.display = 'none';
+  document.getElementById('timelineModal').classList.remove('open');
 }
-
 function renderTimeline() {
-  const items = document.getElementById('timelineItems');
-  items.innerHTML = '';
-  const filtered = cards.filter(c => {
-    if (tlAud !== 'all' && !c.audiences.includes(tlAud)) return false;
-    if (tlHorizon !== 'all' && horizonVal(c.horizonIndex) !== tlHorizon) return false;
-    if (tlDiff !== 'all' && c.difficulty !== tlDiff) return false;
-    if (tlEffect !== 'all' && c.effect !== tlEffect) return false;
+  const wsInits = activeWsId !== null
+    ? initiatives.filter(i => i.wsId === activeWsId)
+    : initiatives;
+
+  const filtered = wsInits.filter(i => {
+    if (tlStatus  !== 'all' && i.status                !== tlStatus)   return false;
+    if (tlHorizon !== 'all' && String(i.horizonIndex)  !== tlHorizon)  return false;
+    if (tlDiff    !== 'all' && i.difficulty            !== tlDiff)     return false;
+    if (tlEffect  !== 'all' && i.effect                !== tlEffect)   return false;
     return true;
   });
 
+  const items = document.getElementById('tl-items');
   if (filtered.length === 0) {
-    items.innerHTML = '<div class="empty-state">Ingen anbefalinger matcher de valgte filtre.</div>';
+    items.innerHTML = `<div class="empty-state" style="padding:2rem"><div class="empty-icon">🔍</div><div class="empty-title">Ingen resultater</div></div>`;
     return;
   }
-
-  filtered.forEach((c, i) => {
-    const side = i % 2 === 0 ? 'left' : 'right';
-    const audTags = c.audiences.map(a =>
-      `<span class="tag tag-${a==='frivillig'?'vol':a}">${a}</span>`
-    ).join('');
-    const dlStr = deadlineStr(c.deadline);
-    const div = document.createElement('div');
-    div.className = `timeline-item ${side}`;
+  items.innerHTML = '';
+  filtered.forEach((c,i) => {
+    const side = i%2===0 ? 'left' : 'right';
+    const hor  = HOR_LBLS[c.horizonIndex] || 'Uger';
+    const dl   = fmtDate(c.deadline);
+    const div  = document.createElement('div');
+    div.className = `tl-item ${side}`;
     div.innerHTML = `
-      <div class="timeline-marker"></div>
-      <div class="timeline-content-box" style="margin-${side==='left'?'right':'left'}:calc(50% + 20px)">
-        <div class="timeline-period">${horizonLabel(c.horizonIndex)}${dlStr ? ' · Deadline: ' + dlStr : ''}</div>
-        <h3>${c.title}</h3>
-        <p>${c.short}</p>
-        <div class="tl-meta-row">
-          ${audTags}
-          ${diffLabel(c.difficulty)}
-          ${effectLabel(c.effect)}
-          ${c.status === 'ongoing' ? '<span class="timeline-badge ongoing">Igangværende</span>' : ''}
+      <div class="tl-marker"></div>
+      <div class="tl-box">
+        <div class="tl-period">${hor}${dl?' · Deadline: '+dl:''}</div>
+        <h3>${esc(c.titel)}</h3>
+        ${c.kort?`<p>${esc(c.kort)}</p>`:''}
+        <div class="tl-badges">
+          ${statusBadge(c.status)}
+          ${diffBadge(c.difficulty)}
+          ${effectBadge(c.effect)}
         </div>
-      </div>
-    `;
+      </div>`;
     items.appendChild(div);
   });
 }
 
-// ─── FILTER WIRING ────────────────────────────────────────────────────────���───
-function wireFilterGroup(containerId, dataAttr, setter, rerender) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.querySelectorAll('[data-' + dataAttr + ']').forEach(btn => {
-    btn.addEventListener('click', () => {
-      container.querySelectorAll('[data-' + dataAttr + ']').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      setter(btn.dataset[dataAttr]);
-      rerender();
-    });
+// Wire timeline filter chips
+document.querySelectorAll('.tlchip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.tl;
+    document.querySelectorAll(`.tlchip[data-tl="${key}"]`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const val = btn.dataset.val;
+    if (key==='status')  tlStatus  = val;
+    if (key==='horizon') tlHorizon = val;
+    if (key==='diff')    tlDiff    = val;
+    if (key==='effect')  tlEffect  = val;
+    renderTimeline();
   });
-}
-
-wireFilterGroup('aud-filters',    'aud',    v => activeAud    = v, renderCards);
-wireFilterGroup('pri-filters',    'pri',    v => activePri    = v, renderCards);
-wireFilterGroup('diff-filters',   'diff',   v => activeDiff   = v, renderCards);
-wireFilterGroup('effect-filters', 'effect', v => activeEffect = v, renderCards);
-wireFilterGroup('horizon-filters','horizon',v => activeHorizon= v, renderCards);
-
-// Timeline filters
-function wireTlFilter(containerId, dataAttr, setter) {
-  const container = document.querySelector('#timelineModal ' + '#' + containerId) ||
-                    document.querySelector('#timelineModal [id="' + containerId + '"]');
-  document.querySelectorAll('#timelineModal [data-tl-' + dataAttr + ']').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#timelineModal [data-tl-' + dataAttr + ']').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      setter(btn.dataset['tl' + dataAttr.charAt(0).toUpperCase() + dataAttr.slice(1)]);
-      renderTimeline();
-    });
-  });
-}
-wireTlFilter('', 'aud',    v => tlAud    = v);
-wireTlFilter('', 'horizon',v => tlHorizon = v);
-wireTlFilter('', 'diff',   v => tlDiff   = v);
-wireTlFilter('', 'effect', v => tlEffect  = v);
-
-// Close modals on backdrop click
-document.getElementById('newModal').addEventListener('click', function(e) {
-  if (e.target === this) closeNewModal();
 });
-document.getElementById('timelineModal').addEventListener('click', function(e) {
-  if (e.target === this) closeTimeline();
+document.getElementById('timelineModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('timelineModal')) closeTimeline();
 });
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
-renderCards();
+/* ── VIEW SWITCH ─────────────────────────────────────────────────────────────── */
+function setView(v) {
+  currentView = v;
+  document.getElementById('vbtn-card').classList.toggle('active', v==='card');
+  document.getElementById('vbtn-table').classList.toggle('active', v==='table');
+  renderAll();
+}
+
+/* ── CARD INTERACTIONS ───────────────────────────────────────────────────────── */
+function toggleCard(id) {
+  const el = document.getElementById('card-'+id);
+  if (el) el.classList.toggle('expanded');
+}
+function toggleEdit(id) {
+  const el = document.getElementById('card-'+id);
+  if (!el) return;
+  el.classList.add('expanded');
+  el.classList.toggle('edit-mode');
+}
+function toggleDone(id) {
+  const c = initiatives.find(x => x.id===id);
+  if (!c) return;
+  c.status = c.status==='done' ? 'ongoing' : 'done';
+  renderAll();
+}
+function saveEdit(id) {
+  const c = initiatives.find(x => x.id===id);
+  if (!c) return;
+  c.titel         = document.getElementById(`e-titel-${id}`).value;
+  c.kort          = document.getElementById(`e-kort-${id}`).value;
+  c.detaljer      = document.getElementById(`e-det-${id}`).value;
+  c.effekt        = document.getElementById(`e-eff-${id}`).value;
+  c.cost          = parseFloat(document.getElementById(`e-cost-${id}`).value)||0;
+  c.deadline      = document.getElementById(`e-dl-${id}`).value;
+  c.roi           = parseFloat(document.getElementById(`e-roi-${id}`).value)||0;
+  c.horizonIndex  = parseInt(document.getElementById(`e-hor-${id}`).value)||0;
+  const de = document.querySelector(`input[name="e-diff-${id}"]:checked`);
+  const ee = document.querySelector(`input[name="e-effect-${id}"]:checked`);
+  if (de) c.difficulty = de.value;
+  if (ee) c.effect     = ee.value;
+  renderAll();
+}
+
+/* ── WORKSPACE CRUD ──────────────────────────────────────────────────────────── */
+function openWsModal() {
+  editingWsId = null;
+  document.getElementById('ws-modal-title').textContent = 'Nyt arbejdsområde';
+  document.getElementById('ws-navn').value = '';
+  document.getElementById('ws-desc').value = '';
+  buildIkonPicker('📁');
+  openModal('wsModal');
+  setTimeout(() => document.getElementById('ws-navn').focus(), 80);
+}
+function openWsEditModal(id) {
+  const ws = workspaces.find(w => w.id===id);
+  if (!ws) return;
+  editingWsId = id;
+  document.getElementById('ws-modal-title').textContent = 'Rediger arbejdsområde';
+  document.getElementById('ws-navn').value = ws.navn;
+  document.getElementById('ws-desc').value = ws.beskrivelse||'';
+  buildIkonPicker(ws.ikon||'📁');
+  openModal('wsModal');
+}
+function saveWorkspace() {
+  const navn = document.getElementById('ws-navn').value.trim();
+  if (!navn) { alert('Navn er påkrævet'); return; }
+  if (editingWsId) {
+    const ws = workspaces.find(w => w.id===editingWsId);
+    if (ws) { ws.navn=navn; ws.beskrivelse=document.getElementById('ws-desc').value.trim(); ws.ikon=selectedIkon; }
+  } else {
+    workspaces.push({ id:nextWsId++, navn, beskrivelse:document.getElementById('ws-desc').value.trim(), ikon:selectedIkon, createdAt:new Date().toISOString() });
+  }
+  closeModal('wsModal');
+  renderAll();
+}
+function openWsDeleteConfirm(id) {
+  deletingWsId = id;
+  const ws = workspaces.find(w => w.id===id);
+  document.getElementById('ws-delete-name').textContent = ws ? ws.navn : '';
+  openModal('wsDeleteModal');
+}
+function confirmDeleteWs() {
+  workspaces  = workspaces.filter(w => w.id !== deletingWsId);
+  initiatives = initiatives.filter(i => i.wsId !== deletingWsId);
+  if (activeWsId === deletingWsId) activeWsId = null;
+  closeModal('wsDeleteModal');
+  selectWorkspace(null);
+}
+
+/* ── INITIATIVE CRUD ─────────────────────────────────────────────────────────── */
+function openInitModal() {
+  ['init-titel','init-kort','init-detaljer','init-effekt','init-cost','init-deadline'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value='';
+  });
+  document.getElementById('init-roi').value = 5;
+  document.getElementById('init-roi-val').textContent = '5';
+  document.getElementById('init-hor').value = 1;
+  document.getElementById('init-hor-lbl').textContent = 'Uger';
+  openModal('initModal');
+  setTimeout(() => document.getElementById('init-titel').focus(), 80);
+}
+function saveInit() {
+  if (activeWsId === null) return;
+  const titel = document.getElementById('init-titel').value.trim();
+  if (!titel) { alert('Titel er påkrævet'); return; }
+  const de = document.querySelector('input[name="init-diff"]:checked');
+  const ee = document.querySelector('input[name="init-effect"]:checked');
+  initiatives.push({
+    id:           nextInitId++,
+    wsId:         activeWsId,
+    titel,
+    kort:         document.getElementById('init-kort').value.trim(),
+    detaljer:     document.getElementById('init-detaljer').value.trim(),
+    effekt:       document.getElementById('init-effekt').value.trim(),
+    status:       'ongoing',
+    difficulty:   de ? de.value : 'low',
+    effect:       ee ? ee.value : 'mid',
+    horizonIndex: parseInt(document.getElementById('init-hor').value)||0,
+    deadline:     document.getElementById('init-deadline').value,
+    roi:          parseFloat(document.getElementById('init-roi').value)||5,
+    cost:         parseFloat(document.getElementById('init-cost').value)||0,
+    createdAt:    new Date().toISOString(),
+  });
+  closeModal('initModal');
+  renderAll();
+}
+function openInitDeleteConfirm(id) {
+  deletingInitId = id;
+  const c = initiatives.find(x => x.id===id);
+  document.getElementById('init-delete-name').textContent = c ? c.titel : '';
+  openModal('initDeleteModal');
+}
+function confirmDeleteInit() {
+  initiatives = initiatives.filter(i => i.id !== deletingInitId);
+  closeModal('initDeleteModal');
+  renderAll();
+}
+
+/* ── ESCAPE HTML ─────────────────────────────────────────────────────────────── */
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── WIRE FILTER CHIPS ───────────────────────────────────────────────────────── */
+wireFilterGroup('f-status',  v => fStatus  = v);
+wireFilterGroup('f-diff',    v => fDiff    = v);
+wireFilterGroup('f-effect',  v => fEffect  = v);
+wireFilterGroup('f-horizon', v => fHorizon = v);
+
+/* ── INIT ────────────────────────────────────────────────────────────────────── */
+renderAll();
 </script>
 </body>
 </html>
