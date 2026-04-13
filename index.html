@@ -1,642 +1,1585 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hjemmesideplan — Anbefalinger</title>
-  <style>
-    :root{
-      --bg:#ffffff;
-      --muted:#f4f4f6;
-      --panel:#f7f7f8;
-      --text:#222;
-      --muted-text:#6b6b6b;
-      --accent:#da253c;
-      --card-border:#e6e6e6;
-      --shadow: 0 6px 18px rgba(0,0,0,0.06);
-      --success:#2ecc71;
-      --warning:#f1c40f;
-      --danger:#e74c3c;
-      --gap:14px;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);}
-    .wrap{max-width:1100px;margin:28px auto;padding:20px;}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    header h1{font-size:20px;margin:0}
-    p.lead{margin:0;color:var(--muted-text)}
-    .grid{display:grid;grid-template-columns:320px 1fr;gap:20px}
-    /* Sidebar / filter panel */
-    .panel{background:var(--panel);border:1px solid var(--card-border);border-radius:10px;padding:14px;box-shadow:var(--shadow)}
-    .panel h3{margin:0 0 10px 0;font-size:14px}
-    .field{margin-bottom:12px}
-    .label{display:block;font-size:12px;color:var(--muted-text);margin-bottom:6px}
-    input[type="text"], input[type="date"], select, textarea{
-      width:100%;padding:8px;border-radius:8px;border:1px solid #ddd;background:#fff;font-size:14px;color:var(--text);
-    }
-    textarea{min-height:80px;resize:vertical}
-    /* slider */
-    .slider-wrap{display:flex;align-items:center;gap:10px}
-    .horizon-slider{flex:1}
-    .horizon-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted-text);margin-top:6px}
-    /* colored circle dropdowns (custom) */
-    .circle-select{position:relative}
-    .circle-select summary{list-style:none;cursor:pointer;padding:8px;border-radius:8px;border:1px solid #ddd;background:#fff;display:flex;align-items:center;justify-content:space-between}
-    .circle-options{position:absolute;left:0;right:0;top:calc(100% + 8px);background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;box-shadow:var(--shadow);z-index:30}
-    .circle-option{display:flex;align-items:center;gap:10px;padding:6px;border-radius:6px;cursor:pointer}
-    .circle{width:14px;height:14px;border-radius:50%;display:inline-block}
-    .opt-label{font-size:14px;color:var(--text)}
-    /* filter chips */
-    .chips{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{background:#fff;border:1px solid #ddd;padding:6px 8px;border-radius:999px;font-size:13px;color:var(--muted-text);cursor:pointer}
-    .chip.active{border-color:var(--accent);color:var(--accent);font-weight:600}
-    /* view controls moved down */
-    .controls-row{display:flex;gap:8px;align-items:center;margin-top:10px}
-    .btn{background:#fff;border:1px solid #ddd;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--text)}
-    .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-    .btn.ghost{background:transparent}
-    /* main content */
-    .content{min-height:400px}
-    .toolbar{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
-    .views{display:flex;gap:8px}
-    .view-btn{padding:8px 12px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
-    .view-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-    /* timeline */
-    .timeline{display:flex;flex-direction:column;gap:12px}
-    .timeline-item{background:#fff;border:1px solid var(--card-border);padding:12px;border-radius:10px;display:flex;gap:12px;align-items:flex-start}
-    .meta{min-width:120px;font-size:13px;color:var(--muted-text)}
-    .title{font-weight:600;color:var(--text)}
-    .desc{color:var(--muted-text);font-size:14px}
-    /* cards (kort) */
-    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-    .card{background:#fff;border:1px solid var(--card-border);padding:12px;border-radius:10px;box-shadow:var(--shadow)}
-    .pill{display:inline-block;padding:6px 8px;border-radius:999px;font-size:12px;border:1px solid #eee;background:var(--muted);color:var(--muted-text)}
-    /* table */
-    table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--card-border);border-radius:8px;overflow:hidden}
-    th,td{padding:10px;border-bottom:1px solid #f0f0f0;text-align:left;font-size:14px}
-    th{background:var(--panel);font-weight:600;color:var(--muted-text)}
-    /* small helpers */
-    .row{display:flex;gap:8px;align-items:center}
-    .right{margin-left:auto}
-    .muted{color:var(--muted-text);font-size:13px}
-    .color-dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:8px}
-    .no-data{padding:40px;text-align:center;color:var(--muted-text)}
-    /* responsive */
-    @media (max-width:900px){
-      .grid{grid-template-columns:1fr; padding:0 12px}
-      .panel{order:2}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prosliding.dk – Anbefalinger</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D1B3E;
+    --navy-light: #1a2d5a;
+    --gold: #C8A84B;
+    --gold-light: #E8C96A;
+    --gold-pale: #fdf6e3;
+    --white: #ffffff;
+    --bg: #f0f2f7;
+    --card-bg: #ffffff;
+    --text: #0D1B3E;
+    --text-muted: #6b7a99;
+    --border: #e2e7f0;
+    --sponsor-bg: #E6F1FB; --sponsor-text: #0C447C;
+    --fan-bg: #EAF3DE; --fan-text: #27500A;
+    --vol-bg: #FAEEDA; --vol-text: #633806;
+    --ongoing-bg: #E6F1FB; --ongoing-text: #185FA5;
+    --done-bg: #f0f0f0; --done-text: #888;
+    --low-bg: #EAF3DE; --low-text: #3B6D11;
+    --mid-bg: #FFF3E0; --mid-text: #854F0B;
+    --shadow: 0 2px 12px rgba(13,27,62,0.08);
+    --shadow-hover: 0 8px 32px rgba(13,27,62,0.15);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--navy);
+    padding: 2rem 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+  header::after {
+    content: 'SKELETON';
+    position: absolute;
+    right: -10px; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 120px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: 8px;
+    pointer-events: none;
+    user-select: none;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .header-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .header-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: 1px;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.4rem;
+    font-weight: 300;
+  }
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .btn-reset {
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-reset:hover { background: rgba(255,255,255,0.15); color: white; }
+
+  /* VIEW TOGGLE BUTTONS */
+  .view-toggle {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .view-btn {
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .view-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+  .view-btn.active { background: var(--gold); color: var(--navy); font-weight: 700; }
+
+  /* TIMELINE MODAL */
+  .timeline-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+  }
+  .timeline-content {
+    background-color: var(--card-bg);
+    margin: 40px auto;
+    padding: 2rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 900px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  .timeline-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .timeline-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .timeline-close:hover { color: var(--text); }
+  
+  .timeline-track {
+    position: relative;
+    padding: 2rem 0;
+  }
+  .timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--border);
+    transform: translateX(-50%);
+  }
+  .timeline-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .timeline-item {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+  }
+  .timeline-item.left { flex-direction: row; }
+  .timeline-item.right { flex-direction: row-reverse; }
+  
+  .timeline-marker {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--navy);
+    border: 3px solid var(--card-bg);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+  
+  .timeline-content-box {
+    flex: 1;
+    padding: 1.5rem;
+    background: #fafbfd;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .timeline-content-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .timeline-content-box p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .timeline-period {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .timeline-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+  }
+  .timeline-badge.ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background-color: var(--card-bg);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  .modal-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.5px;
+  }
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .close-btn:hover { color: var(--text); }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .form-input, .form-select, .form-textarea {
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+  
+  .form-checkboxes {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .form-checkbox input { cursor: pointer; }
+  .form-checkbox label { cursor: pointer; font-size: 13px; }
+
+  /* TIMEFRAME SELECTOR */
+  .timeframe-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .timeframe-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .timeframe-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .timeframe-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .timeframe-input-group label {
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .timeframe-input-group input {
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .timeframe-input-group input:focus { border-color: var(--gold); }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.5rem;
+    justify-content: flex-end;
+  }
+  .modal-actions button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-save {
+    background: var(--navy);
+    color: var(--gold);
+  }
+  .btn-save:hover { background: var(--navy-light); }
+  .btn-cancel {
+    background: var(--border);
+    color: var(--text);
+  }
+  .btn-cancel:hover { background: var(--text-muted); color: white; }
+
+  /* DASHBOARD */
+  .dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 1.5rem 2rem 0;
+  }
+  .dash-card {
+    background: rgba(255,255,255,0.07);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .dash-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .dash-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .dash-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 3px;
+  }
+
+  /* FILTERS */
+  .filter-bar {
+    max-width: 1200px;
+    margin: 1.5rem auto 0;
+    padding: 0 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .filter-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-right: 2px;
+  }
+  .filter-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.15);
+    margin: 0 6px;
+  }
+  .fbtn {
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 0.5px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    transition: all 0.18s;
+  }
+  .fbtn:hover { border-color: var(--gold); color: var(--gold); }
+  .fbtn.active { background: var(--gold); border-color: var(--gold); color: var(--navy); font-weight: 700; }
+
+  /* SORT */
+  .sort-bar {
+    max-width: 1200px;
+    margin: 0.75rem auto 0;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sort-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .sort-select {
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    outline: none;
+  }
+  .sort-select option { background: var(--navy); color: white; }
+
+  /* MAIN CONTENT */
+  .main {
+    max-width: 1200px;
+    margin: 1.5rem auto 2rem;
+    padding: 0 2rem;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 780px) { .cards-grid { grid-template-columns: 1fr; } }
+
+  /* TABLE VIEW */
+  .table-view-container {
+    display: none;
+  }
+  .table-view-container.active {
+    display: block;
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .data-table thead {
+    background: var(--navy);
+  }
+  .data-table th {
+    color: var(--gold);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .data-table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .data-table tr:hover {
+    background: #fafbfd;
+  }
+  .data-table tr.done {
+    opacity: 0.6;
+    background: #f5f5f5;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    overflow: hidden;
+    position: relative;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); border-color: var(--gold); }
+  .card.done { opacity: 0.65; }
+  .card.done .card-title { text-decoration: line-through; color: var(--text-muted); }
+  .card.editing { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,75,0.2); }
+  .card.hidden-card { display: none; }
+
+  .card-header {
+    padding: 1rem 1.25rem 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--navy);
+    color: var(--gold);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+  .card.done .card-num { background: var(--done-bg); color: var(--done-text); }
+  .card-header-content { flex: 1; min-width: 0; }
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .tag-sponsor { background: var(--sponsor-bg); color: var(--sponsor-text); }
+  .tag-fan { background: var(--fan-bg); color: var(--fan-text); }
+  .tag-vol { background: var(--vol-bg); color: var(--vol-text); }
+  .card-header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .pri-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .pri-ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
+  .pri-done { background: var(--done-bg); color: var(--done-text); }
+  .chevron {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: transform 0.25s;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .card.expanded .chevron { transform: rotate(180deg); }
+
+  /* ROI BAR */
+  .card-roi {
+    padding: 0 1.25rem 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .roi-label-txt { font-size: 11px; color: var(--text-muted); font-weight: 500; min-width: 26px; }
+  .roi-track {
+    flex: 1;
+    height: 5px;
+    background: #edf0f7;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .roi-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .roi-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 36px;
+    text-align: right;
+  }
+  .impl-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .impl-low { background: var(--low-bg); color: var(--low-text); }
+  .impl-mid { background: var(--mid-bg); color: var(--mid-text); }
+
+  .card-footer-meta {
+    padding: 0 1.25rem 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .cost-txt {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .cost-txt span { color: var(--text); font-weight: 600; }
+  .card-actions {
+    display: flex;
+    gap: 6px;
+  }
+  .action-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.15s;
+    color: var(--text-muted);
+  }
+  .action-btn:hover { background: var(--bg); border-color: var(--gold); color: var(--gold); }
+  .action-btn.done-btn:hover { background: #EAF3DE; border-color: #27500A; color: #27500A; }
+  .action-btn.edit-btn:hover { background: #E6F1FB; border-color: #0C447C; color: #0C447C; }
+  .action-btn.reset-btn:hover { background: var(--ongoing-bg); border-color: var(--ongoing-text); color: var(--ongoing-text); }
+
+  /* EXPANDED BODY */
+  .card-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 0.5px solid var(--border);
+    background: #fafbfd;
+  }
+  .card.expanded .card-body { display: block; }
+
+  .card-body .short-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 1rem 0 0.75rem;
+    font-style: italic;
+    border-bottom: 0.5px dashed var(--border);
+    margin-bottom: 0.75rem;
+  }
+  .card-body .detail-text {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .card-body .impact-block {
+    background: var(--gold-pale);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 12.5px;
+    color: var(--navy);
+    line-height: 1.6;
+  }
+  .impact-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  /* EDIT MODE */
+  .card-body .edit-section {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 0.5px dashed var(--gold);
+  }
+  .card.edit-mode .card-body .edit-section { display: block; }
+  .card.edit-mode .card-body .view-section { display: none; }
+
+  .edit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .edit-field { display: flex; flex-direction: column; gap: 4px; }
+  .edit-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .edit-input, .edit-select, .edit-textarea {
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+  .edit-input:focus, .edit-select:focus, .edit-textarea:focus { border-color: var(--gold); }
+  .edit-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  .edit-full { grid-column: 1 / -1; }
+  .roi-slider-wrap { display: flex; align-items: center; gap: 10px; }
+  .roi-slider {
+    flex: 1;
+    accent-color: var(--gold);
+    height: 4px;
+    cursor: pointer;
+  }
+  .roi-slider-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    min-width: 36px;
+  }
+  .edit-save-btn {
+    margin-top: 8px;
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.15s;
+  }
+  .edit-save-btn:hover { background: var(--navy-light); }
+
+  /* DONE SECTION */
+  .done-section { margin-top: 2.5rem; }
+  .done-section .section-title { color: #aaa; }
+  .done-section .cards-grid { opacity: 0.7; }
+
+  /* LEGEND / FOOTER */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.45);
+    font-size: 11px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    line-height: 2;
+    margin-top: 2rem;
+  }
+  footer strong { color: rgba(255,255,255,0.7); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  /* ANIMATIONS */
+  .card { animation: fadeIn 0.3s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .card-body { animation: slideDown 0.2s ease; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 768px) {
+    .timeline-line { left: 20px; }
+    .timeline-marker { left: 20px; }
+    .timeline-item { flex-direction: column !important; }
+    .timeline-item { margin-left: 50px; }
+  }
+
+  @media (max-width: 600px) {
+    .dashboard { grid-template-columns: repeat(2, 1fr); }
+    header, .filter-bar, .sort-bar, .main { padding-left: 1rem; padding-right: 1rem; }
+    .header-main { font-size: 26px; }
+    .edit-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .modal-content { width: 95%; margin: 20% auto; }
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <h1>Hjemmesideplan — Anbefalinger</h1>
-        <p class="lead">Tilføj, filtrer og vis anbefalinger. Ændringer gemmes lokalt i din browser.</p>
+
+<header>
+  <div class="header-top">
+    <div>
+      <div class="header-title">Prosliding.dk</div>
+      <div class="header-main">Anbefalede<br>Forbedringer</div>
+      <div class="header-sub">Sponsor-tiltrækning · Fan engagement · Frivilligrekruttering</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-reset" onclick="openTimeline()">📅 Tidslinje</button>
+      <button class="btn-reset" onclick="openNewModal()">+ Ny anbefaling</button>
+      <div class="view-toggle">
+        <button class="view-btn active" id="cardViewBtn" onclick="switchToCardView()">🃏 Kort</button>
+        <button class="view-btn" id="tableViewBtn" onclick="switchToTableView()">📊 Tabel</button>
       </div>
-    </header>
-
-    <div class="grid">
-      <!-- SIDEBAR: Formular + Filtre -->
-      <aside class="panel" aria-labelledby="sidebarTitle">
-        <h3 id="sidebarTitle">Tilføj ny anbefaling</h3>
-
-        <div class="field">
-          <label class="label">Titel</label>
-          <input id="inputTitle" type="text" placeholder="Kort titel" />
-        </div>
-
-        <div class="field">
-          <label class="label">Beskrivelse</label>
-          <textarea id="inputDesc" placeholder="Kort beskrivelse"></textarea>
-        </div>
-
-        <div class="field">
-          <label class="label">Deadline</label>
-          <input id="inputDeadline" type="date" />
-        </div>
-
-        <div class="field">
-          <label class="label">Estimeret tidshorisont</label>
-          <div class="slider-wrap">
-            <input id="horizonSlider" class="horizon-slider" type="range" min="0" max="3" step="1" value="1" />
-            <div id="horizonValue" class="muted" style="min-width:80px;text-align:right">Uger</div>
-          </div>
-          <div class="horizon-labels">
-            <span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Implementeringsvanskelighed</label>
-          <details class="circle-select" id="difficultySelect">
-            <summary><span id="difficultySummary"><span class="circle" style="background:var(--success)"></span> Lav</span></summary>
-            <div class="circle-options" role="list">
-              <div class="circle-option" data-value="lav"><span class="circle" style="background:var(--success)"></span><span class="opt-label">Lav</span></div>
-              <div class="circle-option" data-value="middel"><span class="circle" style="background:var(--warning)"></span><span class="opt-label">Middel</span></div>
-              <div class="circle-option" data-value="høj"><span class="circle" style="background:var(--danger)"></span><span class="opt-label">Høj</span></div>
-            </div>
-          </details>
-        </div>
-
-        <div class="field">
-          <label class="label">Estimeret effekt</label>
-          <details class="circle-select" id="effectSelect">
-            <summary><span id="effectSummary"><span class="circle" style="background:var(--success)"></span> Lav</span></summary>
-            <div class="circle-options" role="list">
-              <div class="circle-option" data-value="lav"><span class="circle" style="background:var(--success)"></span><span class="opt-label">Lav</span></div>
-              <div class="circle-option" data-value="middel"><span class="circle" style="background:var(--warning)"></span><span class="opt-label">Middel</span></div>
-              <div class="circle-option" data-value="høj"><span class="circle" style="background:var(--danger)"></span><span class="opt-label">Høj</span></div>
-            </div>
-          </details>
-        </div>
-
-        <div class="field">
-          <label class="label">Målgruppe</label>
-          <input id="inputAudience" type="text" placeholder="fx Borgere, Internt, Partnere" />
-        </div>
-
-        <div class="field">
-          <label class="label">Status</label>
-          <select id="inputStatus">
-            <option value="idé">Idé</option>
-            <option value="planlagt">Planlagt</option>
-            <option value="igang">Igang</option>
-            <option value="færdig">Færdig</option>
-          </select>
-        </div>
-
-        <div class="controls-row">
-          <button id="addBtn" class="btn primary">Tilføj anbefaling</button>
-          <button id="clearBtn" class="btn">Ryd felter</button>
-        </div>
-
-        <!-- FILTRERING (flyttet under målgruppe/status i samme panel) -->
-        <hr style="margin:14px 0;border:none;border-top:1px solid #eee" />
-        <h3>Filtrering</h3>
-
-        <div class="field">
-          <label class="label">Visning</label>
-          <div class="chips" id="filterViewChips">
-            <div class="chip active" data-view="tidslinje">Tidslinje</div>
-            <div class="chip" data-view="kort">Kort</div>
-            <div class="chip" data-view="tabel">Tabel</div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Tidshorisont</label>
-          <div class="chips" id="filterHorizon">
-            <div class="chip" data-val="0">Dage</div>
-            <div class="chip" data-val="1">Uger</div>
-            <div class="chip" data-val="2">Måneder</div>
-            <div class="chip" data-val="3">År</div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Vanskelighed</label>
-          <div class="chips" id="filterDifficulty">
-            <div class="chip" data-val="lav"><span class="color-dot" style="background:var(--success)"></span>Lav</div>
-            <div class="chip" data-val="middel"><span class="color-dot" style="background:var(--warning)"></span>Middel</div>
-            <div class="chip" data-val="høj"><span class="color-dot" style="background:var(--danger)"></span>Høj</div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Estimeret effekt</label>
-          <div class="chips" id="filterEffect">
-            <div class="chip" data-val="lav"><span class="color-dot" style="background:var(--success)"></span>Lav</div>
-            <div class="chip" data-val="middel"><span class="color-dot" style="background:var(--warning)"></span>Middel</div>
-            <div class="chip" data-val="høj"><span class="color-dot" style="background:var(--danger)"></span>Høj</div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Målgruppe (filter)</label>
-          <input id="filterAudience" type="text" placeholder="Søg målgruppe" />
-        </div>
-
-        <div class="field">
-          <label class="label">Status (filter)</label>
-          <select id="filterStatus">
-            <option value="">Alle</option>
-            <option value="idé">Idé</option>
-            <option value="planlagt">Planlagt</option>
-            <option value="igang">Igang</option>
-            <option value="færdig">Færdig</option>
-          </select>
-        </div>
-
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button id="applyFilters" class="btn">Anvend filtre</button>
-          <button id="resetFilters" class="btn">Nulstil</button>
-        </div>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main>
-        <div class="panel content">
-          <div class="toolbar">
-            <div>
-              <div class="row">
-                <div class="muted">Vis:</div>
-                <div class="views" style="margin-left:8px">
-                  <button class="view-btn active" data-view="tidslinje">Tidslinje</button>
-                  <button class="view-btn" data-view="kort">Kort</button>
-                  <button class="view-btn" data-view="tabel">Tabel</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="muted">Søg:</div>
-              <input id="searchInput" type="text" placeholder="Søg i titler eller beskrivelser" style="margin-left:8px;padding:8px;border-radius:8px;border:1px solid #ddd" />
-            </div>
-          </div>
-
-          <!-- VIEWS -->
-          <section id="viewTidslinje" class="view">
-            <div class="timeline" id="timelineList"></div>
-            <div id="noTimeline" class="no-data" style="display:none">Ingen anbefalinger</div>
-          </section>
-
-          <section id="viewKort" class="view" style="display:none">
-            <div class="cards" id="cardsGrid"></div>
-            <div id="noCards" class="no-data" style="display:none">Ingen anbefalinger</div>
-          </section>
-
-          <section id="viewTabel" class="view" style="display:none">
-            <table id="tableView">
-              <thead>
-                <tr>
-                  <th>Titel</th><th>Deadline</th><th>Tidshorisont</th><th>Vanskelighed</th><th>Effekt</th><th>Målgruppe</th><th>Status</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-            <div id="noTable" class="no-data" style="display:none">Ingen anbefalinger</div>
-          </section>
-        </div>
-      </main>
     </div>
   </div>
 
-  <script>
-    /* --- Hjælpefunktioner og initialisering --- */
-    const STORAGE_KEY = 'hjemmesideplan_anbefalinger_v1';
-    const defaultData = [];
+  <div class="dashboard" id="dashboard">
+    <div class="dash-card">
+      <div class="dash-label">Aktive</div>
+      <div class="dash-value" id="d-active">—</div>
+      <div class="dash-sub">anbefalinger</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-label">Igangværende</div>
+      <div class="dash-value" id="d-ongoing">—</div>
+      <div class="dash-sub">projekter</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-label">Min. budget</div>
+      <div class="dash-value" id="d-cost">—</div>
+      <div class="dash-sub">estimeret</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-label">Gns. ROI</div>
+      <div class="dash-value" id="d-roi">—</div>
+      <div class="dash-sub">ud af 10</div>
+    </div>
+  </div>
 
-    function loadData(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : defaultData.slice();
-      }catch(e){ return defaultData.slice(); }
-    }
-    function saveData(data){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+  <div class="filter-bar">
+    <span class="filter-label">Målgruppe</span>
+    <div class="filter-group" id="aud-filters">
+      <button class="fbtn active" data-aud="all">Alle</button>
+      <button class="fbtn" data-aud="sponsor">Sponsor</button>
+      <button class="fbtn" data-aud="fan">Fan</button>
+      <button class="fbtn" data-aud="frivillig">Frivillig</button>
+    </div>
+    <div class="filter-sep"></div>
+    <span class="filter-label">Status</span>
+    <div class="filter-group" id="pri-filters">
+      <button class="fbtn active" data-pri="all">Alle</button>
+      <button class="fbtn" data-pri="ongoing">Igangværende</button>
+      <button class="fbtn" data-pri="done">Afsluttet</button>
+    </div>
+  </div>
 
-    function uid(){ return 'id_'+Math.random().toString(36).slice(2,9); }
+  <div class="sort-bar">
+    <span class="sort-label">Sortér</span>
+    <select class="sort-select" id="sort-select" onchange="renderCards()">
+      <option value="default">Standard (#)</option>
+      <option value="roi">ROI-indeks (høj → lav)</option>
+      <option value="cost">Estimeret pris (lav → høj)</option>
+      <option value="weeks">Uger (få → mange)</option>
+    </select>
+  </div>
 
-    /* --- DOM refs --- */
-    const inputTitle = document.getElementById('inputTitle');
-    const inputDesc = document.getElementById('inputDesc');
-    const inputDeadline = document.getElementById('inputDeadline');
-    const horizonSlider = document.getElementById('horizonSlider');
-    const horizonValue = document.getElementById('horizonValue');
-    const difficultySelect = document.getElementById('difficultySelect');
-    const difficultySummary = document.getElementById('difficultySummary');
-    const effectSelect = document.getElementById('effectSelect');
-    const effectSummary = document.getElementById('effectSummary');
-    const inputAudience = document.getElementById('inputAudience');
-    const inputStatus = document.getElementById('inputStatus');
-    const addBtn = document.getElementById('addBtn');
-    const clearBtn = document.getElementById('clearBtn');
+  <div id="timelineModal" class="timeline-modal">
+    <div class="timeline-content">
+      <div class="timeline-header">
+        <h2>📅 Implementeringstidslinje</h2>
+        <button class="timeline-close" onclick="closeTimeline()">×</button>
+      </div>
+      <div class="timeline-track">
+        <div class="timeline-line"></div>
+        <div class="timeline-items" id="timelineItems"></div>
+      </div>
+    </div>
+  </div>
 
-    const timelineList = document.getElementById('timelineList');
-    const cardsGrid = document.getElementById('cardsGrid');
-    const tableBody = document.querySelector('#tableView tbody');
-
-    const viewBtns = document.querySelectorAll('.view-btn');
-    const filterViewChips = document.getElementById('filterViewChips');
-    const filterHorizon = document.getElementById('filterHorizon');
-    const filterDifficulty = document.getElementById('filterDifficulty');
-    const filterEffect = document.getElementById('filterEffect');
-    const filterAudience = document.getElementById('filterAudience');
-    const filterStatus = document.getElementById('filterStatus');
-    const applyFilters = document.getElementById('applyFilters');
-    const resetFilters = document.getElementById('resetFilters');
-    const searchInput = document.getElementById('searchInput');
-
-    /* --- State --- */
-    let data = loadData();
-    let filters = {
-      view: 'tidslinje',
-      horizon: null,
-      difficulty: null,
-      effect: null,
-      audience: '',
-      status: ''
-    };
-
-    /* --- UI helpers --- */
-    const horizonLabels = ['Dage','Uger','Måneder','År'];
-    function updateHorizonLabel(){ horizonValue.textContent = horizonLabels[Number(horizonSlider.value)]; }
-    horizonSlider.addEventListener('input', updateHorizonLabel);
-    updateHorizonLabel();
-
-    // custom dropdowns (difficulty/effect)
-    function wireCircleSelect(detailsEl, summaryEl, targetVarName){
-      const options = detailsEl.querySelectorAll('.circle-option');
-      options.forEach(opt=>{
-        opt.addEventListener('click', ()=>{
-          const val = opt.dataset.value;
-          const label = opt.querySelector('.opt-label').textContent;
-          const color = opt.querySelector('.circle').style.background;
-          summaryEl.innerHTML = `<span class="circle" style="background:${color}"></span> ${label}`;
-          detailsEl.removeAttribute('open');
-          detailsEl.dataset.value = val;
-        });
-      });
-      // set default
-      detailsEl.dataset.value = detailsEl.querySelector('.circle-option').dataset.value;
-    }
-    wireCircleSelect(difficultySelect, difficultySummary);
-    wireCircleSelect(effectSelect, effectSummary);
-
-    /* --- Add / Clear --- */
-    addBtn.addEventListener('click', ()=>{
-      const title = inputTitle.value.trim();
-      if(!title){ alert('Skriv en titel'); return; }
-      const item = {
-        id: uid(),
-        title,
-        desc: inputDesc.value.trim(),
-        deadline: inputDeadline.value || null,
-        horizon: Number(horizonSlider.value), // 0..3
-        difficulty: difficultySelect.dataset.value || 'lav',
-        effect: effectSelect.dataset.value || 'lav',
-        audience: inputAudience.value.trim(),
-        status: inputStatus.value,
-        created: new Date().toISOString()
-      };
-      data.push(item);
-      saveData(data);
-      renderAll();
-      clearForm();
-    });
-
-    clearBtn.addEventListener('click', clearForm);
-    function clearForm(){
-      inputTitle.value=''; inputDesc.value=''; inputDeadline.value=''; horizonSlider.value='1'; updateHorizonLabel();
-      difficultySelect.dataset.value='lav'; difficultySummary.innerHTML = `<span class="circle" style="background:var(--success)"></span> Lav`;
-      effectSelect.dataset.value='lav'; effectSummary.innerHTML = `<span class="circle" style="background:var(--success)"></span> Lav`;
-      inputAudience.value=''; inputStatus.value='idé';
-    }
-
-    /* --- Rendering --- */
-    function colorFor(val){
-      if(val==='lav') return 'var(--success)';
-      if(val==='middel') return 'var(--warning)';
-      if(val==='høj') return 'var(--danger)';
-      return '#ccc';
-    }
-
-    function formatDate(d){
-      if(!d) return '-';
-      const dt = new Date(d);
-      if(isNaN(dt)) return d;
-      return dt.toLocaleDateString('da-DK');
-    }
-
-    function renderTimeline(items){
-      timelineList.innerHTML='';
-      if(!items.length){ document.getElementById('noTimeline').style.display='block'; return; }
-      document.getElementById('noTimeline').style.display='none';
-      items.sort((a,b)=>{
-        if(!a.deadline) return 1;
-        if(!b.deadline) return -1;
-        return new Date(a.deadline) - new Date(b.deadline);
-      });
-      items.forEach(it=>{
-        const el = document.createElement('div');
-        el.className='timeline-item';
-        el.innerHTML = `
-          <div class="meta">
-            <div class="muted">Deadline</div>
-            <div style="font-weight:600">${formatDate(it.deadline)}</div>
-            <div style="margin-top:8px" class="muted">Tidshorisont</div>
-            <div class="muted">${horizonLabels[it.horizon]}</div>
-          </div>
-          <div style="flex:1">
-            <div class="title">${escapeHtml(it.title)}</div>
-            <div class="desc">${escapeHtml(it.desc)}</div>
-            <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
-              <div class="pill"><span class="color-dot" style="background:${colorFor(it.difficulty)}"></span> ${capitalize(it.difficulty)}</div>
-              <div class="pill"><span class="color-dot" style="background:${colorFor(it.effect)}"></span> ${capitalize(it.effect)}</div>
-              <div class="pill">${escapeHtml(it.audience || '-')}</div>
-              <div class="pill">${escapeHtml(it.status)}</div>
+  <div id="newRecommendationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Ny anbefaling</h2>
+        <button class="close-btn" onclick="closeNewModal()">×</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label class="form-label">Titel</label>
+          <input class="form-input" id="newTitle" placeholder="Eksempel: Stat-bar med live resultater" type="text">
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Målgruppe</label>
+          <div class="form-checkboxes">
+            <div class="form-checkbox">
+              <input type="checkbox" id="newAudSponsor" value="sponsor">
+              <label for="newAudSponsor">Sponsor</label>
+            </div>
+            <div class="form-checkbox">
+              <input type="checkbox" id="newAudFan" value="fan">
+              <label for="newAudFan">Fan</label>
+            </div>
+            <div class="form-checkbox">
+              <input type="checkbox" id="newAudFrivillig" value="frivillig">
+              <label for="newAudFrivillig">Frivillig</label>
             </div>
           </div>
-          <div style="min-width:80px;text-align:right">
-            <button class="btn" data-action="edit" data-id="${it.id}">Redigér</button>
-            <button class="btn" data-action="del" data-id="${it.id}">Slet</button>
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Kort beskrivelse</label>
+          <input class="form-input" id="newShortDesc" placeholder="En linje beskrivelse" type="text">
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Detaljer</label>
+          <textarea class="form-textarea" id="newDetails" placeholder="Fuldstændig beskrivelse..."></textarea>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Påvirkning</label>
+          <input class="form-input" id="newImpact" placeholder="Eksempel: Højere engagement" type="text">
+        </div>
+        <div class="form-field">
+          <label class="form-label">ROI (0-10)</label>
+          <input class="form-input" id="newROI" placeholder="7" type="number" min="0" max="10">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Estimeret pris (DKK)</label>
+          <input class="form-input" id="newCost" placeholder="5000" type="number" min="0">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Implementeringsvanskelighed</label>
+          <select class="form-select" id="newImpl">
+            <option value="low">Lavt</option>
+            <option value="mid">Middel</option>
+          </select>
+        </div>
+
+        <!-- TIMEFRAME SECTION -->
+        <div class="form-field full">
+          <div class="timeframe-section">
+            <label class="timeframe-label">⏱️ Tidshorisont</label>
+            <div class="timeframe-inputs">
+              <div class="timeframe-input-group">
+                <label for="newWeeks">Uger</label>
+                <input type="number" id="newWeeks" placeholder="f.eks. 4" min="0">
+              </div>
+              <div class="timeframe-input-group">
+                <label for="newMonths">Måneder</label>
+                <input type="number" id="newMonths" placeholder="f.eks. 2" min="0">
+              </div>
+            </div>
           </div>
-        `;
-        timelineList.appendChild(el);
-      });
-    }
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeNewModal()">Annuller</button>
+        <button class="btn-save" onclick="saveNewRecommendation()">Gem anbefaling</button>
+      </div>
+    </div>
+  </div>
+</header>
 
-    function renderCards(items){
-      cardsGrid.innerHTML='';
-      if(!items.length){ document.getElementById('noCards').style.display='block'; return; }
-      document.getElementById('noCards').style.display='none';
-      items.forEach(it=>{
-        const c = document.createElement('div'); c.className='card';
-        c.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:start">
-            <div style="font-weight:700">${escapeHtml(it.title)}</div>
-            <div style="font-size:12px;color:var(--muted-text)">${formatDate(it.deadline)}</div>
+<div class="main">
+  <div class="cards-view-container" id="cardsViewContainer">
+    <div class="section-title" id="activeTitle">✨ Aktive anbefalinger</div>
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+  <div class="table-view-container" id="tableViewContainer">
+    <table class="data-table" id="dataTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Titel</th>
+          <th>Målgruppe</th>
+          <th>Status</th>
+          <th>ROI</th>
+          <th>Pris</th>
+          <th>Uger</th>
+          <th>Handlinger</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <strong>Prosliding.dk</strong> · Anbefalede forbedringer til sponsortiltrækning, fan engagement og frivilligrekruttering
+</footer>
+
+<script>
+// ===== DATA STRUCTURE & STORAGE =====
+let recommendations = JSON.parse(localStorage.getItem('recommendations')) || [];
+let currentFilters = { audience: 'all', priority: 'all' };
+let currentSort = 'default';
+let nextId = recommendations.length > 0 ? Math.max(...recommendations.map(r => r.id)) + 1 : 1;
+
+// ===== MODAL FUNCTIONS =====
+function openNewModal() {
+  document.getElementById('newRecommendationModal').style.display = 'block';
+  clearNewForm();
+}
+
+function closeNewModal() {
+  document.getElementById('newRecommendationModal').style.display = 'none';
+}
+
+function clearNewForm() {
+  document.getElementById('newTitle').value = '';
+  document.getElementById('newShortDesc').value = '';
+  document.getElementById('newDetails').value = '';
+  document.getElementById('newImpact').value = '';
+  document.getElementById('newROI').value = '7';
+  document.getElementById('newCost').value = '';
+  document.getElementById('newImpl').value = 'low';
+  document.getElementById('newWeeks').value = '';
+  document.getElementById('newMonths').value = '';
+  document.querySelectorAll('.form-checkbox input').forEach(cb => cb.checked = false);
+}
+
+function saveNewRecommendation() {
+  const title = document.getElementById('newTitle').value.trim();
+  const shortDesc = document.getElementById('newShortDesc').value.trim();
+  const details = document.getElementById('newDetails').value.trim();
+  const impact = document.getElementById('newImpact').value.trim();
+  const roi = parseInt(document.getElementById('newROI').value) || 0;
+  const cost = parseInt(document.getElementById('newCost').value) || 0;
+  const impl = document.getElementById('newImpl').value;
+  const weeks = parseInt(document.getElementById('newWeeks').value) || 0;
+  const months = parseInt(document.getElementById('newMonths').value) || 0;
+
+  if (!title) {
+    alert('Tilføj en titel!');
+    return;
+  }
+
+  if (weeks === 0 && months === 0) {
+    alert('Angiv mindst uger eller måneder for tidshorisont!');
+    return;
+  }
+
+  const audiences = [];
+  if (document.getElementById('newAudSponsor').checked) audiences.push('sponsor');
+  if (document.getElementById('newAudFan').checked) audiences.push('fan');
+  if (document.getElementById('newAudFrivillig').checked) audiences.push('frivillig');
+
+  const newRec = {
+    id: nextId++,
+    title,
+    shortDesc,
+    details,
+    impact,
+    roi: Math.min(10, Math.max(0, roi)),
+    cost,
+    impl,
+    audiences: audiences.length > 0 ? audiences : ['all'],
+    status: 'ongoing',
+    weeks,
+    months,
+    createdAt: new Date().toISOString()
+  };
+
+  recommendations.push(newRec);
+  saveData();
+  renderCards();
+  closeNewModal();
+}
+
+function saveData() {
+  localStorage.setItem('recommendations', JSON.stringify(recommendations));
+}
+
+// ===== FILTERING & SORTING =====
+function applyFilters() {
+  const audFilters = document.querySelectorAll('#aud-filters .fbtn');
+  const priFilters = document.querySelectorAll('#pri-filters .fbtn');
+
+  audFilters.forEach(btn => {
+    btn.addEventListener('click', function() {
+      audFilters.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentFilters.audience = this.dataset.aud;
+      renderCards();
+    });
+  });
+
+  priFilters.forEach(btn => {
+    btn.addEventListener('click', function() {
+      priFilters.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentFilters.priority = this.dataset.pri;
+      renderCards();
+    });
+  });
+}
+
+function getFilteredRecommendations() {
+  let filtered = recommendations;
+
+  // Audience filter
+  if (currentFilters.audience !== 'all') {
+    filtered = filtered.filter(r => r.audiences.includes(currentFilters.audience) || r.audiences.includes('all'));
+  }
+
+  // Priority filter (status)
+  if (currentFilters.priority !== 'all') {
+    filtered = filtered.filter(r => r.status === currentFilters.priority);
+  }
+
+  return filtered;
+}
+
+function getSortedRecommendations(recs) {
+  const sorted = [...recs];
+
+  switch(currentSort) {
+    case 'roi':
+      sorted.sort((a, b) => b.roi - a.roi);
+      break;
+    case 'cost':
+      sorted.sort((a, b) => a.cost - b.cost);
+      break;
+    case 'weeks':
+      sorted.sort((a, b) => {
+        const weekA = a.weeks + (a.months * 4.33);
+        const weekB = b.weeks + (b.months * 4.33);
+        return weekA - weekB;
+      });
+      break;
+    default:
+      sorted.sort((a, b) => a.id - b.id);
+  }
+
+  return sorted;
+}
+
+// ===== CARD RENDERING =====
+function renderCards() {
+  const filtered = getFilteredRecommendations();
+  const sorted = getSortedRecommendations(filtered);
+
+  const cardsGrid = document.getElementById('cardsGrid');
+  cardsGrid.innerHTML = '';
+
+  if (sorted.length === 0) {
+    cardsGrid.innerHTML = '<div class="empty-state">Ingen anbefalinger matcher dine filtre.</div>';
+    updateDashboard([]);
+    return;
+  }
+
+  sorted.forEach(rec => {
+    const card = createCardElement(rec);
+    cardsGrid.appendChild(card);
+  });
+
+  updateDashboard(sorted);
+  updateTable(sorted);
+}
+
+function createCardElement(rec) {
+  const card = document.createElement('div');
+  card.className = `card ${rec.status === 'done' ? 'done' : ''}`;
+  card.dataset.id = rec.id;
+
+  const totalWeeks = rec.weeks + (rec.months * 4.33);
+  const timeframeText = rec.months > 0 && rec.weeks > 0 
+    ? `${rec.months}m ${rec.weeks}u`
+    : rec.months > 0 
+    ? `${rec.months} måned${rec.months !== 1 ? 'er' : ''}`
+    : `${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`;
+
+  card.innerHTML = `
+    <div class="card-header" onclick="toggleExpand(${rec.id})">
+      <div class="card-num">${rec.id}</div>
+      <div class="card-header-content">
+        <div class="card-title">${rec.title}</div>
+        <div class="card-tags">
+          ${rec.audiences.map(aud => {
+            if (aud === 'all') return '';
+            const tagClass = aud === 'sponsor' ? 'tag-sponsor' : aud === 'fan' ? 'tag-fan' : 'tag-vol';
+            const label = aud === 'sponsor' ? 'Sponsor' : aud === 'fan' ? 'Fan' : 'Frivillig';
+            return `<span class="tag ${tagClass}">${label}</span>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="card-header-right">
+        <span class="pri-badge pri-${rec.status}">${rec.status === 'ongoing' ? 'Igangværende' : 'Afsluttet'}</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+
+    <div class="card-roi">
+      <span class="roi-label-txt">ROI</span>
+      <div class="roi-track">
+        <div class="roi-fill" style="width: ${rec.roi * 10}%"></div>
+      </div>
+      <span class="roi-score">${rec.roi}</span>
+    </div>
+
+    <div class="card-footer-meta">
+      <div>
+        <span class="cost-txt">💰 <span>${rec.cost.toLocaleString('da-DK')} DKK</span></span>
+        <span class="impl-badge impl-${rec.impl}" style="margin-left: 0.5rem;">${rec.impl === 'low' ? 'Lavt' : 'Middel'}</span>
+        <span class="impl-badge ongoing" style="margin-left: 0.5rem;">⏱️ ${timeframeText}</span>
+      </div>
+      <div class="card-actions">
+        <button class="action-btn edit-btn" onclick="toggleEditMode(event, ${rec.id})" title="Rediger">✎</button>
+        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})" title="Skift status">🔄</button>
+        <button class="action-btn done-btn" onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="short-desc">${rec.shortDesc}</div>
+      <div class="view-section">
+        <div class="detail-text">${rec.details}</div>
+        <div class="impact-block">
+          <div class="impact-label">💡 Påvirkning</div>
+          ${rec.impact}
+        </div>
+      </div>
+      <div class="edit-section">
+        <div class="edit-grid">
+          <div class="edit-field full">
+            <label class="edit-label">Titel</label>
+            <input class="edit-input" value="${rec.title}" data-field="title">
           </div>
-          <div style="margin-top:8px;color:var(--muted-text)">${escapeHtml(it.desc)}</div>
-          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-            <div class="pill"><span class="color-dot" style="background:${colorFor(it.difficulty)}"></span>${capitalize(it.difficulty)}</div>
-            <div class="pill"><span class="color-dot" style="background:${colorFor(it.effect)}"></span>${capitalize(it.effect)}</div>
-            <div class="pill">${escapeHtml(it.audience || '-')}</div>
-            <div class="pill">${escapeHtml(it.status)}</div>
+          <div class="edit-field full">
+            <label class="edit-label">Kort beskrivelse</label>
+            <input class="edit-input" value="${rec.shortDesc}" data-field="shortDesc">
           </div>
-          <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
-            <button class="btn" data-action="edit" data-id="${it.id}">Redigér</button>
-            <button class="btn" data-action="del" data-id="${it.id}">Slet</button>
+          <div class="edit-field full">
+            <label class="edit-label">Detaljer</label>
+            <textarea class="edit-textarea" data-field="details">${rec.details}</textarea>
           </div>
-        `;
-        cardsGrid.appendChild(c);
-      });
-    }
+          <div class="edit-field full">
+            <label class="edit-label">Påvirkning</label>
+            <input class="edit-input" value="${rec.impact}" data-field="impact">
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">ROI (0-10)</label>
+            <div class="roi-slider-wrap">
+              <input class="roi-slider" type="range" min="0" max="10" value="${rec.roi}" data-field="roi">
+              <span class="roi-slider-val">${rec.roi}</span>
+            </div>
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">Pris (DKK)</label>
+            <input class="edit-input" type="number" value="${rec.cost}" data-field="cost">
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">Vanskelighed</label>
+            <select class="edit-select" data-field="impl">
+              <option value="low" ${rec.impl === 'low' ? 'selected' : ''}>Lavt</option>
+              <option value="mid" ${rec.impl === 'mid' ? 'selected' : ''}>Middel</option>
+            </select>
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">Uger</label>
+            <input class="edit-input" type="number" value="${rec.weeks}" data-field="weeks">
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">Måneder</label>
+            <input class="edit-input" type="number" value="${rec.months}" data-field="months">
+          </div>
+        </div>
+        <button class="edit-save-btn" onclick="saveEditedRecommendation(${rec.id})">Gem ændringer</button>
+      </div>
+    </div>
+  `;
 
-    function renderTable(items){
-      tableBody.innerHTML='';
-      if(!items.length){ document.getElementById('noTable').style.display='block'; return; }
-      document.getElementById('noTable').style.display='none';
-      items.forEach(it=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${escapeHtml(it.title)}</td>
-          <td>${formatDate(it.deadline)}</td>
-          <td>${horizonLabels[it.horizon]}</td>
-          <td><span class="color-dot" style="background:${colorFor(it.difficulty)}"></span>${capitalize(it.difficulty)}</td>
-          <td><span class="color-dot" style="background:${colorFor(it.effect)}"></span>${capitalize(it.effect)}</td>
-          <td>${escapeHtml(it.audience)}</td>
-          <td>${escapeHtml(it.status)}</td>
-        `;
-        tableBody.appendChild(tr);
-      });
-    }
-
-    function renderAll(){
-      const filtered = applyAllFilters();
-      renderTimeline(filtered);
-      renderCards(filtered);
-      renderTable(filtered);
-    }
-
-    /* --- Filters logic --- */
-    function applyAllFilters(){
-      const q = (searchInput.value || '').toLowerCase().trim();
-      return data.filter(it=>{
-        // view filter not affecting content, only UI
-        if(filters.horizon !== null && String(it.horizon) !== String(filters.horizon)) return false;
-        if(filters.difficulty && it.difficulty !== filters.difficulty) return false;
-        if(filters.effect && it.effect !== filters.effect) return false;
-        if(filters.audience && !(it.audience || '').toLowerCase().includes(filters.audience.toLowerCase())) return false;
-        if(filters.status && it.status !== filters.status) return false;
-        if(q){
-          const hay = (it.title + ' ' + it.desc).toLowerCase();
-          if(!hay.includes(q)) return false;
-        }
-        return true;
-      });
-    }
-
-    // chips toggles
-    function wireChips(container, key){
-      container.addEventListener('click', e=>{
-        const chip = e.target.closest('.chip');
-        if(!chip) return;
-        const val = chip.dataset.val || chip.dataset.view;
-        // toggle behavior: if already active -> unset
-        const active = chip.classList.contains('active');
-        // clear all in group
-        container.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-        if(!active){
-          chip.classList.add('active');
-          filters[key] = val;
-        } else {
-          filters[key] = null;
-        }
-        // if view chips changed, switch main view
-        if(key === 'view'){
-          setActiveView(val || 'tidslinje');
-        }
-      });
-    }
-    // special for view chips (they use data-view)
-    wireChips(filterViewChips, 'view');
-    wireChips(filterHorizon, 'horizon');
-    wireChips(filterDifficulty, 'difficulty');
-    wireChips(filterEffect, 'effect');
-
-    applyFilters.addEventListener('click', ()=>{
-      filters.audience = filterAudience.value.trim();
-      filters.status = filterStatus.value;
-      renderAll();
+  // Event listener for ROI slider
+  const roiSlider = card.querySelector('.roi-slider');
+  if (roiSlider) {
+    roiSlider.addEventListener('input', function() {
+      card.querySelector('.roi-slider-val').textContent = this.value;
     });
-    resetFilters.addEventListener('click', ()=>{
-      filters = {view:'tidslinje',horizon:null,difficulty:null,effect:null,audience:'',status:''};
-      // reset UI chips
-      document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-      // set default view chip
-      document.querySelector('.chip[data-view="tidslinje"]').classList.add('active');
-      filterAudience.value=''; filterStatus.value='';
-      setActiveView('tidslinje');
-      renderAll();
-    });
+  }
 
-    /* --- View switching (buttons) --- */
-    function setActiveView(view){
-      // update main view buttons
-      document.querySelectorAll('.view-btn').forEach(b=>{
-        b.classList.toggle('active', b.dataset.view === view);
-      });
-      // show/hide sections
-      document.getElementById('viewTidslinje').style.display = view === 'tidslinje' ? '' : 'none';
-      document.getElementById('viewKort').style.display = view === 'kort' ? '' : 'none';
-      document.getElementById('viewTabel').style.display = view === 'tabel' ? '' : 'none';
-      // sync chips
-      document.querySelectorAll('.chip').forEach(c=>{
-        if(c.dataset.view) c.classList.toggle('active', c.dataset.view === view);
-      });
-      filters.view = view;
+  return card;
+}
+
+function toggleExpand(id) {
+  const card = document.querySelector(`[data-id="${id}"]`);
+  card.classList.toggle('expanded');
+}
+
+function toggleEditMode(event, id) {
+  event.stopPropagation();
+  const card = document.querySelector(`[data-id="${id}"]`);
+  card.classList.toggle('edit-mode');
+}
+
+function saveEditedRecommendation(id) {
+  const card = document.querySelector(`[data-id="${id}"]`);
+  const rec = recommendations.find(r => r.id === id);
+
+  const fields = card.querySelectorAll('[data-field]');
+  fields.forEach(field => {
+    const fieldName = field.dataset.field;
+    let value = field.value;
+
+    if (fieldName === 'roi' || fieldName === 'cost' || fieldName === 'weeks' || fieldName === 'months') {
+      value = parseInt(value) || 0;
     }
-    document.querySelectorAll('.view-btn').forEach(b=>{
-      b.addEventListener('click', ()=> setActiveView(b.dataset.view));
+
+    rec[fieldName] = value;
+  });
+
+  saveData();
+  renderCards();
+}
+
+function cycleStatus(event, id) {
+  event.stopPropagation();
+  const rec = recommendations.find(r => r.id === id);
+  rec.status = rec.status === 'ongoing' ? 'done' : 'ongoing';
+  saveData();
+  renderCards();
+}
+
+function deleteRecommendation(event, id) {
+  event.stopPropagation();
+  if (confirm('Er du sikker på, at du vil slette denne anbefaling?')) {
+    recommendations = recommendations.filter(r => r.id !== id);
+    saveData();
+    renderCards();
+  }
+}
+
+// ===== DASHBOARD =====
+function updateDashboard(sorted) {
+  const active = sorted.length;
+  const ongoing = sorted.filter(r => r.status === 'ongoing').length;
+  const totalCost = sorted.reduce((sum, r) => sum + r.cost, 0);
+  const avgROI = sorted.length > 0 ? (sorted.reduce((sum, r) => sum + r.roi, 0) / sorted.length).toFixed(1) : 0;
+
+  document.getElementById('d-active').textContent = active;
+  document.getElementById('d-ongoing').textContent = ongoing;
+  document.getElementById('d-cost').textContent = totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0';
+  document.getElementById('d-roi').textContent = avgROI;
+}
+
+// ===== TABLE VIEW =====
+function updateTable(sorted) {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+
+  sorted.forEach(rec => {
+    const totalWeeks = rec.weeks + (rec.months * 4.33);
+    const timeframeText = rec.months > 0 && rec.weeks > 0 
+      ? `${rec.months}m ${rec.weeks}u`
+      : rec.months > 0 
+      ? `${rec.months} md.`
+      : `${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`;
+
+    const row = document.createElement('tr');
+    row.className = rec.status === 'done' ? 'done' : '';
+    row.innerHTML = `
+      <td>${rec.id}</td>
+      <td>${rec.title}</td>
+      <td>${rec.audiences.filter(a => a !== 'all').map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(', ') || 'Alle'}</td>
+      <td>${rec.status === 'ongoing' ? 'Igangværende' : 'Afsluttet'}</td>
+      <td>${rec.roi}</td>
+      <td>${rec.cost.toLocaleString('da-DK')} DKK</td>
+      <td>${totalWeeks.toFixed(1)}</td>
+      <td style="text-align: center;">
+        <button class="action-btn edit-btn" onclick="toggleEditMode(event, ${rec.id})" title="Rediger">✎</button>
+        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})" title="Skift status">🔄</button>
+        <button class="action-btn done-btn" onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+// ===== VIEW SWITCHING =====
+function switchToCardView() {
+  document.getElementById('cardViewBtn').classList.add('active');
+  document.getElementById('tableViewBtn').classList.remove('active');
+  document.getElementById('cardsViewContainer').style.display = 'block';
+  document.getElementById('tableViewContainer').classList.remove('active');
+  renderCards();
+}
+
+function switchToTableView() {
+  document.getElementById('tableViewBtn').classList.add('active');
+  document.getElementById('cardViewBtn').classList.remove('active');
+  document.getElementById('cardsViewContainer').style.display = 'none';
+  document.getElementById('tableViewContainer').classList.add('active');
+  const filtered = getFilteredRecommendations();
+  const sorted = getSortedRecommendations(filtered);
+  updateTable(sorted);
+}
+
+// ===== TIMELINE =====
+function openTimeline() {
+  const timelineItems = document.getElementById('timelineItems');
+  timelineItems.innerHTML = '';
+
+  const sorted = getSortedRecommendations(recommendations.filter(r => r.status === 'ongoing'));
+
+  if (sorted.length === 0) {
+    timelineItems.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">Ingen igangværende anbefalinger planlagt.</div>';
+  } else {
+    sorted.forEach((rec, idx) => {
+      const item = document.createElement('div');
+      item.className = `timeline-item ${idx % 2 === 0 ? 'left' : 'right'}`;
+      
+      const totalWeeks = rec.weeks + (rec.months * 4.33);
+      const timeframeText = rec.months > 0 && rec.weeks > 0 
+        ? `${rec.months} måned${rec.months !== 1 ? 'er' : ''} og ${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`
+        : rec.months > 0 
+        ? `${rec.months} måned${rec.months !== 1 ? 'er' : ''}`
+        : `${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`;
+
+      item.innerHTML = `
+        <div class="timeline-marker"></div>
+        <div class="timeline-content-box">
+          <div class="timeline-period">${timeframeText}</div>
+          <h3>${rec.title}</h3>
+          <p>${rec.shortDesc}</p>
+          <span class="timeline-badge ongoing">Igangværende</span>
+        </div>
+      `;
+      timelineItems.appendChild(item);
     });
+  }
 
-    /* --- Edit / Delete handlers (event delegation) --- */
-    document.addEventListener('click', (e)=>{
-      const btn = e.target.closest('button[data-action]');
-      if(!btn) return;
-      const id = btn.dataset.id;
-      const action = btn.dataset.action;
-      if(action === 'del'){
-        if(!confirm('Slet denne anbefaling?')) return;
-        data = data.filter(x=>x.id !== id);
-        saveData(data);
-        renderAll();
-      } else if(action === 'edit'){
-        const it = data.find(x=>x.id===id);
-        if(!it) return;
-        // populate form
-        inputTitle.value = it.title;
-        inputDesc.value = it.desc;
-        inputDeadline.value = it.deadline || '';
-        horizonSlider.value = it.horizon;
-        updateHorizonLabel();
-        difficultySelect.dataset.value = it.difficulty;
-        difficultySummary.innerHTML = `<span class="circle" style="background:${colorFor(it.difficulty)}"></span> ${capitalize(it.difficulty)}`;
-        effectSelect.dataset.value = it.effect;
-        effectSummary.innerHTML = `<span class="circle" style="background:${colorFor(it.effect)}"></span> ${capitalize(it.effect)}`;
-        inputAudience.value = it.audience;
-        inputStatus.value = it.status;
-        // remove old and save new on add (simple approach)
-        data = data.filter(x=>x.id !== id);
-        saveData(data);
-        renderAll();
-        window.scrollTo({top:0,behavior:'smooth'});
-      }
-    });
+  document.getElementById('timelineModal').style.display = 'block';
+}
 
-    /* --- Search input --- */
-    searchInput.addEventListener('input', ()=> renderAll());
+function closeTimeline() {
+  document.getElementById('timelineModal').style.display = 'none';
+}
 
-    /* --- Utilities --- */
-    function capitalize(s){ if(!s) return s; return s.charAt(0).toUpperCase()+s.slice(1); }
-    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, (m)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+// ===== MODAL OUTSIDE CLICK =====
+window.onclick = function(event) {
+  const modal = document.getElementById('newRecommendationModal');
+  const timelineModal = document.getElementById('timelineModal');
 
-    /* --- Init --- */
-    // set default view chip active
-    document.querySelector('.chip[data-view="tidslinje"]').classList.add('active');
-    setActiveView('tidslinje');
-    renderAll();
+  if (event.target === modal) {
+    closeNewModal();
+  }
+  if (event.target === timelineModal) {
+    closeTimeline();
+  }
+};
 
-    /* --- Accessibility: close details when clicking outside --- */
-    document.addEventListener('click', (e)=>{
-      document.querySelectorAll('.circle-select[open]').forEach(d=>{
-        if(!d.contains(e.target)) d.removeAttribute('open');
-      });
-    });
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  applyFilters();
+  renderCards();
+});
+</script>
 
-    /* --- End of script --- */
-  </script>
 </body>
 </html>
