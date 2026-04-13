@@ -105,6 +105,7 @@
     gap: 8px;
     align-items: center;
     flex-shrink: 0;
+    flex-wrap: wrap;
   }
   .btn-reset {
     background: rgba(255,255,255,0.08);
@@ -507,7 +508,7 @@
     border-bottom: 0.5px solid var(--border);
   }
 
-  /* CARDS GRID - CARD VIEW */
+  /* CARDS GRID */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -516,10 +517,10 @@
   @media (max-width: 780px) { .cards-grid { grid-template-columns: 1fr; } }
 
   /* TABLE VIEW */
-  .table-view {
+  .table-view-container {
     display: none;
   }
-  .table-view.active {
+  .table-view-container.active {
     display: block;
   }
   .data-table {
@@ -541,7 +542,6 @@
     font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
   }
   .data-table td {
     padding: 1rem 1.25rem;
@@ -1049,7 +1049,7 @@
   <div class="section-title" id="active-label">Aktive anbefalinger</div>
   <div class="cards-grid" id="cards-container"></div>
 
-  <div class="table-view" id="table-view">
+  <div class="table-view-container" id="table-view-container">
     <table class="data-table" id="data-table">
       <thead>
         <tr>
@@ -1079,10 +1079,10 @@
 </footer>
 
 <script>
-// VIEW MODE MANAGEMENT
+// ====================== VIEW MODE MANAGEMENT ======================
 function switchToCardView() {
   document.getElementById('cards-container').style.display = 'grid';
-  document.getElementById('table-view').classList.remove('active');
+  document.getElementById('table-view-container').classList.remove('active');
   document.getElementById('cardViewBtn').classList.add('active');
   document.getElementById('tableViewBtn').classList.remove('active');
   localStorage.setItem('viewMode', 'card');
@@ -1091,7 +1091,7 @@ function switchToCardView() {
 
 function switchToTableView() {
   document.getElementById('cards-container').style.display = 'none';
-  document.getElementById('table-view').classList.add('active');
+  document.getElementById('table-view-container').classList.add('active');
   document.getElementById('cardViewBtn').classList.remove('active');
   document.getElementById('tableViewBtn').classList.add('active');
   localStorage.setItem('viewMode', 'table');
@@ -1111,18 +1111,25 @@ function renderTableView() {
   const tbody = document.getElementById('table-body');
   tbody.innerHTML = '';
   
-  const activeCards = document.querySelectorAll('#cards-container .card:not(.hidden-card):not(.done)');
+  const allCards = document.querySelectorAll('#cards-container .card:not(.hidden-card)');
   
-  activeCards.forEach(card => {
-    const num = card.querySelector('.card-num').textContent;
-    const title = card.querySelector('.card-title').textContent;
-    const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent).join(', ');
-    const priority = card.querySelector('[class*="pri-"]').textContent;
-    const complexity = card.querySelector('[class*="impl-"]').textContent;
-    const cost = card.querySelector('.cost-txt span').textContent;
-    const roi = card.querySelector('.roi-score').textContent;
+  allCards.forEach(card => {
+    const isActive = !card.classList.contains('done');
+    const num = card.querySelector('.card-num')?.textContent || '';
+    const title = card.querySelector('.card-title')?.textContent || '';
+    const tagsElements = card.querySelectorAll('.tag');
+    const tags = Array.from(tagsElements).map(t => t.textContent).join(', ') || '-';
+    const priorityEl = card.querySelector('[class*="pri-"]');
+    const priority = priorityEl?.textContent || '-';
+    const complexityEl = card.querySelector('[class*="impl-"]');
+    const complexity = complexityEl?.textContent || '-';
+    const costEl = card.querySelector('.cost-txt span');
+    const cost = costEl?.textContent || '-';
+    const roiEl = card.querySelector('.roi-score');
+    const roi = roiEl?.textContent || '-';
     
     const row = document.createElement('tr');
+    if (!isActive) row.classList.add('done');
     row.innerHTML = `
       <td>${num}</td>
       <td>${title}</td>
@@ -1136,6 +1143,317 @@ function renderTableView() {
   });
 }
 
+// ====================== DATA & RENDERING ======================
 const ORIGINAL_DATA = [
   {
     id: 1,
+    num: 1,
+    title: 'Live resultattavle',
+    aud: ['sponsor', 'fan'],
+    pri: 'now',
+    impl: 'low',
+    cost: '2.500 kr.',
+    roi: 9,
+    shortDesc: 'Skaber øjeblikkelig troværdighed',
+    detail: 'En synlig resultattavle øverst på siden med live opdateringer af kampen. Dette vil øge brugerengagement og kan være en stærk sponsor-aktivering.',
+    impact: 'Øget engagement, højere vertikal scrollydelse, bedre sponsor-værdi'
+  },
+  {
+    id: 2,
+    num: 2,
+    title: 'VIP-zone med eksklusivt indhold',
+    aud: ['sponsor'],
+    pri: 'soon',
+    impl: 'mid',
+    cost: '5.000 kr.',
+    roi: 7,
+    shortDesc: 'Premium opplevelse for sponsorer',
+    detail: 'Eksklusivt område for sponsorer med bag-kulisser-indhold og live updates fra holdet. Kan være a/b-testet.',
+    impact: 'Stærk sponsor-differentiering, øget loyalitet'
+  },
+  {
+    id: 3,
+    num: 3,
+    title: 'Frivillig-priser og belønninger',
+    aud: ['frivillig'],
+    pri: 'soon',
+    impl: 'mid',
+    cost: '3.000 kr.',
+    roi: 6,
+    shortDesc: 'Øg frivillig-engagement med gamification',
+    detail: 'Pointsystem for frivillige med tangible rewards. Kan være en app-feature eller web-baseret.',
+    impact: 'Øget frivillig-retentionrate, bedre kulturel binding'
+  }
+];
+
+let currentData = JSON.parse(JSON.stringify(ORIGINAL_DATA));
+
+// ====================== INITIALIZATION ======================
+window.addEventListener('DOMContentLoaded', () => {
+  loadViewPreference();
+  renderDashboard();
+  setupFiltersAndSort();
+});
+
+// ====================== DASHBOARD & RENDERING ======================
+function renderDashboard() {
+  const active = currentData.filter(d => d.pri !== 'done').length;
+  const now = currentData.filter(d => d.pri === 'now').length;
+  const totalCost = currentData.filter(d => d.pri !== 'done').reduce((sum, d) => {
+    const num = parseInt(d.cost.replace(/\D/g, ''));
+    return sum + (isNaN(num) ? 0 : num);
+  }, 0);
+  const avgRoi = currentData.length > 0 ? Math.round(currentData.reduce((sum, d) => sum + d.roi, 0) / currentData.length) : 0;
+
+  document.getElementById('d-active').textContent = active;
+  document.getElementById('d-now').textContent = now;
+  document.getElementById('d-cost').textContent = (totalCost / 1000).toFixed(1) + ' K';
+  document.getElementById('d-roi').textContent = avgRoi;
+}
+
+function renderCards() {
+  const container = document.getElementById('cards-container');
+  const doneContainer = document.getElementById('done-container');
+  const doneSection = document.getElementById('done-section');
+
+  container.innerHTML = '';
+  doneContainer.innerHTML = '';
+  let hasDone = false;
+
+  currentData.forEach(item => {
+    const card = createCard(item);
+    if (item.pri === 'done') {
+      doneContainer.appendChild(card);
+      hasDone = true;
+    } else {
+      container.appendChild(card);
+    }
+  });
+
+  doneSection.style.display = hasDone ? 'block' : 'none';
+  if (container.children.length === 0 && !hasDone) {
+    container.innerHTML = '<div class="empty-state">Ingen anbefalinger. Opret en ny for at komme igang!</div>';
+  }
+}
+
+function createCard(item) {
+  const card = document.createElement('div');
+  card.className = `card ${item.pri === 'done' ? 'done' : ''}`;
+  card.innerHTML = `
+    <div class="card-header" onclick="toggleExpanded(this)">
+      <div class="card-num">${item.num}</div>
+      <div class="card-header-content">
+        <div class="card-title">${item.title}</div>
+        <div class="card-tags">
+          ${item.aud.map(a => `<span class="tag tag-${a}">${a === 'frivillig' ? 'Frivillig' : a === 'sponsor' ? 'Sponsor' : 'Fan'}</span>`).join('')}
+        </div>
+      </div>
+      <div class="card-header-right">
+        <span class="pri-badge pri-${item.pri}">${item.pri.toUpperCase()}</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="card-roi">
+      <span class="roi-label-txt">ROI</span>
+      <div class="roi-track"><div class="roi-fill" style="width: ${item.roi * 10}%"></div></div>
+      <span class="roi-score">${item.roi}/10</span>
+      <span class="impl-badge impl-${item.impl}">${item.impl === 'low' ? 'LAV' : 'MID'}</span>
+    </div>
+    <div class="card-footer-meta">
+      <span class="cost-txt">Pris: <span>${item.cost}</span></span>
+      <div class="card-actions">
+        <button class="action-btn edit-btn" onclick="editItem(${item.id})" title="Rediger">✏️</button>
+        <button class="action-btn done-btn" onclick="markDone(${item.id})" title="Markér som færdig">✓</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="view-section">
+        <div class="short-desc">${item.shortDesc}</div>
+        <div class="detail-text">${item.detail}</div>
+        <div class="impact-block">
+          <div class="impact-label">Forventet effekt</div>
+          ${item.impact}
+        </div>
+      </div>
+      <div class="edit-section" style="display:none;">
+        <div class="edit-grid">
+          <div class="edit-field full">
+            <label class="edit-label">Titel</label>
+            <input class="edit-input" value="${item.title}" onchange="updateItem(${item.id}, 'title', this.value)">
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">Prioritet</label>
+            <select class="edit-select" onchange="updateItem(${item.id}, 'pri', this.value)">
+              <option value="now" ${item.pri === 'now' ? 'selected' : ''}>Nu</option>
+              <option value="soon" ${item.pri === 'soon' ? 'selected' : ''}>Snart</option>
+              <option value="ongoing" ${item.pri === 'ongoing' ? 'selected' : ''}>Løbende</option>
+              <option value="done" ${item.pri === 'done' ? 'selected' : ''}>Færdig</option>
+            </select>
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">Kompleksitet</label>
+            <select class="edit-select" onchange="updateItem(${item.id}, 'impl', this.value)">
+              <option value="low" ${item.impl === 'low' ? 'selected' : ''}>Lav</option>
+              <option value="mid" ${item.impl === 'mid' ? 'selected' : ''}>Middel</option>
+            </select>
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">ROI</label>
+            <input type="number" class="edit-input" min="1" max="10" value="${item.roi}" onchange="updateItem(${item.id}, 'roi', parseInt(this.value))">
+          </div>
+          <div class="edit-field full">
+            <label class="edit-label">Pris</label>
+            <input class="edit-input" value="${item.cost}" onchange="updateItem(${item.id}, 'cost', this.value)">
+          </div>
+          <div class="edit-field full">
+            <label class="edit-label">Kort beskrivelse</label>
+            <textarea class="edit-textarea" onchange="updateItem(${item.id}, 'shortDesc', this.value)">${item.shortDesc}</textarea>
+          </div>
+          <div class="edit-field full">
+            <label class="edit-label">Detaljer</label>
+            <textarea class="edit-textarea" onchange="updateItem(${item.id}, 'detail', this.value)">${item.detail}</textarea>
+          </div>
+          <div class="edit-field full">
+            <label class="edit-label">Effekt</label>
+            <textarea class="edit-textarea" onchange="updateItem(${item.id}, 'impact', this.value)">${item.impact}</textarea>
+          </div>
+        </div>
+        <button class="edit-save-btn" onclick="toggleEditMode(this, ${item.id})">Gem ændringer</button>
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function toggleExpanded(header) {
+  const card = header.closest('.card');
+  card.classList.toggle('expanded');
+}
+
+function editItem(id) {
+  const card = document.querySelector(`[onclick*="toggleEditMode(this, ${id})"]`)?.closest('.card');
+  if (card) {
+    card.classList.add('edit-mode');
+    card.querySelector('.edit-section').style.display = 'block';
+    card.querySelector('.view-section').style.display = 'none';
+  }
+}
+
+function toggleEditMode(btn, id) {
+  const card = btn.closest('.card');
+  card.classList.remove('edit-mode');
+  card.querySelector('.edit-section').style.display = 'none';
+  card.querySelector('.view-section').style.display = 'block';
+  renderTableView();
+}
+
+function updateItem(id, field, value) {
+  const item = currentData.find(d => d.id === id);
+  if (item) {
+    item[field] = value;
+    renderCards();
+    renderDashboard();
+  }
+}
+
+function markDone(id) {
+  const item = currentData.find(d => d.id === id);
+  if (item) {
+    item.pri = item.pri === 'done' ? 'now' : 'done';
+    renderCards();
+    renderDashboard();
+  }
+}
+
+// ====================== FILTERS & SORT ======================
+function setupFiltersAndSort() {
+  document.querySelectorAll('.fbtn').forEach(btn => {
+    btn.addEventListener('click', applyFilters);
+  });
+  document.getElementById('sort-select').addEventListener('change', renderCards);
+}
+
+function applyFilters() {
+  const audFilter = document.querySelector('.fbtn[data-aud].active')?.dataset.aud || 'all';
+  const priFilter = document.querySelector('.fbtn[data-pri].active')?.dataset.pri || 'all';
+
+  currentData = ORIGINAL_DATA.filter(item => {
+    const audMatch = audFilter === 'all' || item.aud.includes(audFilter);
+    const priMatch = priFilter === 'all' || item.pri === priFilter;
+    return audMatch && priMatch;
+  });
+
+  renderCards();
+  renderTableView();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.fbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const group = this.dataset.aud ? 'aud' : 'pri';
+      document.querySelectorAll(`[data-${group}]`).forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      applyFilters();
+    });
+  });
+});
+
+// ====================== MODAL FUNCTIONS ======================
+function openTimeline() {
+  document.getElementById('timelineModal').style.display = 'block';
+}
+
+function closeTimeline() {
+  document.getElementById('timelineModal').style.display = 'none';
+}
+
+function openNewModal() {
+  document.getElementById('newRecommendationModal').style.display = 'block';
+}
+
+function closeNewModal() {
+  document.getElementById('newRecommendationModal').style.display = 'none';
+}
+
+function saveNewRecommendation() {
+  const title = document.getElementById('newTitle').value;
+  if (!title) return alert('Titel er påkrævet');
+
+  const aud = [];
+  if (document.getElementById('newAudSponsor').checked) aud.push('sponsor');
+  if (document.getElementById('newAudFan').checked) aud.push('fan');
+  if (document.getElementById('newAudFrivillig').checked) aud.push('frivillig');
+
+  const newItem = {
+    id: Math.max(...currentData.map(d => d.id), 0) + 1,
+    num: Math.max(...currentData.map(d => d.num), 0) + 1,
+    title,
+    aud: aud.length ? aud : ['sponsor'],
+    pri: document.getElementById('newPriority').value,
+    impl: document.getElementById('newComplexity').value,
+    cost: document.getElementById('newCost').value || '0 kr.',
+    roi: parseInt(document.getElementById('newROI').value),
+    shortDesc: document.getElementById('newShortDesc').value,
+    detail: document.getElementById('newDetail').value,
+    impact: document.getElementById('newImpact').value
+  };
+
+  currentData.push(newItem);
+  ORIGINAL_DATA.push(JSON.parse(JSON.stringify(newItem)));
+  renderCards();
+  renderTableView();
+  renderDashboard();
+  closeNewModal();
+  document.getElementById('newRecommendationModal').querySelectorAll('input, textarea, select').forEach(el => el.value = '');
+}
+
+window.onclick = function(event) {
+  const modal1 = document.getElementById('timelineModal');
+  const modal2 = document.getElementById('newRecommendationModal');
+  if (event.target === modal1) modal1.style.display = 'none';
+  if (event.target === modal2) modal2.style.display = 'none';
+};
+</script>
+
+</body>
+</html>
