@@ -194,6 +194,11 @@
     margin: 0 2px;
     flex-shrink: 0;
   }
+  .fp-buttons {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
   .fp-btn {
     padding: 5px 12px;
     border-radius: 20px;
@@ -1078,7 +1083,7 @@
       <div class="fp-sep"></div>
       <div class="fp-group">
         <span class="fp-label">Målgruppe</span>
-        <div id="aud-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <div id="aud-filters" class="fp-buttons">
           <button class="fp-btn active" data-aud="all">Alle</button>
           <button class="fp-btn" data-aud="sponsor">Sponsor</button>
           <button class="fp-btn" data-aud="fan">Fan</button>
@@ -1088,7 +1093,7 @@
       <div class="fp-sep"></div>
       <div class="fp-group">
         <span class="fp-label">Status</span>
-        <div id="pri-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <div id="pri-filters" class="fp-buttons">
           <button class="fp-btn active" data-pri="all">Alle</button>
           <button class="fp-btn" data-pri="ongoing">Igangværende</button>
           <button class="fp-btn" data-pri="done">Afsluttet</button>
@@ -1100,7 +1105,7 @@
     <div class="fp-row">
       <div class="fp-group">
         <span class="fp-label">Tidshorisont</span>
-        <div id="horizon-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <div id="horizon-filters" class="fp-buttons">
           <button class="fp-btn active" data-horizon="all">Alle</button>
           <button class="fp-btn" data-horizon="dage">Dage</button>
           <button class="fp-btn" data-horizon="uger">Uger</button>
@@ -1111,7 +1116,7 @@
       <div class="fp-sep"></div>
       <div class="fp-group">
         <span class="fp-label">Vanskelighed</span>
-        <div id="impl-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <div id="impl-filters" class="fp-buttons">
           <button class="fp-btn active" data-impl="all">Alle</button>
           <button class="fp-btn" data-impl="lav"><span class="circle-dot green"></span>Lav</button>
           <button class="fp-btn" data-impl="middel"><span class="circle-dot yellow"></span>Middel</button>
@@ -1121,7 +1126,7 @@
       <div class="fp-sep"></div>
       <div class="fp-group">
         <span class="fp-label">Estimeret effekt</span>
-        <div id="effect-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <div id="effect-filters" class="fp-buttons">
           <button class="fp-btn active" data-effect="all">Alle</button>
           <button class="fp-btn" data-effect="lav"><span class="circle-dot green"></span>Lav</button>
           <button class="fp-btn" data-effect="middel"><span class="circle-dot yellow"></span>Middel</button>
@@ -1131,7 +1136,7 @@
       <div class="fp-sep"></div>
       <div class="fp-group">
         <span class="fp-label">Deadline</span>
-        <div id="deadline-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+        <div id="deadline-filters" class="fp-buttons">
           <button class="fp-btn active" data-deadline="all">Alle</button>
           <button class="fp-btn" data-deadline="has">Har deadline</button>
           <button class="fp-btn" data-deadline="none">Ingen deadline</button>
@@ -1201,11 +1206,11 @@ let nextId = recommendations.length > 0 ? Math.max(...recommendations.map(r => r
 recommendations.forEach(r => {
   if (!r.timeHorizon) {
     if (r.months > 0) {
-      r.timeHorizon = r.months >= 12 ? 'år' : 'måneder';
+      r.timeHorizon = 'måneder';
     } else if (r.weeks > 0) {
-      r.timeHorizon = r.weeks <= 1 ? 'dage' : 'uger';
-    } else {
       r.timeHorizon = 'uger';
+    } else {
+      r.timeHorizon = 'dage';
     }
   }
   if (!r.impl || r.impl === 'low') r.impl = 'lav';
@@ -1390,8 +1395,8 @@ function createCardElement(rec) {
   card.className = `card ${rec.status === 'done' ? 'done' : ''}`;
   card.dataset.id = rec.id;
 
-  const hl = horizonLabel(rec.timeHorizon);
-  const dl = rec.deadline ? `<span class="impl-badge deadline-badge">📅 ${rec.deadline}</span>` : '';
+  const horizonText   = horizonLabel(rec.timeHorizon);
+  const deadlineHtml  = rec.deadline ? `<span class="impl-badge deadline-badge">📅 ${rec.deadline}</span>` : '';
 
   card.innerHTML = `
     <div class="card-header" onclick="toggleExpand(${rec.id})">
@@ -1424,8 +1429,8 @@ function createCardElement(rec) {
         <span class="cost-txt">💰 <span>${rec.cost.toLocaleString('da-DK')} DKK</span></span>
         <span class="impl-badge ${implClass(rec.impl)}"><span class="badge-dot ${implDotClass(rec.impl)}"></span>${implLabel(rec.impl)}</span>
         <span class="impl-badge ${implClass(rec.effect)}" title="Effekt"><span class="badge-dot ${implDotClass(rec.effect)}"></span>${implLabel(rec.effect)} effekt</span>
-        <span class="impl-badge horizon-badge">⏱️ ${hl}</span>
-        ${dl}
+        <span class="impl-badge horizon-badge">⏱️ ${horizonText}</span>
+        ${deadlineHtml}
       </div>
       <div class="card-actions">
         <button class="action-btn edit-btn"  onclick="toggleEditMode(event, ${rec.id})"       title="Rediger">✎</button>
