@@ -7,26 +7,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0D1B3E;
-    --navy-light: #1a2d5a;
-    --gold: #C8A84B;
-    --gold-light: #E8C96A;
-    --gold-pale: #fdf6e3;
+    --accent: #da253c;
+    --accent-pale: #fdeaed;
+    --header-bg: #222;
     --white: #ffffff;
-    --bg: #f0f2f7;
+    --bg: #f5f5f5;
     --card-bg: #ffffff;
-    --text: #0D1B3E;
-    --text-muted: #6b7a99;
-    --border: #e2e7f0;
+    --text: #1a1a1a;
+    --text-muted: #777;
+    --border: #e0e0e0;
+    --gray-light: #f0f0f0;
     --sponsor-bg: #E6F1FB; --sponsor-text: #0C447C;
     --fan-bg: #EAF3DE; --fan-text: #27500A;
     --vol-bg: #FAEEDA; --vol-text: #633806;
     --ongoing-bg: #E6F1FB; --ongoing-text: #185FA5;
     --done-bg: #f0f0f0; --done-text: #888;
-    --low-bg: #EAF3DE; --low-text: #3B6D11;
-    --mid-bg: #FFF3E0; --mid-text: #854F0B;
-    --shadow: 0 2px 12px rgba(13,27,62,0.08);
-    --shadow-hover: 0 8px 32px rgba(13,27,62,0.15);
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
     --radius: 12px;
   }
 
@@ -41,7 +38,7 @@
 
   /* HEADER */
   header {
-    background: var(--navy);
+    background: var(--header-bg);
     padding: 2rem 2rem 1.5rem;
     position: relative;
     overflow: hidden;
@@ -51,7 +48,7 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    background: var(--accent);
   }
   header::after {
     content: 'SKELETON';
@@ -79,7 +76,7 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    color: var(--gold);
+    color: var(--accent);
     letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 0.4rem;
@@ -103,54 +100,172 @@
     gap: 8px;
     align-items: center;
     flex-shrink: 0;
+  }
+  .btn-new {
+    background: var(--accent);
+    border: none;
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-new:hover { background: #c01f33; }
+
+  /* DASHBOARD */
+  .dashboard {
+    max-width: 1200px;
+    margin: 1.5rem auto 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .dash-card {
+    background: rgba(255,255,255,0.07);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .dash-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .dash-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .dash-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 3px;
+  }
+
+  /* FILTER PANEL */
+  .filter-panel {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .filter-panel-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .fp-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  .fp-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     flex-wrap: wrap;
   }
-  .btn-reset {
-    background: rgba(255,255,255,0.08);
-    border: 0.5px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.7);
-    padding: 8px 16px;
-    border-radius: 8px;
+  .fp-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 80px;
+  }
+  .fp-sep {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+    margin: 0 2px;
+    flex-shrink: 0;
+  }
+  .fp-btn {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text-muted);
     cursor: pointer;
     font-size: 12px;
     font-family: 'Barlow', sans-serif;
     font-weight: 500;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .btn-reset:hover { background: rgba(255,255,255,0.15); color: white; }
-
-  /* VIEW TOGGLE BUTTONS */
-  .view-toggle {
-    display: flex;
-    gap: 6px;
+    transition: all 0.18s;
+    display: inline-flex;
     align-items: center;
+    gap: 5px;
   }
-  .view-btn {
-    background: rgba(255,255,255,0.08);
-    border: 0.5px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.7);
-    padding: 8px 16px;
+  .fp-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .fp-btn.active { background: var(--accent); border-color: var(--accent); color: var(--white); font-weight: 700; }
+  .fp-btn.active .circle-dot { border-color: rgba(255,255,255,0.4); }
+
+  /* Small color circles used in filter buttons */
+  .circle-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .circle-dot.green  { background: #27AE60; }
+  .circle-dot.yellow { background: #F1C40F; }
+  .circle-dot.red    { background: var(--accent); }
+
+  .fp-sort-row {
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+  }
+  .sort-select {
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 10px;
     border-radius: 8px;
+    font-size: 12px;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sort-select:focus { border-color: var(--accent); }
+  .sort-select option { background: var(--white); color: var(--text); }
+  .btn-reset-filters {
+    margin-left: auto;
+    background: var(--gray-light);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 5px 14px;
+    border-radius: 20px;
     cursor: pointer;
     font-size: 12px;
     font-family: 'Barlow', sans-serif;
     font-weight: 500;
     transition: all 0.2s;
-    letter-spacing: 0.5px;
   }
-  .view-btn:hover { background: rgba(255,255,255,0.15); color: white; }
-  .view-btn.active { background: var(--gold); color: var(--navy); font-weight: 700; }
+  .btn-reset-filters:hover { background: var(--accent); border-color: var(--accent); color: var(--white); }
 
   /* TIMELINE MODAL */
   .timeline-modal {
     display: none;
     position: fixed;
     z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.5);
     overflow-y: auto;
   }
@@ -185,50 +300,32 @@
     color: var(--text-muted);
   }
   .timeline-close:hover { color: var(--text); }
-  
-  .timeline-track {
-    position: relative;
-    padding: 2rem 0;
-  }
+  .timeline-track { position: relative; padding: 2rem 0; }
   .timeline-line {
     position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
+    left: 50%; top: 0; bottom: 0;
     width: 3px;
     background: var(--border);
     transform: translateX(-50%);
   }
-  .timeline-items {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-  }
-  .timeline-item {
-    position: relative;
-    display: flex;
-    gap: 2rem;
-  }
-  .timeline-item.left { flex-direction: row; }
+  .timeline-items { display: flex; flex-direction: column; gap: 3rem; }
+  .timeline-item { position: relative; display: flex; gap: 2rem; }
+  .timeline-item.left  { flex-direction: row; }
   .timeline-item.right { flex-direction: row-reverse; }
-  
   .timeline-marker {
     position: absolute;
-    left: 50%;
-    top: 0;
-    width: 20px;
-    height: 20px;
-    background: var(--navy);
+    left: 50%; top: 0;
+    width: 20px; height: 20px;
+    background: var(--accent);
     border: 3px solid var(--card-bg);
     border-radius: 50%;
     transform: translateX(-50%);
     z-index: 10;
   }
-  
   .timeline-content-box {
     flex: 1;
     padding: 1.5rem;
-    background: #fafbfd;
+    background: #fafafa;
     border-radius: 8px;
     border: 1px solid var(--border);
   }
@@ -239,17 +336,13 @@
     margin-bottom: 0.5rem;
     color: var(--text);
   }
-  .timeline-content-box p {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
+  .timeline-content-box p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
   .timeline-period {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--accent);
     margin-bottom: 0.5rem;
   }
   .timeline-badge {
@@ -268,20 +361,18 @@
     display: none;
     position: fixed;
     z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.4);
   }
   .modal-content {
     background-color: var(--card-bg);
-    margin: 5% auto;
+    margin: 4% auto;
     padding: 2rem;
     border-radius: var(--radius);
     width: 90%;
-    max-width: 600px;
-    max-height: 80vh;
+    max-width: 640px;
+    max-height: 88vh;
     overflow-y: auto;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
@@ -309,7 +400,7 @@
     transition: color 0.2s;
   }
   .close-btn:hover { color: var(--text); }
-  
+
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -329,72 +420,74 @@
     font-family: 'Barlow', sans-serif;
     font-size: 13px;
     color: var(--text);
-    background: white;
-    border: 0.5px solid var(--border);
+    background: var(--white);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 8px 12px;
     outline: none;
     transition: border-color 0.2s;
   }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
   .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-  
-  .form-checkboxes {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .form-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
-  .form-checkbox input { cursor: pointer; }
+
+  .form-checkboxes { display: flex; gap: 16px; flex-wrap: wrap; }
+  .form-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .form-checkbox input { cursor: pointer; accent-color: var(--accent); }
   .form-checkbox label { cursor: pointer; font-size: 13px; }
 
-  /* TIMEFRAME SELECTOR */
-  .timeframe-section {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-  }
-  .timeframe-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 0.75rem;
-    display: block;
-  }
-  .timeframe-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .timeframe-input-group {
-    display: flex;
-    flex-direction: column;
+  /* CIRCLE SELECTOR (vanskelighed / effekt) */
+  .circle-selector { display: flex; gap: 8px; flex-wrap: wrap; }
+  .circ-btn {
+    display: inline-flex;
+    align-items: center;
     gap: 6px;
-  }
-  .timeframe-input-group label {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
     font-size: 12px;
-    color: var(--text);
-    font-weight: 500;
-  }
-  .timeframe-input-group input {
     font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    background: white;
-    border: 0.5px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    outline: none;
-    transition: border-color 0.2s;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.18s;
   }
-  .timeframe-input-group input:focus { border-color: var(--gold); }
+  .circ-btn .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .circ-btn.green  .dot { background: #27AE60; }
+  .circ-btn.yellow .dot { background: #F1C40F; }
+  .circ-btn.red    .dot { background: var(--accent); }
+  .circ-btn.green.selected  { border-color: #27AE60; background: #f0faf5; color: #1a6b3e; font-weight: 700; }
+  .circ-btn.yellow.selected { border-color: #d4a800; background: #fffbec; color: #7a5f00; font-weight: 700; }
+  .circ-btn.red.selected    { border-color: var(--accent); background: var(--accent-pale); color: var(--accent); font-weight: 700; }
+
+  /* HORIZON SLIDER */
+  .slider-wrap { display: flex; align-items: center; gap: 12px; }
+  .horizon-slider {
+    flex: 1;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .horizon-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 64px;
+    text-transform: uppercase;
+  }
+  .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    padding: 0 2px;
+  }
 
   .modal-actions {
     display: flex;
@@ -413,121 +506,10 @@
     transition: all 0.2s;
     letter-spacing: 0.5px;
   }
-  .btn-save {
-    background: var(--navy);
-    color: var(--gold);
-  }
-  .btn-save:hover { background: var(--navy-light); }
-  .btn-cancel {
-    background: var(--border);
-    color: var(--text);
-  }
-  .btn-cancel:hover { background: var(--text-muted); color: white; }
-
-  /* DASHBOARD */
-  .dashboard {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 1.5rem 2rem 0;
-  }
-  .dash-card {
-    background: rgba(255,255,255,0.07);
-    border: 0.5px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    text-align: center;
-  }
-  .dash-label {
-    font-size: 10px;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .dash-value {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .dash-sub {
-    font-size: 11px;
-    color: rgba(255,255,255,0.35);
-    margin-top: 3px;
-  }
-
-  /* FILTERS */
-  .filter-bar {
-    max-width: 1200px;
-    margin: 1.5rem auto 0;
-    padding: 0 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-  }
-  .filter-group {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .filter-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-right: 2px;
-  }
-  .filter-sep {
-    width: 1px;
-    height: 20px;
-    background: rgba(255,255,255,0.15);
-    margin: 0 6px;
-  }
-  .fbtn {
-    padding: 5px 14px;
-    border-radius: 20px;
-    border: 0.5px solid rgba(255,255,255,0.2);
-    background: transparent;
-    color: rgba(255,255,255,0.55);
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    transition: all 0.18s;
-  }
-  .fbtn:hover { border-color: var(--gold); color: var(--gold); }
-  .fbtn.active { background: var(--gold); border-color: var(--gold); color: var(--navy); font-weight: 700; }
-
-  /* SORT */
-  .sort-bar {
-    max-width: 1200px;
-    margin: 0.75rem auto 0;
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .sort-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
-  .sort-select {
-    background: rgba(255,255,255,0.08);
-    border: 0.5px solid rgba(255,255,255,0.2);
-    color: rgba(255,255,255,0.7);
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-family: 'Barlow', sans-serif;
-    cursor: pointer;
-    outline: none;
-  }
-  .sort-select option { background: var(--navy); color: white; }
+  .btn-save { background: var(--accent); color: var(--white); }
+  .btn-save:hover { background: #c01f33; }
+  .btn-cancel { background: var(--gray-light); color: var(--text); border: 1px solid var(--border); }
+  .btn-cancel:hover { background: var(--border); }
 
   /* MAIN CONTENT */
   .main {
@@ -544,7 +526,7 @@
     color: var(--text-muted);
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 0.5px solid var(--border);
+    border-bottom: 1px solid var(--border);
   }
 
   /* CARDS GRID */
@@ -556,44 +538,34 @@
   @media (max-width: 780px) { .cards-grid { grid-template-columns: 1fr; } }
 
   /* TABLE VIEW */
-  .table-view-container {
-    display: none;
-  }
-  .table-view-container.active {
-    display: block;
-  }
+  .table-view-container { display: none; }
+  .table-view-container.active { display: block; }
   .data-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
+    background: var(--white);
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
   }
-  .data-table thead {
-    background: var(--navy);
-  }
+  .data-table thead { background: var(--header-bg); }
   .data-table th {
-    color: var(--gold);
-    padding: 1rem 1.25rem;
+    color: var(--white);
+    padding: 1rem 1rem;
     text-align: left;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
+  .data-table th:first-child { color: var(--accent); }
   .data-table td {
-    padding: 1rem 1.25rem;
+    padding: 0.85rem 1rem;
     border-bottom: 1px solid var(--border);
     font-size: 13px;
   }
-  .data-table tr:hover {
-    background: #fafbfd;
-  }
-  .data-table tr.done {
-    opacity: 0.6;
-    background: #f5f5f5;
-  }
+  .data-table tr:hover { background: #fafafa; }
+  .data-table tr.done { opacity: 0.6; background: #f5f5f5; }
 
   /* CARD */
   .card {
@@ -605,10 +577,10 @@
     overflow: hidden;
     position: relative;
   }
-  .card:hover { box-shadow: var(--shadow-hover); border-color: var(--gold); }
+  .card:hover { box-shadow: var(--shadow-hover); border-color: var(--accent); }
   .card.done { opacity: 0.65; }
   .card.done .card-title { text-decoration: line-through; color: var(--text-muted); }
-  .card.editing { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,75,0.2); }
+  .card.editing { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(218,37,60,0.15); }
   .card.hidden-card { display: none; }
 
   .card-header {
@@ -623,10 +595,9 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 11px;
     font-weight: 700;
-    background: var(--navy);
-    color: var(--gold);
-    width: 32px;
-    height: 32px;
+    background: var(--header-bg);
+    color: var(--white);
+    width: 32px; height: 32px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -644,12 +615,7 @@
     line-height: 1.2;
     letter-spacing: 0.3px;
   }
-  .card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 6px;
-  }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
   .tag {
     font-size: 10px;
     font-weight: 600;
@@ -659,8 +625,8 @@
     text-transform: uppercase;
   }
   .tag-sponsor { background: var(--sponsor-bg); color: var(--sponsor-text); }
-  .tag-fan { background: var(--fan-bg); color: var(--fan-text); }
-  .tag-vol { background: var(--vol-bg); color: var(--vol-text); }
+  .tag-fan     { background: var(--fan-bg);     color: var(--fan-text); }
+  .tag-vol     { background: var(--vol-bg);     color: var(--vol-text); }
   .card-header-right {
     display: flex;
     flex-direction: column;
@@ -677,7 +643,7 @@
     text-transform: uppercase;
   }
   .pri-ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
-  .pri-done { background: var(--done-bg); color: var(--done-text); }
+  .pri-done    { background: var(--done-bg);    color: var(--done-text); }
   .chevron {
     font-size: 14px;
     color: var(--text-muted);
@@ -699,13 +665,13 @@
   .roi-track {
     flex: 1;
     height: 5px;
-    background: #edf0f7;
+    background: var(--gray-light);
     border-radius: 3px;
     overflow: hidden;
   }
   .roi-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    background: linear-gradient(90deg, var(--accent), #f05070);
     border-radius: 3px;
     transition: width 0.4s ease;
   }
@@ -713,28 +679,50 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: var(--gold);
+    color: var(--accent);
     min-width: 36px;
     text-align: right;
   }
+
+  /* META BADGES */
   .impl-badge {
     font-size: 10px;
     font-weight: 600;
     padding: 2px 8px;
     border-radius: 20px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
-  .impl-low { background: var(--low-bg); color: var(--low-text); }
-  .impl-mid { background: var(--mid-bg); color: var(--mid-text); }
+  .badge-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .badge-dot.green  { background: #27AE60; }
+  .badge-dot.yellow { background: #F1C40F; }
+  .badge-dot.red    { background: var(--accent); }
+  .impl-low      { background: #EAF3DE; color: #3B6D11; }
+  .impl-mid      { background: #FFF3E0; color: #854F0B; }
+  .impl-high     { background: var(--accent-pale); color: var(--accent); }
+  .horizon-badge { background: var(--gray-light); color: var(--text-muted); }
+  .deadline-badge { background: #f0eafd; color: #5e35b1; }
 
   .card-footer-meta {
     padding: 0 1.25rem 0.85rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 8px;
-    cursor: pointer;
+  }
+  .meta-left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
   }
   .cost-txt {
     font-size: 12px;
@@ -742,15 +730,11 @@
     font-weight: 500;
   }
   .cost-txt span { color: var(--text); font-weight: 600; }
-  .card-actions {
-    display: flex;
-    gap: 6px;
-  }
+  .card-actions { display: flex; gap: 6px; flex-shrink: 0; }
   .action-btn {
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     border-radius: 8px;
-    border: 0.5px solid var(--border);
+    border: 1px solid var(--border);
     background: transparent;
     cursor: pointer;
     display: flex;
@@ -760,17 +744,17 @@
     transition: all 0.15s;
     color: var(--text-muted);
   }
-  .action-btn:hover { background: var(--bg); border-color: var(--gold); color: var(--gold); }
-  .action-btn.done-btn:hover { background: #EAF3DE; border-color: #27500A; color: #27500A; }
-  .action-btn.edit-btn:hover { background: #E6F1FB; border-color: #0C447C; color: #0C447C; }
+  .action-btn:hover       { background: var(--bg); border-color: var(--accent); color: var(--accent); }
+  .action-btn.done-btn:hover  { background: #EAF3DE; border-color: #27500A; color: #27500A; }
+  .action-btn.edit-btn:hover  { background: #E6F1FB; border-color: #0C447C; color: #0C447C; }
   .action-btn.reset-btn:hover { background: var(--ongoing-bg); border-color: var(--ongoing-text); color: var(--ongoing-text); }
 
   /* EXPANDED BODY */
   .card-body {
     display: none;
     padding: 0 1.25rem 1.25rem;
-    border-top: 0.5px solid var(--border);
-    background: #fafbfd;
+    border-top: 1px solid var(--border);
+    background: #fafafa;
   }
   .card.expanded .card-body { display: block; }
 
@@ -779,7 +763,7 @@
     color: var(--text-muted);
     padding: 1rem 0 0.75rem;
     font-style: italic;
-    border-bottom: 0.5px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
     margin-bottom: 0.75rem;
   }
   .card-body .detail-text {
@@ -789,12 +773,12 @@
     margin-bottom: 1rem;
   }
   .card-body .impact-block {
-    background: var(--gold-pale);
-    border-left: 3px solid var(--gold);
+    background: var(--accent-pale);
+    border-left: 3px solid var(--accent);
     border-radius: 0 8px 8px 0;
     padding: 0.75rem 1rem;
     font-size: 12.5px;
-    color: var(--navy);
+    color: var(--text);
     line-height: 1.6;
   }
   .impact-label {
@@ -802,7 +786,7 @@
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--accent);
     margin-bottom: 4px;
   }
 
@@ -811,7 +795,7 @@
     display: none;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 0.5px dashed var(--gold);
+    border-top: 1px dashed var(--border);
   }
   .card.edit-mode .card-body .edit-section { display: block; }
   .card.edit-mode .card-body .view-section { display: none; }
@@ -834,21 +818,21 @@
     font-family: 'Barlow', sans-serif;
     font-size: 13px;
     color: var(--text);
-    background: white;
-    border: 0.5px solid var(--border);
+    background: var(--white);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 7px 10px;
     outline: none;
     transition: border-color 0.15s;
     width: 100%;
   }
-  .edit-input:focus, .edit-select:focus, .edit-textarea:focus { border-color: var(--gold); }
+  .edit-input:focus, .edit-select:focus, .edit-textarea:focus { border-color: var(--accent); }
   .edit-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
   .edit-full { grid-column: 1 / -1; }
   .roi-slider-wrap { display: flex; align-items: center; gap: 10px; }
   .roi-slider {
     flex: 1;
-    accent-color: var(--gold);
+    accent-color: var(--accent);
     height: 4px;
     cursor: pointer;
   }
@@ -856,13 +840,13 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 16px;
     font-weight: 700;
-    color: var(--gold);
+    color: var(--accent);
     min-width: 36px;
   }
   .edit-save-btn {
     margin-top: 8px;
-    background: var(--navy);
-    color: var(--gold);
+    background: var(--accent);
+    color: var(--white);
     border: none;
     padding: 8px 20px;
     border-radius: 8px;
@@ -873,24 +857,7 @@
     letter-spacing: 0.5px;
     transition: background 0.15s;
   }
-  .edit-save-btn:hover { background: var(--navy-light); }
-
-  /* DONE SECTION */
-  .done-section { margin-top: 2.5rem; }
-  .done-section .section-title { color: #aaa; }
-  .done-section .cards-grid { opacity: 0.7; }
-
-  /* LEGEND / FOOTER */
-  footer {
-    background: var(--navy);
-    color: rgba(255,255,255,0.45);
-    font-size: 11px;
-    padding: 1.5rem 2rem;
-    text-align: center;
-    line-height: 2;
-    margin-top: 2rem;
-  }
-  footer strong { color: rgba(255,255,255,0.7); }
+  .edit-save-btn:hover { background: #c01f33; }
 
   /* EMPTY STATE */
   .empty-state {
@@ -907,20 +874,33 @@
   .card-body { animation: slideDown 0.2s ease; }
   @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
+  /* FOOTER */
+  footer {
+    background: var(--header-bg);
+    color: rgba(255,255,255,0.45);
+    font-size: 11px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    line-height: 2;
+    margin-top: 2rem;
+  }
+  footer strong { color: rgba(255,255,255,0.7); }
+
   @media (max-width: 768px) {
     .timeline-line { left: 20px; }
     .timeline-marker { left: 20px; }
-    .timeline-item { flex-direction: column !important; }
-    .timeline-item { margin-left: 50px; }
+    .timeline-item { flex-direction: column !important; margin-left: 50px; }
+    .fp-label { min-width: 60px; }
+    .fp-sep { display: none; }
   }
-
   @media (max-width: 600px) {
     .dashboard { grid-template-columns: repeat(2, 1fr); }
-    header, .filter-bar, .sort-bar, .main { padding-left: 1rem; padding-right: 1rem; }
+    header, .filter-panel-inner, .main { padding-left: 1rem; padding-right: 1rem; }
     .header-main { font-size: 26px; }
     .edit-grid { grid-template-columns: 1fr; }
     .form-grid { grid-template-columns: 1fr; }
-    .modal-content { width: 95%; margin: 20% auto; }
+    .modal-content { width: 95%; margin: 8% auto; }
+    .fp-row { gap: 0.6rem; }
   }
 </style>
 </head>
@@ -934,12 +914,7 @@
       <div class="header-sub">Sponsor-tiltrækning · Fan engagement · Frivilligrekruttering</div>
     </div>
     <div class="header-actions">
-      <button class="btn-reset" onclick="openTimeline()">📅 Tidslinje</button>
-      <button class="btn-reset" onclick="openNewModal()">+ Ny anbefaling</button>
-      <div class="view-toggle">
-        <button class="view-btn active" id="cardViewBtn" onclick="switchToCardView()">🃏 Kort</button>
-        <button class="view-btn" id="tableViewBtn" onclick="switchToTableView()">📊 Tabel</button>
-      </div>
+      <button class="btn-new" onclick="openNewModal()">+ Ny anbefaling</button>
     </div>
   </div>
 
@@ -966,33 +941,7 @@
     </div>
   </div>
 
-  <div class="filter-bar">
-    <span class="filter-label">Målgruppe</span>
-    <div class="filter-group" id="aud-filters">
-      <button class="fbtn active" data-aud="all">Alle</button>
-      <button class="fbtn" data-aud="sponsor">Sponsor</button>
-      <button class="fbtn" data-aud="fan">Fan</button>
-      <button class="fbtn" data-aud="frivillig">Frivillig</button>
-    </div>
-    <div class="filter-sep"></div>
-    <span class="filter-label">Status</span>
-    <div class="filter-group" id="pri-filters">
-      <button class="fbtn active" data-pri="all">Alle</button>
-      <button class="fbtn" data-pri="ongoing">Igangværende</button>
-      <button class="fbtn" data-pri="done">Afsluttet</button>
-    </div>
-  </div>
-
-  <div class="sort-bar">
-    <span class="sort-label">Sortér</span>
-    <select class="sort-select" id="sort-select" onchange="renderCards()">
-      <option value="default">Standard (#)</option>
-      <option value="roi">ROI-indeks (høj → lav)</option>
-      <option value="cost">Estimeret pris (lav → høj)</option>
-      <option value="weeks">Uger (få → mange)</option>
-    </select>
-  </div>
-
+  <!-- TIMELINE MODAL -->
   <div id="timelineModal" class="timeline-modal">
     <div class="timeline-content">
       <div class="timeline-header">
@@ -1006,6 +955,7 @@
     </div>
   </div>
 
+  <!-- NEW RECOMMENDATION MODAL -->
   <div id="newRecommendationModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -1055,28 +1005,54 @@
           <input class="form-input" id="newCost" placeholder="5000" type="number" min="0">
         </div>
         <div class="form-field">
-          <label class="form-label">Implementeringsvanskelighed</label>
-          <select class="form-select" id="newImpl">
-            <option value="low">Lavt</option>
-            <option value="mid">Middel</option>
-          </select>
+          <label class="form-label">Deadline</label>
+          <input class="form-input" id="newDeadline" type="date">
         </div>
 
-        <!-- TIMEFRAME SECTION -->
+        <!-- Tidshorisont slider -->
         <div class="form-field full">
-          <div class="timeframe-section">
-            <label class="timeframe-label">⏱️ Tidshorisont</label>
-            <div class="timeframe-inputs">
-              <div class="timeframe-input-group">
-                <label for="newWeeks">Uger</label>
-                <input type="number" id="newWeeks" placeholder="f.eks. 4" min="0">
-              </div>
-              <div class="timeframe-input-group">
-                <label for="newMonths">Måneder</label>
-                <input type="number" id="newMonths" placeholder="f.eks. 2" min="0">
-              </div>
-            </div>
+          <label class="form-label">Tidshorisont for implementering</label>
+          <div class="slider-wrap">
+            <input type="range" class="horizon-slider" id="newTimeHorizon" min="0" max="3" step="1" value="1">
+            <span class="horizon-label" id="newTimeHorizonLabel">Uger</span>
           </div>
+          <div class="slider-ticks">
+            <span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span>
+          </div>
+        </div>
+
+        <!-- Vanskelighed circles -->
+        <div class="form-field">
+          <label class="form-label">Vanskelighed</label>
+          <div class="circle-selector" id="newImplCircles">
+            <button type="button" class="circ-btn green selected" data-val="lav">
+              <span class="dot"></span>Lav
+            </button>
+            <button type="button" class="circ-btn yellow" data-val="middel">
+              <span class="dot"></span>Middel
+            </button>
+            <button type="button" class="circ-btn red" data-val="høj">
+              <span class="dot"></span>Høj
+            </button>
+          </div>
+          <input type="hidden" id="newImpl" value="lav">
+        </div>
+
+        <!-- Estimeret effekt circles -->
+        <div class="form-field">
+          <label class="form-label">Estimeret effekt</label>
+          <div class="circle-selector" id="newEffectCircles">
+            <button type="button" class="circ-btn green selected" data-val="lav">
+              <span class="dot"></span>Lav
+            </button>
+            <button type="button" class="circ-btn yellow" data-val="middel">
+              <span class="dot"></span>Middel
+            </button>
+            <button type="button" class="circ-btn red" data-val="høj">
+              <span class="dot"></span>Høj
+            </button>
+          </div>
+          <input type="hidden" id="newEffect" value="lav">
         </div>
       </div>
       <div class="modal-actions">
@@ -1086,6 +1062,97 @@
     </div>
   </div>
 </header>
+
+<!-- FILTER PANEL -->
+<div class="filter-panel">
+  <div class="filter-panel-inner">
+
+    <!-- Row 1: View + Målgruppe + Status -->
+    <div class="fp-row">
+      <div class="fp-group">
+        <span class="fp-label">Vis</span>
+        <button class="fp-btn" id="viewTimelineBtn" onclick="openTimeline()">📅 Tidslinje</button>
+        <button class="fp-btn active" id="viewCardBtn" onclick="switchToCardView()">🃏 Kort</button>
+        <button class="fp-btn" id="viewTableBtn" onclick="switchToTableView()">📊 Tabel</button>
+      </div>
+      <div class="fp-sep"></div>
+      <div class="fp-group">
+        <span class="fp-label">Målgruppe</span>
+        <div id="aud-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="fp-btn active" data-aud="all">Alle</button>
+          <button class="fp-btn" data-aud="sponsor">Sponsor</button>
+          <button class="fp-btn" data-aud="fan">Fan</button>
+          <button class="fp-btn" data-aud="frivillig">Frivillig</button>
+        </div>
+      </div>
+      <div class="fp-sep"></div>
+      <div class="fp-group">
+        <span class="fp-label">Status</span>
+        <div id="pri-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="fp-btn active" data-pri="all">Alle</button>
+          <button class="fp-btn" data-pri="ongoing">Igangværende</button>
+          <button class="fp-btn" data-pri="done">Afsluttet</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Tidshorisont + Vanskelighed + Effekt + Deadline -->
+    <div class="fp-row">
+      <div class="fp-group">
+        <span class="fp-label">Tidshorisont</span>
+        <div id="horizon-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="fp-btn active" data-horizon="all">Alle</button>
+          <button class="fp-btn" data-horizon="dage">Dage</button>
+          <button class="fp-btn" data-horizon="uger">Uger</button>
+          <button class="fp-btn" data-horizon="måneder">Måneder</button>
+          <button class="fp-btn" data-horizon="år">År</button>
+        </div>
+      </div>
+      <div class="fp-sep"></div>
+      <div class="fp-group">
+        <span class="fp-label">Vanskelighed</span>
+        <div id="impl-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="fp-btn active" data-impl="all">Alle</button>
+          <button class="fp-btn" data-impl="lav"><span class="circle-dot green"></span>Lav</button>
+          <button class="fp-btn" data-impl="middel"><span class="circle-dot yellow"></span>Middel</button>
+          <button class="fp-btn" data-impl="høj"><span class="circle-dot red"></span>Høj</button>
+        </div>
+      </div>
+      <div class="fp-sep"></div>
+      <div class="fp-group">
+        <span class="fp-label">Estimeret effekt</span>
+        <div id="effect-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="fp-btn active" data-effect="all">Alle</button>
+          <button class="fp-btn" data-effect="lav"><span class="circle-dot green"></span>Lav</button>
+          <button class="fp-btn" data-effect="middel"><span class="circle-dot yellow"></span>Middel</button>
+          <button class="fp-btn" data-effect="høj"><span class="circle-dot red"></span>Høj</button>
+        </div>
+      </div>
+      <div class="fp-sep"></div>
+      <div class="fp-group">
+        <span class="fp-label">Deadline</span>
+        <div id="deadline-filters" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="fp-btn active" data-deadline="all">Alle</button>
+          <button class="fp-btn" data-deadline="has">Har deadline</button>
+          <button class="fp-btn" data-deadline="none">Ingen deadline</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Sort + Reset -->
+    <div class="fp-row fp-sort-row">
+      <span class="fp-label">Sortér</span>
+      <select class="sort-select" id="sort-select" onchange="renderCards()">
+        <option value="default">Standard (#)</option>
+        <option value="roi">ROI-indeks (høj → lav)</option>
+        <option value="cost">Estimeret pris (lav → høj)</option>
+        <option value="horizon">Tidshorisont (kort → lang)</option>
+        <option value="deadline">Deadline (tidligst → senest)</option>
+      </select>
+      <button class="btn-reset-filters" onclick="resetFilters()">↺ Nulstil filtre</button>
+    </div>
+  </div>
+</div>
 
 <div class="main">
   <div class="cards-view-container" id="cardsViewContainer">
@@ -1102,7 +1169,10 @@
           <th>Status</th>
           <th>ROI</th>
           <th>Pris</th>
-          <th>Uger</th>
+          <th>Tidshorisont</th>
+          <th>Vanskelighed</th>
+          <th>Effekt</th>
+          <th>Deadline</th>
           <th>Handlinger</th>
         </tr>
       </thead>
@@ -1116,78 +1186,113 @@
 </footer>
 
 <script>
-// ===== DATA STRUCTURE & STORAGE =====
+// ===== CONSTANTS =====
+const HORIZON_LABELS = ['Dage', 'Uger', 'Måneder', 'År'];
+const HORIZON_VALUES = ['dage', 'uger', 'måneder', 'år'];
+const HORIZON_ORDER  = { dage: 0, uger: 1, måneder: 2, år: 3 };
+
+// ===== DATA & STATE =====
 let recommendations = JSON.parse(localStorage.getItem('recommendations')) || [];
-let currentFilters = { audience: 'all', priority: 'all' };
+let currentFilters = { audience: 'all', priority: 'all', horizon: 'all', impl: 'all', effect: 'all', deadline: 'all' };
 let currentSort = 'default';
 let nextId = recommendations.length > 0 ? Math.max(...recommendations.map(r => r.id)) + 1 : 1;
 
-// ===== MODAL FUNCTIONS =====
+// Migrate old data format (weeks/months → timeHorizon, low/mid → lav/middel)
+recommendations.forEach(r => {
+  if (!r.timeHorizon) {
+    if (r.months > 0) {
+      r.timeHorizon = r.months >= 12 ? 'år' : 'måneder';
+    } else if (r.weeks > 0) {
+      r.timeHorizon = r.weeks <= 1 ? 'dage' : 'uger';
+    } else {
+      r.timeHorizon = 'uger';
+    }
+  }
+  if (!r.impl || r.impl === 'low') r.impl = 'lav';
+  if (r.impl === 'mid') r.impl = 'middel';
+  if (!r.effect) r.effect = 'lav';
+  if (r.deadline === undefined) r.deadline = '';
+});
+
+// ===== HELPERS =====
+function implClass(v) {
+  if (v === 'lav') return 'impl-low';
+  if (v === 'middel') return 'impl-mid';
+  if (v === 'høj') return 'impl-high';
+  return 'impl-low';
+}
+function implDotClass(v) {
+  if (v === 'lav') return 'green';
+  if (v === 'middel') return 'yellow';
+  if (v === 'høj') return 'red';
+  return 'green';
+}
+function implLabel(v) {
+  if (v === 'lav') return 'Lav';
+  if (v === 'middel') return 'Middel';
+  if (v === 'høj') return 'Høj';
+  return 'Lav';
+}
+function horizonLabel(v) {
+  if (!v) return 'Uger';
+  return v.charAt(0).toUpperCase() + v.slice(1);
+}
+
+// ===== MODAL =====
 function openNewModal() {
   document.getElementById('newRecommendationModal').style.display = 'block';
   clearNewForm();
 }
-
 function closeNewModal() {
   document.getElementById('newRecommendationModal').style.display = 'none';
 }
-
 function clearNewForm() {
-  document.getElementById('newTitle').value = '';
-  document.getElementById('newShortDesc').value = '';
-  document.getElementById('newDetails').value = '';
-  document.getElementById('newImpact').value = '';
-  document.getElementById('newROI').value = '7';
-  document.getElementById('newCost').value = '';
-  document.getElementById('newImpl').value = 'low';
-  document.getElementById('newWeeks').value = '';
-  document.getElementById('newMonths').value = '';
+  document.getElementById('newTitle').value      = '';
+  document.getElementById('newShortDesc').value  = '';
+  document.getElementById('newDetails').value    = '';
+  document.getElementById('newImpact').value     = '';
+  document.getElementById('newROI').value        = '7';
+  document.getElementById('newCost').value       = '';
+  document.getElementById('newDeadline').value   = '';
+  document.getElementById('newTimeHorizon').value = '1';
+  document.getElementById('newTimeHorizonLabel').textContent = 'Uger';
+  document.getElementById('newImpl').value   = 'lav';
+  document.getElementById('newEffect').value = 'lav';
+  document.querySelectorAll('#newImplCircles .circ-btn').forEach((btn, i) => btn.classList.toggle('selected', i === 0));
+  document.querySelectorAll('#newEffectCircles .circ-btn').forEach((btn, i) => btn.classList.toggle('selected', i === 0));
   document.querySelectorAll('.form-checkbox input').forEach(cb => cb.checked = false);
 }
 
 function saveNewRecommendation() {
-  const title = document.getElementById('newTitle').value.trim();
-  const shortDesc = document.getElementById('newShortDesc').value.trim();
-  const details = document.getElementById('newDetails').value.trim();
-  const impact = document.getElementById('newImpact').value.trim();
-  const roi = parseInt(document.getElementById('newROI').value) || 0;
-  const cost = parseInt(document.getElementById('newCost').value) || 0;
-  const impl = document.getElementById('newImpl').value;
-  const weeks = parseInt(document.getElementById('newWeeks').value) || 0;
-  const months = parseInt(document.getElementById('newMonths').value) || 0;
+  const title      = document.getElementById('newTitle').value.trim();
+  const shortDesc  = document.getElementById('newShortDesc').value.trim();
+  const details    = document.getElementById('newDetails').value.trim();
+  const impact     = document.getElementById('newImpact').value.trim();
+  const roi        = parseInt(document.getElementById('newROI').value) || 0;
+  const cost       = parseInt(document.getElementById('newCost').value) || 0;
+  const impl       = document.getElementById('newImpl').value;
+  const effect     = document.getElementById('newEffect').value;
+  const deadline   = document.getElementById('newDeadline').value;
+  const horizonIdx = parseInt(document.getElementById('newTimeHorizon').value);
+  const timeHorizon = HORIZON_VALUES[horizonIdx];
 
-  if (!title) {
-    alert('Tilføj en titel!');
-    return;
-  }
-
-  if (weeks === 0 && months === 0) {
-    alert('Angiv mindst uger eller måneder for tidshorisont!');
-    return;
-  }
+  if (!title) { alert('Tilføj en titel!'); return; }
 
   const audiences = [];
-  if (document.getElementById('newAudSponsor').checked) audiences.push('sponsor');
-  if (document.getElementById('newAudFan').checked) audiences.push('fan');
+  if (document.getElementById('newAudSponsor').checked)   audiences.push('sponsor');
+  if (document.getElementById('newAudFan').checked)       audiences.push('fan');
   if (document.getElementById('newAudFrivillig').checked) audiences.push('frivillig');
 
-  const newRec = {
+  recommendations.push({
     id: nextId++,
-    title,
-    shortDesc,
-    details,
-    impact,
+    title, shortDesc, details, impact,
     roi: Math.min(10, Math.max(0, roi)),
-    cost,
-    impl,
+    cost, impl, effect, deadline, timeHorizon,
     audiences: audiences.length > 0 ? audiences : ['all'],
     status: 'ongoing',
-    weeks,
-    months,
     createdAt: new Date().toISOString()
-  };
+  });
 
-  recommendations.push(newRec);
   saveData();
   renderCards();
   closeNewModal();
@@ -1197,89 +1302,85 @@ function saveData() {
   localStorage.setItem('recommendations', JSON.stringify(recommendations));
 }
 
-// ===== FILTERING & SORTING =====
+// ===== FILTERING =====
 function applyFilters() {
-  const audFilters = document.querySelectorAll('#aud-filters .fbtn');
-  const priFilters = document.querySelectorAll('#pri-filters .fbtn');
-
-  audFilters.forEach(btn => {
-    btn.addEventListener('click', function() {
-      audFilters.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      currentFilters.audience = this.dataset.aud;
-      renderCards();
+  function bindGroup(selector, filterKey, dataAttr) {
+    document.querySelectorAll(selector + ' .fp-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll(selector + ' .fp-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentFilters[filterKey] = this.dataset[dataAttr];
+        renderCards();
+      });
     });
-  });
+  }
+  bindGroup('#aud-filters',      'audience', 'aud');
+  bindGroup('#pri-filters',      'priority', 'pri');
+  bindGroup('#horizon-filters',  'horizon',  'horizon');
+  bindGroup('#impl-filters',     'impl',     'impl');
+  bindGroup('#effect-filters',   'effect',   'effect');
+  bindGroup('#deadline-filters', 'deadline', 'deadline');
+}
 
-  priFilters.forEach(btn => {
-    btn.addEventListener('click', function() {
-      priFilters.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      currentFilters.priority = this.dataset.pri;
-      renderCards();
-    });
+function resetFilters() {
+  currentFilters = { audience: 'all', priority: 'all', horizon: 'all', impl: 'all', effect: 'all', deadline: 'all' };
+  [['#aud-filters','aud'],['#pri-filters','pri'],['#horizon-filters','horizon'],
+   ['#impl-filters','impl'],['#effect-filters','effect'],['#deadline-filters','deadline']
+  ].forEach(([sel, attr]) => {
+    document.querySelectorAll(sel + ' .fp-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset[attr] === 'all'));
   });
+  document.getElementById('sort-select').value = 'default';
+  currentSort = 'default';
+  renderCards();
 }
 
 function getFilteredRecommendations() {
-  let filtered = recommendations;
-
-  // Audience filter
-  if (currentFilters.audience !== 'all') {
-    filtered = filtered.filter(r => r.audiences.includes(currentFilters.audience) || r.audiences.includes('all'));
-  }
-
-  // Priority filter (status)
-  if (currentFilters.priority !== 'all') {
-    filtered = filtered.filter(r => r.status === currentFilters.priority);
-  }
-
-  return filtered;
+  let f = recommendations;
+  const cf = currentFilters;
+  if (cf.audience !== 'all') f = f.filter(r => r.audiences.includes(cf.audience) || r.audiences.includes('all'));
+  if (cf.priority !== 'all') f = f.filter(r => r.status === cf.priority);
+  if (cf.horizon  !== 'all') f = f.filter(r => r.timeHorizon === cf.horizon);
+  if (cf.impl     !== 'all') f = f.filter(r => r.impl === cf.impl);
+  if (cf.effect   !== 'all') f = f.filter(r => r.effect === cf.effect);
+  if (cf.deadline === 'has')  f = f.filter(r => r.deadline && r.deadline !== '');
+  if (cf.deadline === 'none') f = f.filter(r => !r.deadline || r.deadline === '');
+  return f;
 }
 
 function getSortedRecommendations(recs) {
+  const sel = document.getElementById('sort-select');
+  if (sel) currentSort = sel.value;
   const sorted = [...recs];
-
-  switch(currentSort) {
-    case 'roi':
-      sorted.sort((a, b) => b.roi - a.roi);
-      break;
-    case 'cost':
-      sorted.sort((a, b) => a.cost - b.cost);
-      break;
-    case 'weeks':
-      sorted.sort((a, b) => {
-        const weekA = a.weeks + (a.months * 4.33);
-        const weekB = b.weeks + (b.months * 4.33);
-        return weekA - weekB;
-      });
-      break;
-    default:
-      sorted.sort((a, b) => a.id - b.id);
+  switch (currentSort) {
+    case 'roi':      sorted.sort((a, b) => b.roi - a.roi); break;
+    case 'cost':     sorted.sort((a, b) => a.cost - b.cost); break;
+    case 'horizon':  sorted.sort((a, b) => (HORIZON_ORDER[a.timeHorizon] || 0) - (HORIZON_ORDER[b.timeHorizon] || 0)); break;
+    case 'deadline': sorted.sort((a, b) => {
+      if (!a.deadline && !b.deadline) return 0;
+      if (!a.deadline) return 1;
+      if (!b.deadline) return -1;
+      return new Date(a.deadline) - new Date(b.deadline);
+    }); break;
+    default: sorted.sort((a, b) => a.id - b.id);
   }
-
   return sorted;
 }
 
 // ===== CARD RENDERING =====
 function renderCards() {
   const filtered = getFilteredRecommendations();
-  const sorted = getSortedRecommendations(filtered);
-
-  const cardsGrid = document.getElementById('cardsGrid');
-  cardsGrid.innerHTML = '';
+  const sorted   = getSortedRecommendations(filtered);
+  const grid     = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
 
   if (sorted.length === 0) {
-    cardsGrid.innerHTML = '<div class="empty-state">Ingen anbefalinger matcher dine filtre.</div>';
+    grid.innerHTML = '<div class="empty-state">Ingen anbefalinger matcher dine filtre.</div>';
     updateDashboard([]);
+    updateTable([]);
     return;
   }
-
-  sorted.forEach(rec => {
-    const card = createCardElement(rec);
-    cardsGrid.appendChild(card);
-  });
-
+  sorted.forEach(rec => grid.appendChild(createCardElement(rec)));
   updateDashboard(sorted);
   updateTable(sorted);
 }
@@ -1289,12 +1390,8 @@ function createCardElement(rec) {
   card.className = `card ${rec.status === 'done' ? 'done' : ''}`;
   card.dataset.id = rec.id;
 
-  const totalWeeks = rec.weeks + (rec.months * 4.33);
-  const timeframeText = rec.months > 0 && rec.weeks > 0 
-    ? `${rec.months}m ${rec.weeks}u`
-    : rec.months > 0 
-    ? `${rec.months} måned${rec.months !== 1 ? 'er' : ''}`
-    : `${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`;
+  const hl = horizonLabel(rec.timeHorizon);
+  const dl = rec.deadline ? `<span class="impl-badge deadline-badge">📅 ${rec.deadline}</span>` : '';
 
   card.innerHTML = `
     <div class="card-header" onclick="toggleExpand(${rec.id})">
@@ -1304,9 +1401,9 @@ function createCardElement(rec) {
         <div class="card-tags">
           ${rec.audiences.map(aud => {
             if (aud === 'all') return '';
-            const tagClass = aud === 'sponsor' ? 'tag-sponsor' : aud === 'fan' ? 'tag-fan' : 'tag-vol';
+            const cls   = aud === 'sponsor' ? 'tag-sponsor' : aud === 'fan' ? 'tag-fan' : 'tag-vol';
             const label = aud === 'sponsor' ? 'Sponsor' : aud === 'fan' ? 'Fan' : 'Frivillig';
-            return `<span class="tag ${tagClass}">${label}</span>`;
+            return `<span class="tag ${cls}">${label}</span>`;
           }).join('')}
         </div>
       </div>
@@ -1316,53 +1413,53 @@ function createCardElement(rec) {
       </div>
     </div>
 
-    <div class="card-roi">
+    <div class="card-roi" onclick="toggleExpand(${rec.id})">
       <span class="roi-label-txt">ROI</span>
-      <div class="roi-track">
-        <div class="roi-fill" style="width: ${rec.roi * 10}%"></div>
-      </div>
+      <div class="roi-track"><div class="roi-fill" style="width:${rec.roi * 10}%"></div></div>
       <span class="roi-score">${rec.roi}</span>
     </div>
 
     <div class="card-footer-meta">
-      <div>
+      <div class="meta-left">
         <span class="cost-txt">💰 <span>${rec.cost.toLocaleString('da-DK')} DKK</span></span>
-        <span class="impl-badge impl-${rec.impl}" style="margin-left: 0.5rem;">${rec.impl === 'low' ? 'Lavt' : 'Middel'}</span>
-        <span class="impl-badge ongoing" style="margin-left: 0.5rem;">⏱️ ${timeframeText}</span>
+        <span class="impl-badge ${implClass(rec.impl)}"><span class="badge-dot ${implDotClass(rec.impl)}"></span>${implLabel(rec.impl)}</span>
+        <span class="impl-badge ${implClass(rec.effect)}" title="Effekt"><span class="badge-dot ${implDotClass(rec.effect)}"></span>${implLabel(rec.effect)} effekt</span>
+        <span class="impl-badge horizon-badge">⏱️ ${hl}</span>
+        ${dl}
       </div>
       <div class="card-actions">
-        <button class="action-btn edit-btn" onclick="toggleEditMode(event, ${rec.id})" title="Rediger">✎</button>
-        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})" title="Skift status">🔄</button>
-        <button class="action-btn done-btn" onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
+        <button class="action-btn edit-btn"  onclick="toggleEditMode(event, ${rec.id})"       title="Rediger">✎</button>
+        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})"          title="Skift status">🔄</button>
+        <button class="action-btn done-btn"  onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
       </div>
     </div>
 
     <div class="card-body">
-      <div class="short-desc">${rec.shortDesc}</div>
+      <div class="short-desc">${rec.shortDesc || ''}</div>
       <div class="view-section">
-        <div class="detail-text">${rec.details}</div>
+        <div class="detail-text">${rec.details || ''}</div>
         <div class="impact-block">
           <div class="impact-label">💡 Påvirkning</div>
-          ${rec.impact}
+          ${rec.impact || ''}
         </div>
       </div>
       <div class="edit-section">
         <div class="edit-grid">
-          <div class="edit-field full">
+          <div class="edit-field edit-full">
             <label class="edit-label">Titel</label>
             <input class="edit-input" value="${rec.title}" data-field="title">
           </div>
-          <div class="edit-field full">
+          <div class="edit-field edit-full">
             <label class="edit-label">Kort beskrivelse</label>
-            <input class="edit-input" value="${rec.shortDesc}" data-field="shortDesc">
+            <input class="edit-input" value="${rec.shortDesc || ''}" data-field="shortDesc">
           </div>
-          <div class="edit-field full">
+          <div class="edit-field edit-full">
             <label class="edit-label">Detaljer</label>
-            <textarea class="edit-textarea" data-field="details">${rec.details}</textarea>
+            <textarea class="edit-textarea" data-field="details">${rec.details || ''}</textarea>
           </div>
-          <div class="edit-field full">
+          <div class="edit-field edit-full">
             <label class="edit-label">Påvirkning</label>
-            <input class="edit-input" value="${rec.impact}" data-field="impact">
+            <input class="edit-input" value="${rec.impact || ''}" data-field="impact">
           </div>
           <div class="edit-field">
             <label class="edit-label">ROI (0-10)</label>
@@ -1376,19 +1473,33 @@ function createCardElement(rec) {
             <input class="edit-input" type="number" value="${rec.cost}" data-field="cost">
           </div>
           <div class="edit-field">
-            <label class="edit-label">Vanskelighed</label>
-            <select class="edit-select" data-field="impl">
-              <option value="low" ${rec.impl === 'low' ? 'selected' : ''}>Lavt</option>
-              <option value="mid" ${rec.impl === 'mid' ? 'selected' : ''}>Middel</option>
+            <label class="edit-label">Deadline</label>
+            <input class="edit-input" type="date" value="${rec.deadline || ''}" data-field="deadline">
+          </div>
+          <div class="edit-field">
+            <label class="edit-label">Tidshorisont</label>
+            <select class="edit-select" data-field="timeHorizon">
+              <option value="dage"    ${rec.timeHorizon === 'dage'    ? 'selected' : ''}>Dage</option>
+              <option value="uger"    ${rec.timeHorizon === 'uger'    ? 'selected' : ''}>Uger</option>
+              <option value="måneder" ${rec.timeHorizon === 'måneder' ? 'selected' : ''}>Måneder</option>
+              <option value="år"      ${rec.timeHorizon === 'år'      ? 'selected' : ''}>År</option>
             </select>
           </div>
           <div class="edit-field">
-            <label class="edit-label">Uger</label>
-            <input class="edit-input" type="number" value="${rec.weeks}" data-field="weeks">
+            <label class="edit-label">Vanskelighed</label>
+            <select class="edit-select" data-field="impl">
+              <option value="lav"    ${rec.impl === 'lav'    ? 'selected' : ''}>Lav</option>
+              <option value="middel" ${rec.impl === 'middel' ? 'selected' : ''}>Middel</option>
+              <option value="høj"    ${rec.impl === 'høj'    ? 'selected' : ''}>Høj</option>
+            </select>
           </div>
           <div class="edit-field">
-            <label class="edit-label">Måneder</label>
-            <input class="edit-input" type="number" value="${rec.months}" data-field="months">
+            <label class="edit-label">Estimeret effekt</label>
+            <select class="edit-select" data-field="effect">
+              <option value="lav"    ${rec.effect === 'lav'    ? 'selected' : ''}>Lav</option>
+              <option value="middel" ${rec.effect === 'middel' ? 'selected' : ''}>Middel</option>
+              <option value="høj"    ${rec.effect === 'høj'    ? 'selected' : ''}>Høj</option>
+            </select>
           </div>
         </div>
         <button class="edit-save-btn" onclick="saveEditedRecommendation(${rec.id})">Gem ændringer</button>
@@ -1396,44 +1507,35 @@ function createCardElement(rec) {
     </div>
   `;
 
-  // Event listener for ROI slider
   const roiSlider = card.querySelector('.roi-slider');
   if (roiSlider) {
     roiSlider.addEventListener('input', function() {
       card.querySelector('.roi-slider-val').textContent = this.value;
     });
   }
-
   return card;
 }
 
 function toggleExpand(id) {
-  const card = document.querySelector(`[data-id="${id}"]`);
-  card.classList.toggle('expanded');
+  document.querySelector(`[data-id="${id}"]`).classList.toggle('expanded');
 }
 
 function toggleEditMode(event, id) {
   event.stopPropagation();
   const card = document.querySelector(`[data-id="${id}"]`);
+  if (!card.classList.contains('expanded')) card.classList.add('expanded');
   card.classList.toggle('edit-mode');
 }
 
 function saveEditedRecommendation(id) {
   const card = document.querySelector(`[data-id="${id}"]`);
-  const rec = recommendations.find(r => r.id === id);
-
-  const fields = card.querySelectorAll('[data-field]');
-  fields.forEach(field => {
-    const fieldName = field.dataset.field;
-    let value = field.value;
-
-    if (fieldName === 'roi' || fieldName === 'cost' || fieldName === 'weeks' || fieldName === 'months') {
-      value = parseInt(value) || 0;
-    }
-
-    rec[fieldName] = value;
+  const rec  = recommendations.find(r => r.id === id);
+  card.querySelectorAll('[data-field]').forEach(field => {
+    const fn = field.dataset.field;
+    let val  = field.value;
+    if (fn === 'roi' || fn === 'cost') val = parseInt(val) || 0;
+    rec[fn] = val;
   });
-
   saveData();
   renderCards();
 }
@@ -1457,30 +1559,20 @@ function deleteRecommendation(event, id) {
 
 // ===== DASHBOARD =====
 function updateDashboard(sorted) {
-  const active = sorted.length;
-  const ongoing = sorted.filter(r => r.status === 'ongoing').length;
-  const totalCost = sorted.reduce((sum, r) => sum + r.cost, 0);
-  const avgROI = sorted.length > 0 ? (sorted.reduce((sum, r) => sum + r.roi, 0) / sorted.length).toFixed(1) : 0;
-
-  document.getElementById('d-active').textContent = active;
+  const ongoing  = sorted.filter(r => r.status === 'ongoing').length;
+  const totalCost = sorted.reduce((s, r) => s + r.cost, 0);
+  const avgROI   = sorted.length > 0 ? (sorted.reduce((s, r) => s + r.roi, 0) / sorted.length).toFixed(1) : 0;
+  document.getElementById('d-active').textContent  = sorted.length;
   document.getElementById('d-ongoing').textContent = ongoing;
-  document.getElementById('d-cost').textContent = totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0';
-  document.getElementById('d-roi').textContent = avgROI;
+  document.getElementById('d-cost').textContent    = totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0';
+  document.getElementById('d-roi').textContent     = avgROI;
 }
 
 // ===== TABLE VIEW =====
 function updateTable(sorted) {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
-
   sorted.forEach(rec => {
-    const totalWeeks = rec.weeks + (rec.months * 4.33);
-    const timeframeText = rec.months > 0 && rec.weeks > 0 
-      ? `${rec.months}m ${rec.weeks}u`
-      : rec.months > 0 
-      ? `${rec.months} md.`
-      : `${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`;
-
     const row = document.createElement('tr');
     row.className = rec.status === 'done' ? 'done' : '';
     row.innerHTML = `
@@ -1490,11 +1582,14 @@ function updateTable(sorted) {
       <td>${rec.status === 'ongoing' ? 'Igangværende' : 'Afsluttet'}</td>
       <td>${rec.roi}</td>
       <td>${rec.cost.toLocaleString('da-DK')} DKK</td>
-      <td>${totalWeeks.toFixed(1)}</td>
-      <td style="text-align: center;">
-        <button class="action-btn edit-btn" onclick="toggleEditMode(event, ${rec.id})" title="Rediger">✎</button>
-        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})" title="Skift status">🔄</button>
-        <button class="action-btn done-btn" onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
+      <td>${horizonLabel(rec.timeHorizon)}</td>
+      <td><span class="impl-badge ${implClass(rec.impl)}"><span class="badge-dot ${implDotClass(rec.impl)}"></span>${implLabel(rec.impl)}</span></td>
+      <td><span class="impl-badge ${implClass(rec.effect)}"><span class="badge-dot ${implDotClass(rec.effect)}"></span>${implLabel(rec.effect)}</span></td>
+      <td>${rec.deadline || '—'}</td>
+      <td style="white-space:nowrap;">
+        <button class="action-btn edit-btn"  onclick="toggleEditMode(event, ${rec.id})"       title="Rediger">✎</button>
+        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})"          title="Skift status">🔄</button>
+        <button class="action-btn done-btn"  onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
       </td>
     `;
     tbody.appendChild(row);
@@ -1503,20 +1598,19 @@ function updateTable(sorted) {
 
 // ===== VIEW SWITCHING =====
 function switchToCardView() {
-  document.getElementById('cardViewBtn').classList.add('active');
-  document.getElementById('tableViewBtn').classList.remove('active');
+  document.getElementById('viewCardBtn').classList.add('active');
+  document.getElementById('viewTableBtn').classList.remove('active');
   document.getElementById('cardsViewContainer').style.display = 'block';
   document.getElementById('tableViewContainer').classList.remove('active');
   renderCards();
 }
 
 function switchToTableView() {
-  document.getElementById('tableViewBtn').classList.add('active');
-  document.getElementById('cardViewBtn').classList.remove('active');
+  document.getElementById('viewTableBtn').classList.add('active');
+  document.getElementById('viewCardBtn').classList.remove('active');
   document.getElementById('cardsViewContainer').style.display = 'none';
   document.getElementById('tableViewContainer').classList.add('active');
-  const filtered = getFilteredRecommendations();
-  const sorted = getSortedRecommendations(filtered);
+  const sorted = getSortedRecommendations(getFilteredRecommendations());
   updateTable(sorted);
 }
 
@@ -1525,29 +1619,26 @@ function openTimeline() {
   const timelineItems = document.getElementById('timelineItems');
   timelineItems.innerHTML = '';
 
-  const sorted = getSortedRecommendations(recommendations.filter(r => r.status === 'ongoing'));
+  const sorted = getSortedRecommendations(getFilteredRecommendations().filter(r => r.status === 'ongoing'));
 
   if (sorted.length === 0) {
-    timelineItems.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #999;">Ingen igangværende anbefalinger planlagt.</div>';
+    timelineItems.innerHTML = '<div style="text-align:center;padding:2rem;color:#999;">Ingen igangværende anbefalinger planlagt.</div>';
   } else {
     sorted.forEach((rec, idx) => {
       const item = document.createElement('div');
       item.className = `timeline-item ${idx % 2 === 0 ? 'left' : 'right'}`;
-      
-      const totalWeeks = rec.weeks + (rec.months * 4.33);
-      const timeframeText = rec.months > 0 && rec.weeks > 0 
-        ? `${rec.months} måned${rec.months !== 1 ? 'er' : ''} og ${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`
-        : rec.months > 0 
-        ? `${rec.months} måned${rec.months !== 1 ? 'er' : ''}`
-        : `${rec.weeks} uge${rec.weeks !== 1 ? 'r' : ''}`;
-
+      const dlStr = rec.deadline ? ` · Deadline: ${rec.deadline}` : '';
       item.innerHTML = `
         <div class="timeline-marker"></div>
         <div class="timeline-content-box">
-          <div class="timeline-period">${timeframeText}</div>
+          <div class="timeline-period">${horizonLabel(rec.timeHorizon)}${dlStr}</div>
           <h3>${rec.title}</h3>
-          <p>${rec.shortDesc}</p>
-          <span class="timeline-badge ongoing">Igangværende</span>
+          <p>${rec.shortDesc || ''}</p>
+          <div style="margin-top:0.5rem;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="impl-badge ${implClass(rec.impl)}"><span class="badge-dot ${implDotClass(rec.impl)}"></span>${implLabel(rec.impl)}</span>
+            <span class="impl-badge ${implClass(rec.effect)}"><span class="badge-dot ${implDotClass(rec.effect)}"></span>${implLabel(rec.effect)} effekt</span>
+            <span class="timeline-badge ongoing">Igangværende</span>
+          </div>
         </div>
       `;
       timelineItems.appendChild(item);
@@ -1561,21 +1652,38 @@ function closeTimeline() {
   document.getElementById('timelineModal').style.display = 'none';
 }
 
+// ===== CIRCLE & SLIDER SETUP =====
+function setupFormControls() {
+  // Circle selectors
+  [['#newImplCircles', 'newImpl'], ['#newEffectCircles', 'newEffect']].forEach(([sel, hiddenId]) => {
+    document.querySelectorAll(sel + ' .circ-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll(sel + ' .circ-btn').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+        document.getElementById(hiddenId).value = this.dataset.val;
+      });
+    });
+  });
+
+  // Horizon slider
+  const slider = document.getElementById('newTimeHorizon');
+  const label  = document.getElementById('newTimeHorizonLabel');
+  if (slider) {
+    slider.addEventListener('input', function() {
+      label.textContent = HORIZON_LABELS[this.value];
+    });
+  }
+}
+
 // ===== MODAL OUTSIDE CLICK =====
 window.onclick = function(event) {
-  const modal = document.getElementById('newRecommendationModal');
-  const timelineModal = document.getElementById('timelineModal');
-
-  if (event.target === modal) {
-    closeNewModal();
-  }
-  if (event.target === timelineModal) {
-    closeTimeline();
-  }
+  if (event.target === document.getElementById('newRecommendationModal')) closeNewModal();
+  if (event.target === document.getElementById('timelineModal'))          closeTimeline();
 };
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', function() {
+  setupFormControls();
   applyFilters();
   renderCards();
 });
