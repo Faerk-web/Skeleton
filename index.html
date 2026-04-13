@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prosliding.dk – Anbefalinger</title>
+<title>Skeleton – Initiativstyring</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --accent: #da253c;
     --accent-pale: #fdeaed;
-    --header-bg: #222;
+    --sidebar-bg: #1e1e1e;
+    --sidebar-width: 240px;
     --white: #ffffff;
     --bg: #f5f5f5;
     --card-bg: #ffffff;
@@ -17,14 +18,12 @@
     --text-muted: #777;
     --border: #e0e0e0;
     --gray-light: #f0f0f0;
-    --sponsor-bg: #E6F1FB; --sponsor-text: #0C447C;
-    --fan-bg: #EAF3DE; --fan-text: #27500A;
-    --vol-bg: #FAEEDA; --vol-text: #633806;
-    --ongoing-bg: #E6F1FB; --ongoing-text: #185FA5;
-    --done-bg: #f0f0f0; --done-text: #888;
     --shadow: 0 2px 12px rgba(0,0,0,0.08);
     --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
     --radius: 12px;
+    --sponsor-bg: #E6F1FB; --sponsor-text: #0C447C;
+    --fan-bg: #EAF3DE;     --fan-text: #27500A;
+    --vol-bg: #FAEEDA;     --vol-text: #633806;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,433 +35,517 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
-  header {
-    background: var(--header-bg);
-    padding: 2rem 2rem 1.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: var(--accent);
-  }
-  header::after {
-    content: 'SKELETON';
-    position: absolute;
-    right: -10px; top: 50%;
-    transform: translateY(-50%);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 120px;
-    font-weight: 800;
-    color: rgba(255,255,255,0.03);
-    letter-spacing: 8px;
-    pointer-events: none;
-    user-select: none;
-  }
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .header-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-  }
-  .header-main {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--white);
-    line-height: 1.1;
-    letter-spacing: 1px;
-  }
-  .header-sub {
-    font-size: 13px;
-    color: rgba(255,255,255,0.5);
-    margin-top: 0.4rem;
-    font-weight: 300;
-  }
-  .header-actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  .btn-new {
-    background: var(--accent);
-    border: none;
-    color: var(--white);
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 13px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 600;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .btn-new:hover { background: #c01f33; }
+  /* ===== APP SHELL ===== */
+  .app-layout { display: flex; min-height: 100vh; }
 
-  /* DASHBOARD */
-  .dashboard {
-    max-width: 1200px;
-    margin: 1.5rem auto 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-  .dash-card {
-    background: rgba(255,255,255,0.07);
-    border: 0.5px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    text-align: center;
-  }
-  .dash-label {
-    font-size: 10px;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .dash-value {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-  }
-  .dash-sub {
-    font-size: 11px;
-    color: rgba(255,255,255,0.35);
-    margin-top: 3px;
-  }
-
-  /* FILTER PANEL */
-  .filter-panel {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .filter-panel-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem 2rem;
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+    overflow-y: auto;
   }
-  .fp-row {
+
+  .sidebar-logo {
+    padding: 1.4rem 1.25rem 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
+    gap: 10px;
   }
-  .fp-group {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
+  .sidebar-logo-icon {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px; font-weight: 800;
+    color: white; flex-shrink: 0;
+  }
+  .sidebar-logo-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--white); letter-spacing: 0.5px;
+  }
+  .sidebar-logo-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.38);
+    letter-spacing: 0.5px;
+  }
+
+  .sidebar-nav { flex: 1; padding: 0.75rem 0; }
+
+  .nav-section-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    padding: 0.9rem 1.25rem 0.35rem;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    color: rgba(255,255,255,0.65);
+    font-size: 13.5px; font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    user-select: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+  .nav-item.active { background: rgba(255,255,255,0.11); color: var(--white); }
+  .nav-item.active .nav-icon { color: var(--accent); }
+  .nav-item.disabled { opacity: 0.38; cursor: default; pointer-events: none; }
+  .nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
+
+  /* Workspace list in sidebar */
+  .sidebar-ws-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0.48rem 1.25rem 0.48rem 2.6rem;
+    cursor: pointer;
+    color: rgba(255,255,255,0.52);
+    font-size: 12.5px;
+    transition: background 0.15s, color 0.15s;
+    user-select: none;
+  }
+  .sidebar-ws-item:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+  .sidebar-ws-item.active { color: var(--accent); font-weight: 600; }
+  .sidebar-ws-icon { font-size: 13px; flex-shrink: 0; }
+  .sidebar-ws-count {
+    margin-left: auto;
+    font-size: 10px;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.45);
+    padding: 1px 6px; border-radius: 10px;
+  }
+  .sidebar-ws-item.active .sidebar-ws-count { background: rgba(218,37,60,0.18); color: var(--accent); }
+
+  .sidebar-add-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0.48rem 1.25rem 0.48rem 2.6rem;
+    cursor: pointer;
+    color: rgba(255,255,255,0.32);
+    font-size: 12px;
+    transition: color 0.15s;
+    background: none; border: none; width: 100%;
+    text-align: left; font-family: 'Barlow', sans-serif;
+  }
+  .sidebar-add-btn:hover { color: var(--accent); }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1; display: flex; flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ===== TOPBAR ===== */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 1rem;
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .topbar-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--text); letter-spacing: 0.3px;
+  }
+  .topbar-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  .topbar-actions { display: flex; gap: 8px; align-items: center; }
+
+  .btn-primary {
+    background: var(--accent); border: none;
+    color: var(--white); padding: 9px 18px;
+    border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-family: 'Barlow', sans-serif;
+    font-weight: 600; transition: background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary:hover { background: #c01f33; }
+
+  /* ===== PAGE BODY ===== */
+  .page-body { padding: 2rem; flex: 1; }
+
+  /* ===== DASHBOARD ===== */
+  .dash-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px; margin-bottom: 2rem;
+  }
+  .dash-stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .dsc-icon { font-size: 22px; margin-bottom: 0.4rem; }
+  .dsc-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 34px; font-weight: 700;
+    color: var(--accent); line-height: 1;
+  }
+  .dsc-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  .dash-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dash-deadline-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 2rem; }
+  .dash-deadline-item {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.75rem 1rem;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: var(--shadow);
+  }
+  .dl-date {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700;
+    color: var(--accent); white-space: nowrap; min-width: 95px;
+  }
+  .dl-title { font-size: 13px; font-weight: 600; flex: 1; }
+  .dl-ws { font-size: 11px; color: var(--text-muted); }
+
+  /* ===== WORKSPACES OVERVIEW ===== */
+  .ws-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  .ws-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    box-shadow: var(--shadow); cursor: pointer;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .ws-card:hover { box-shadow: var(--shadow-hover); border-color: var(--accent); transform: translateY(-2px); }
+  .ws-card-icon { font-size: 30px; margin-bottom: 0.65rem; }
+  .ws-card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 19px; font-weight: 700;
+    color: var(--text); margin-bottom: 0.25rem;
+  }
+  .ws-card-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5; min-height: 32px; }
+  .ws-card-meta {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--text-muted);
+    padding-top: 0.75rem; border-top: 1px solid var(--border);
+  }
+  .ws-card-meta strong { color: var(--text); font-size: 14px; }
+  .ws-card.ws-add-card {
+    border: 2px dashed var(--border); background: transparent;
+    box-shadow: none; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; color: var(--text-muted);
+    gap: 8px; min-height: 180px;
+  }
+  .ws-card.ws-add-card:hover { border-color: var(--accent); color: var(--accent); transform: none; box-shadow: none; }
+  .ws-add-plus { font-size: 30px; }
+  .ws-add-label { font-size: 13px; font-weight: 600; }
+
+  /* ===== WORKSPACE DETAIL ===== */
+  .ws-detail-icon-big { font-size: 32px; flex-shrink: 0; }
+  .ws-detail-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px; font-weight: 800; color: var(--text);
+  }
+  .ws-detail-desc { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  /* ===== DETAIL TOOLBAR ===== */
+  .detail-toolbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0.65rem 2rem;
+    display: flex; align-items: center;
+    gap: 10px; flex-wrap: wrap;
+  }
+
+  .view-switcher {
+    display: flex; gap: 3px;
+    background: var(--gray-light);
+    padding: 3px; border-radius: 8px;
+    margin-right: auto;
+  }
+  .vs-btn {
+    padding: 5px 14px; border-radius: 6px;
+    border: none; background: transparent;
+    color: var(--text-muted);
+    cursor: pointer; font-size: 12px;
+    font-family: 'Barlow', sans-serif; font-weight: 600;
+    transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .vs-btn:hover { color: var(--text); }
+  .vs-btn.active { background: var(--white); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+  /* ===== FILTER ROW ===== */
+  .detail-filter-row {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 2rem;
+    display: flex; align-items: center;
+    gap: 10px; flex-wrap: wrap;
   }
   .fp-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    white-space: nowrap;
-    min-width: 80px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--text-muted); white-space: nowrap;
   }
-  .fp-sep {
-    width: 1px;
-    height: 24px;
-    background: var(--border);
-    margin: 0 2px;
-    flex-shrink: 0;
-  }
-  .fp-buttons {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
+  .fp-group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
   .fp-btn {
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--white);
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    transition: all 0.18s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid var(--border); background: var(--white);
+    color: var(--text-muted); cursor: pointer;
+    font-size: 11px; font-family: 'Barlow', sans-serif;
+    font-weight: 500; transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 4px;
   }
   .fp-btn:hover { border-color: var(--accent); color: var(--accent); }
   .fp-btn.active { background: var(--accent); border-color: var(--accent); color: var(--white); font-weight: 700; }
-  .fp-btn.active .circle-dot { border-color: rgba(255,255,255,0.4); }
+  .fp-sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
 
-  /* Small color circles used in filter buttons */
-  .circle-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-    border: 1px solid rgba(0,0,0,0.1);
-  }
+  .circle-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.1); }
   .circle-dot.green  { background: #27AE60; }
   .circle-dot.yellow { background: #F1C40F; }
   .circle-dot.red    { background: var(--accent); }
 
-  .fp-sort-row {
-    border-top: 1px solid var(--border);
-    padding-top: 0.75rem;
-  }
   .sort-select {
-    background: var(--white);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 5px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-family: 'Barlow', sans-serif;
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.2s;
+    background: var(--white); border: 1px solid var(--border);
+    color: var(--text); padding: 4px 10px;
+    border-radius: 8px; font-size: 11px;
+    font-family: 'Barlow', sans-serif; cursor: pointer; outline: none;
   }
   .sort-select:focus { border-color: var(--accent); }
-  .sort-select option { background: var(--white); color: var(--text); }
   .btn-reset-filters {
-    margin-left: auto;
-    background: var(--gray-light);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    padding: 5px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    transition: all 0.2s;
+    background: var(--gray-light); border: 1px solid var(--border);
+    color: var(--text-muted); padding: 4px 12px;
+    border-radius: 20px; cursor: pointer;
+    font-size: 11px; font-family: 'Barlow', sans-serif;
+    font-weight: 500; transition: all 0.2s; margin-left: auto;
   }
   .btn-reset-filters:hover { background: var(--accent); border-color: var(--accent); color: var(--white); }
 
-  /* TIMELINE MODAL */
-  .timeline-modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    overflow-y: auto;
+  /* ===== LIST VIEW ===== */
+  .list-view { padding: 1.5rem 2rem; }
+  .data-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--white); border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow);
   }
-  .timeline-content {
-    background-color: var(--card-bg);
-    margin: 40px auto;
-    padding: 2rem;
-    border-radius: var(--radius);
-    width: 90%;
-    max-width: 900px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  .data-table thead { background: #2a2a2a; }
+  .data-table th {
+    color: var(--white); padding: 0.9rem 1rem;
+    text-align: left; font-weight: 700;
+    font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase;
   }
-  .timeline-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 1rem;
-  }
-  .timeline-header h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .timeline-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text-muted);
-  }
-  .timeline-close:hover { color: var(--text); }
-  .timeline-track { position: relative; padding: 2rem 0; }
-  .timeline-line {
-    position: absolute;
-    left: 50%; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--border);
-    transform: translateX(-50%);
-  }
-  .timeline-items { display: flex; flex-direction: column; gap: 3rem; }
-  .timeline-item { position: relative; display: flex; gap: 2rem; }
-  .timeline-item.left  { flex-direction: row; }
-  .timeline-item.right { flex-direction: row-reverse; }
-  .timeline-marker {
-    position: absolute;
-    left: 50%; top: 0;
-    width: 20px; height: 20px;
-    background: var(--accent);
-    border: 3px solid var(--card-bg);
-    border-radius: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-  }
-  .timeline-content-box {
-    flex: 1;
-    padding: 1.5rem;
-    background: #fafafa;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-  }
-  .timeline-content-box h3 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--text);
-  }
-  .timeline-content-box p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-  .timeline-period {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-  }
-  .timeline-badge {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin-top: 0.5rem;
-    text-transform: uppercase;
-  }
-  .timeline-badge.ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
+  .data-table th:first-child { color: var(--accent); }
+  .data-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tbody tr:hover td { background: #fafafa; }
+  .data-table tr.status-afsluttet td { opacity: 0.6; }
 
-  /* MODAL */
+  /* ===== KANBAN VIEW ===== */
+  .kanban-view { padding: 1.5rem 2rem; overflow-x: auto; }
+  .kanban-board { display: flex; gap: 14px; min-width: max-content; }
+  .kanban-col { width: 272px; flex-shrink: 0; display: flex; flex-direction: column; }
+  .kanban-col-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0.7rem 1rem;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius) var(--radius) 0 0;
+    border-bottom: none;
+  }
+  .kanban-col-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase; color: var(--text);
+  }
+  .kanban-col-count {
+    margin-left: auto;
+    background: var(--gray-light); color: var(--text-muted);
+    font-size: 11px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+  }
+  .kanban-col-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .dot-ide       { background: #a0aec0; }
+  .dot-planlagt  { background: #63b3ed; }
+  .dot-igang     { background: #f6ad55; }
+  .dot-afsluttet { background: #68d391; }
+
+  .kanban-col-body {
+    background: var(--gray-light);
+    border: 1px solid var(--border);
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 8px; display: flex; flex-direction: column;
+    gap: 8px; min-height: 120px; flex: 1;
+  }
+  .kanban-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.8rem 0.9rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    transition: box-shadow 0.15s;
+  }
+  .kanban-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .kc-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+  .kc-badges { display: flex; flex-wrap: wrap; gap: 4px; }
+  .kc-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 6px; margin-top: 8px; padding-top: 6px;
+    border-top: 1px solid var(--border);
+  }
+  .kc-roi { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+  .roi-mini-track { width: 44px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .roi-mini-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+  .kc-actions { display: flex; gap: 4px; }
+  .kc-action-btn {
+    width: 24px; height: 24px; border-radius: 6px;
+    border: 1px solid var(--border); background: transparent;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; font-size: 11px;
+    color: var(--text-muted); transition: all 0.15s;
+  }
+  .kc-action-btn:hover { background: var(--bg); border-color: var(--accent); color: var(--accent); }
+  .kanban-empty { text-align: center; padding: 1.5rem 1rem; color: var(--text-muted); font-size: 12px; }
+
+  /* ===== TIMELINE VIEW ===== */
+  .timeline-view { padding: 1.5rem 2rem; }
+  .timeline-track { position: relative; padding: 1rem 0; }
+  .timeline-line {
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 3px; background: var(--border); transform: translateX(-50%);
+  }
+  .timeline-items { display: flex; flex-direction: column; gap: 2.5rem; }
+  .timeline-item { position: relative; display: flex; gap: 2rem; }
+  .timeline-item.t-left  { flex-direction: row; }
+  .timeline-item.t-right { flex-direction: row-reverse; }
+  .timeline-marker {
+    position: absolute; left: 50%; top: 0;
+    width: 18px; height: 18px;
+    background: var(--accent); border: 3px solid var(--bg);
+    border-radius: 50%; transform: translateX(-50%); z-index: 10;
+  }
+  .timeline-box {
+    flex: 1; padding: 1.2rem 1.4rem;
+    background: var(--white); border-radius: 8px;
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .timeline-period {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+  }
+  .timeline-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 700; margin-bottom: 4px; color: var(--text);
+  }
+  .timeline-box p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .timeline-empty { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 14px; }
+
+  /* ===== BADGES ===== */
+  .impl-badge {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .badge-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .badge-dot.green  { background: #27AE60; }
+  .badge-dot.yellow { background: #F1C40F; }
+  .badge-dot.red    { background: var(--accent); }
+  .impl-low  { background: #EAF3DE; color: #3B6D11; }
+  .impl-mid  { background: #FFF3E0; color: #854F0B; }
+  .impl-high { background: var(--accent-pale); color: var(--accent); }
+  .horizon-badge  { background: var(--gray-light); color: var(--text-muted); }
+  .deadline-badge { background: #f0eafd; color: #5e35b1; }
+
+  .status-badge {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .status-ide       { background: #edf2f7; color: #718096; }
+  .status-planlagt  { background: #ebf8ff; color: #2b6cb0; }
+  .status-igang     { background: #fffaf0; color: #c05621; }
+  .status-afsluttet { background: #f0fff4; color: #276749; }
+
+  .action-btn {
+    width: 26px; height: 26px; border-radius: 7px;
+    border: 1px solid var(--border); background: transparent;
+    cursor: pointer; display: inline-flex; align-items: center;
+    justify-content: center; font-size: 12px;
+    transition: all 0.15s; color: var(--text-muted);
+  }
+  .action-btn:hover { background: var(--bg); border-color: var(--accent); color: var(--accent); }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 14px; }
+
+  /* ===== MODALS ===== */
   .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.4);
+    display: none; position: fixed; z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.45);
   }
   .modal-content {
-    background-color: var(--card-bg);
-    margin: 4% auto;
-    padding: 2rem;
+    background: var(--card-bg);
+    margin: 4% auto; padding: 2rem;
     border-radius: var(--radius);
-    width: 90%;
-    max-width: 640px;
-    max-height: 88vh;
-    overflow-y: auto;
+    width: 90%; max-width: 640px;
+    max-height: 88vh; overflow-y: auto;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   }
+  .modal-content.modal-sm { max-width: 420px; }
   .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 1rem;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;
   }
   .modal-header h2 {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.5px;
+    font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: 0.5px;
   }
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: color 0.2s;
-  }
+  .close-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text-muted); }
   .close-btn:hover { color: var(--text); }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
   .form-field { display: flex; flex-direction: column; gap: 6px; }
   .form-field.full { grid-column: 1 / -1; }
-  .form-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
+  .form-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); }
   .form-input, .form-select, .form-textarea {
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    outline: none;
-    transition: border-color 0.2s;
+    font-family: 'Barlow', sans-serif; font-size: 13px;
+    color: var(--text); background: var(--white);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px; outline: none; transition: border-color 0.2s;
   }
   .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
   .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-
   .form-checkboxes { display: flex; gap: 16px; flex-wrap: wrap; }
   .form-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; }
   .form-checkbox input { cursor: pointer; accent-color: var(--accent); }
   .form-checkbox label { cursor: pointer; font-size: 13px; }
 
-  /* CIRCLE SELECTOR (vanskelighed / effekt) */
+  /* Circle selector */
   .circle-selector { display: flex; gap: 8px; flex-wrap: wrap; }
   .circ-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: var(--white);
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    color: var(--text-muted);
-    transition: all 0.18s;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 20px;
+    border: 1.5px solid var(--border); background: var(--white);
+    cursor: pointer; font-size: 12px;
+    font-family: 'Barlow', sans-serif; font-weight: 500;
+    color: var(--text-muted); transition: all 0.18s;
   }
-  .circ-btn .dot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    border: 1px solid rgba(0,0,0,0.1);
-  }
+  .circ-btn .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.1); }
   .circ-btn.green  .dot { background: #27AE60; }
   .circ-btn.yellow .dot { background: #F1C40F; }
   .circ-btn.red    .dot { background: var(--accent); }
@@ -470,725 +553,221 @@
   .circ-btn.yellow.selected { border-color: #d4a800; background: #fffbec; color: #7a5f00; font-weight: 700; }
   .circ-btn.red.selected    { border-color: var(--accent); background: var(--accent-pale); color: var(--accent); font-weight: 700; }
 
-  /* HORIZON SLIDER */
+  /* Horizon slider */
   .slider-wrap { display: flex; align-items: center; gap: 12px; }
-  .horizon-slider {
-    flex: 1;
-    accent-color: var(--accent);
-    cursor: pointer;
-  }
+  .horizon-slider { flex: 1; accent-color: var(--accent); cursor: pointer; }
   .horizon-label {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 64px;
-    text-transform: uppercase;
+    font-size: 15px; font-weight: 700; color: var(--accent);
+    min-width: 64px; text-transform: uppercase;
   }
-  .slider-ticks {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 2px;
-    padding: 0 2px;
-  }
+  .slider-ticks { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 2px; padding: 0 2px; }
 
-  .modal-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 1.5rem;
-    justify-content: flex-end;
-  }
+  .modal-actions { display: flex; gap: 10px; margin-top: 1.5rem; justify-content: flex-end; }
   .modal-actions button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
+    padding: 10px 20px; border-radius: 8px; border: none;
+    font-family: 'Barlow', sans-serif; font-size: 13px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
   }
-  .btn-save { background: var(--accent); color: var(--white); }
+  .btn-save   { background: var(--accent); color: var(--white); }
   .btn-save:hover { background: #c01f33; }
-  .btn-cancel { background: var(--gray-light); color: var(--text); border: 1px solid var(--border); }
+  .btn-cancel { background: var(--gray-light); color: var(--text); border: 1px solid var(--border) !important; }
   .btn-cancel:hover { background: var(--border); }
 
-  /* MAIN CONTENT */
-  .main {
-    max-width: 1200px;
-    margin: 1.5rem auto 2rem;
-    padding: 0 2rem;
-  }
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* CARDS GRID */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 780px) { .cards-grid { grid-template-columns: 1fr; } }
-
-  /* TABLE VIEW */
-  .table-view-container { display: none; }
-  .table-view-container.active { display: block; }
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--white);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-  .data-table thead { background: var(--header-bg); }
-  .data-table th {
-    color: var(--white);
-    padding: 1rem 1rem;
-    text-align: left;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .data-table th:first-child { color: var(--accent); }
-  .data-table td {
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .data-table tr:hover { background: #fafafa; }
-  .data-table tr.done { opacity: 0.6; background: #f5f5f5; }
-
-  /* CARD */
-  .card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    transition: box-shadow 0.2s, border-color 0.2s;
-    overflow: hidden;
-    position: relative;
-  }
-  .card:hover { box-shadow: var(--shadow-hover); border-color: var(--accent); }
-  .card.done { opacity: 0.65; }
-  .card.done .card-title { text-decoration: line-through; color: var(--text-muted); }
-  .card.editing { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(218,37,60,0.15); }
-  .card.hidden-card { display: none; }
-
-  .card-header {
-    padding: 1rem 1.25rem 0.75rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .card-num {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    background: var(--header-bg);
-    color: var(--white);
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    letter-spacing: 0.5px;
-  }
-  .card.done .card-num { background: var(--done-bg); color: var(--done-text); }
-  .card-header-content { flex: 1; min-width: 0; }
-  .card-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.2;
-    letter-spacing: 0.3px;
-  }
-  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-  .tag {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .tag-sponsor { background: var(--sponsor-bg); color: var(--sponsor-text); }
-  .tag-fan     { background: var(--fan-bg);     color: var(--fan-text); }
-  .tag-vol     { background: var(--vol-bg);     color: var(--vol-text); }
-  .card-header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-  .pri-badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .pri-ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
-  .pri-done    { background: var(--done-bg);    color: var(--done-text); }
-  .chevron {
-    font-size: 14px;
-    color: var(--text-muted);
-    transition: transform 0.25s;
-    line-height: 1;
-    margin-top: 2px;
-  }
-  .card.expanded .chevron { transform: rotate(180deg); }
-
-  /* ROI BAR */
-  .card-roi {
-    padding: 0 1.25rem 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-  }
-  .roi-label-txt { font-size: 11px; color: var(--text-muted); font-weight: 500; min-width: 26px; }
-  .roi-track {
-    flex: 1;
-    height: 5px;
-    background: var(--gray-light);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .roi-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), #f05070);
-    border-radius: 3px;
-    transition: width 0.4s ease;
-  }
-  .roi-score {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 36px;
-    text-align: right;
-  }
-
-  /* META BADGES */
-  .impl-badge {
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .badge-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-  }
-  .badge-dot.green  { background: #27AE60; }
-  .badge-dot.yellow { background: #F1C40F; }
-  .badge-dot.red    { background: var(--accent); }
-  .impl-low      { background: #EAF3DE; color: #3B6D11; }
-  .impl-mid      { background: #FFF3E0; color: #854F0B; }
-  .impl-high     { background: var(--accent-pale); color: var(--accent); }
-  .horizon-badge { background: var(--gray-light); color: var(--text-muted); }
-  .deadline-badge { background: #f0eafd; color: #5e35b1; }
-
-  .card-footer-meta {
-    padding: 0 1.25rem 0.85rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .meta-left {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    align-items: center;
-  }
-  .cost-txt {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-  .cost-txt span { color: var(--text); font-weight: 600; }
-  .card-actions { display: flex; gap: 6px; flex-shrink: 0; }
-  .action-btn {
-    width: 28px; height: 28px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    transition: all 0.15s;
-    color: var(--text-muted);
-  }
-  .action-btn:hover       { background: var(--bg); border-color: var(--accent); color: var(--accent); }
-  .action-btn.done-btn:hover  { background: #EAF3DE; border-color: #27500A; color: #27500A; }
-  .action-btn.edit-btn:hover  { background: #E6F1FB; border-color: #0C447C; color: #0C447C; }
-  .action-btn.reset-btn:hover { background: var(--ongoing-bg); border-color: var(--ongoing-text); color: var(--ongoing-text); }
-
-  /* EXPANDED BODY */
-  .card-body {
-    display: none;
-    padding: 0 1.25rem 1.25rem;
-    border-top: 1px solid var(--border);
-    background: #fafafa;
-  }
-  .card.expanded .card-body { display: block; }
-
-  .card-body .short-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    padding: 1rem 0 0.75rem;
-    font-style: italic;
-    border-bottom: 1px dashed var(--border);
-    margin-bottom: 0.75rem;
-  }
-  .card-body .detail-text {
-    font-size: 13.5px;
-    line-height: 1.75;
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-  .card-body .impact-block {
-    background: var(--accent-pale);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    padding: 0.75rem 1rem;
-    font-size: 12.5px;
-    color: var(--text);
-    line-height: 1.6;
-  }
-  .impact-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-
-  /* EDIT MODE */
-  .card-body .edit-section {
-    display: none;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--border);
-  }
-  .card.edit-mode .card-body .edit-section { display: block; }
-  .card.edit-mode .card-body .view-section { display: none; }
-
-  .edit-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .edit-field { display: flex; flex-direction: column; gap: 4px; }
-  .edit-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .edit-input, .edit-select, .edit-textarea {
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 7px 10px;
-    outline: none;
-    transition: border-color 0.15s;
-    width: 100%;
-  }
-  .edit-input:focus, .edit-select:focus, .edit-textarea:focus { border-color: var(--accent); }
-  .edit-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-  .edit-full { grid-column: 1 / -1; }
-  .roi-slider-wrap { display: flex; align-items: center; gap: 10px; }
-  .roi-slider {
-    flex: 1;
-    accent-color: var(--accent);
-    height: 4px;
-    cursor: pointer;
-  }
-  .roi-slider-val {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 36px;
-  }
-  .edit-save-btn {
-    margin-top: 8px;
-    background: var(--accent);
-    color: var(--white);
-    border: none;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: background 0.15s;
-  }
-  .edit-save-btn:hover { background: #c01f33; }
-
-  /* EMPTY STATE */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-muted);
-    font-size: 14px;
-  }
-
-  /* ANIMATIONS */
-  .card { animation: fadeIn 0.3s ease both; }
+  /* Animations */
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  .card-body { animation: slideDown 0.2s ease; }
-  @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .ws-card, .dash-stat-card, .kanban-card, .timeline-box, .dash-deadline-item { animation: fadeIn 0.25s ease both; }
 
-  /* FOOTER */
-  footer {
-    background: var(--header-bg);
-    color: rgba(255,255,255,0.45);
-    font-size: 11px;
-    padding: 1.5rem 2rem;
-    text-align: center;
-    line-height: 2;
-    margin-top: 2rem;
-  }
-  footer strong { color: rgba(255,255,255,0.7); }
-
-  @media (max-width: 768px) {
-    .timeline-line { left: 20px; }
-    .timeline-marker { left: 20px; }
-    .timeline-item { flex-direction: column !important; margin-left: 50px; }
-    .fp-label { min-width: 60px; }
-    .fp-sep { display: none; }
-  }
-  @media (max-width: 600px) {
-    .dashboard { grid-template-columns: repeat(2, 1fr); }
-    header, .filter-panel-inner, .main { padding-left: 1rem; padding-right: 1rem; }
-    .header-main { font-size: 26px; }
-    .edit-grid { grid-template-columns: 1fr; }
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) { :root { --sidebar-width: 200px; } }
+  @media (max-width: 680px) {
+    .sidebar { display: none; }
+    .main-content { margin-left: 0; }
+    .kanban-board { flex-direction: column; }
+    .kanban-col { width: 100%; }
+    .timeline-line { left: 22px; }
+    .timeline-marker { left: 22px; }
+    .timeline-item { flex-direction: column !important; margin-left: 46px; }
     .form-grid { grid-template-columns: 1fr; }
-    .modal-content { width: 95%; margin: 8% auto; }
-    .fp-row { gap: 0.6rem; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <div>
-      <div class="header-title">Prosliding.dk</div>
-      <div class="header-main">Anbefalede<br>Forbedringer</div>
-      <div class="header-sub">Sponsor-tiltrækning · Fan engagement · Frivilligrekruttering</div>
+<div class="app-layout">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">S</div>
+      <div>
+        <div class="sidebar-logo-text">Skeleton</div>
+        <div class="sidebar-logo-sub">Initiativstyring</div>
+      </div>
     </div>
-    <div class="header-actions">
-      <button class="btn-new" onclick="openNewModal()">+ Ny anbefaling</button>
-    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+
+      <div class="nav-item active" id="nav-dashboard" onclick="navigate('dashboard')">
+        <span class="nav-icon">&#x1F4CA;</span>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-item" id="nav-workspaces" onclick="navigate('workspaces')">
+        <span class="nav-icon">&#x1F4C1;</span>
+        <span>Arbejdsområder</span>
+      </div>
+
+      <!-- Dynamic workspace list injected by JS -->
+      <div id="sidebar-ws-list"></div>
+
+      <button class="sidebar-add-btn" onclick="openNewWorkspaceModal()">
+        <span>+</span>
+        <span>Nyt arbejdsområde</span>
+      </button>
+
+      <div style="margin-top:2rem;">
+        <div class="nav-section-label">System</div>
+        <div class="nav-item disabled">
+          <span class="nav-icon">&#x2699;&#xFE0F;</span>
+          <span>Indstillinger</span>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-content" id="main-content">
+    <!-- Rendered dynamically by JS -->
   </div>
 
-  <div class="dashboard" id="dashboard">
-    <div class="dash-card">
-      <div class="dash-label">Aktive</div>
-      <div class="dash-value" id="d-active">—</div>
-      <div class="dash-sub">anbefalinger</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-label">Igangværende</div>
-      <div class="dash-value" id="d-ongoing">—</div>
-      <div class="dash-sub">projekter</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-label">Min. budget</div>
-      <div class="dash-value" id="d-cost">—</div>
-      <div class="dash-sub">estimeret</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-label">Gns. ROI</div>
-      <div class="dash-value" id="d-roi">—</div>
-      <div class="dash-sub">ud af 10</div>
-    </div>
-  </div>
+</div><!-- end .app-layout -->
 
-  <!-- TIMELINE MODAL -->
-  <div id="timelineModal" class="timeline-modal">
-    <div class="timeline-content">
-      <div class="timeline-header">
-        <h2>📅 Implementeringstidslinje</h2>
-        <button class="timeline-close" onclick="closeTimeline()">×</button>
+<!-- ===== MODAL: NYT ARBEJDSOMRADE ===== -->
+<div id="newWorkspaceModal" class="modal">
+  <div class="modal-content modal-sm">
+    <div class="modal-header">
+      <h2>Nyt arbejdsområde</h2>
+      <button class="close-btn" onclick="closeNewWorkspaceModal()">&#x00D7;</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-field full">
+        <label class="form-label">Ikon (emoji)</label>
+        <input class="form-input" id="wsIcon" type="text" maxlength="4" value="&#x1F4CB;" placeholder="&#x1F4CB;">
       </div>
-      <div class="timeline-track">
-        <div class="timeline-line"></div>
-        <div class="timeline-items" id="timelineItems"></div>
+      <div class="form-field full">
+        <label class="form-label">Navn</label>
+        <input class="form-input" id="wsName" type="text" placeholder="Fx Sponsortiltrækning">
+      </div>
+      <div class="form-field full">
+        <label class="form-label">Beskrivelse</label>
+        <textarea class="form-textarea" id="wsDesc" placeholder="Hvad handler dette arbejdsområde om?"></textarea>
       </div>
     </div>
-  </div>
-
-  <!-- NEW RECOMMENDATION MODAL -->
-  <div id="newRecommendationModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Ny anbefaling</h2>
-        <button class="close-btn" onclick="closeNewModal()">×</button>
-      </div>
-      <div class="form-grid">
-        <div class="form-field full">
-          <label class="form-label">Titel</label>
-          <input class="form-input" id="newTitle" placeholder="Eksempel: Stat-bar med live resultater" type="text">
-        </div>
-        <div class="form-field full">
-          <label class="form-label">Målgruppe</label>
-          <div class="form-checkboxes">
-            <div class="form-checkbox">
-              <input type="checkbox" id="newAudSponsor" value="sponsor">
-              <label for="newAudSponsor">Sponsor</label>
-            </div>
-            <div class="form-checkbox">
-              <input type="checkbox" id="newAudFan" value="fan">
-              <label for="newAudFan">Fan</label>
-            </div>
-            <div class="form-checkbox">
-              <input type="checkbox" id="newAudFrivillig" value="frivillig">
-              <label for="newAudFrivillig">Frivillig</label>
-            </div>
-          </div>
-        </div>
-        <div class="form-field full">
-          <label class="form-label">Kort beskrivelse</label>
-          <input class="form-input" id="newShortDesc" placeholder="En linje beskrivelse" type="text">
-        </div>
-        <div class="form-field full">
-          <label class="form-label">Detaljer</label>
-          <textarea class="form-textarea" id="newDetails" placeholder="Fuldstændig beskrivelse..."></textarea>
-        </div>
-        <div class="form-field">
-          <label class="form-label">Påvirkning</label>
-          <input class="form-input" id="newImpact" placeholder="Eksempel: Højere engagement" type="text">
-        </div>
-        <div class="form-field">
-          <label class="form-label">ROI (0-10)</label>
-          <input class="form-input" id="newROI" placeholder="7" type="number" min="0" max="10">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Estimeret pris (DKK)</label>
-          <input class="form-input" id="newCost" placeholder="5000" type="number" min="0">
-        </div>
-        <div class="form-field">
-          <label class="form-label">Deadline</label>
-          <input class="form-input" id="newDeadline" type="date">
-        </div>
-
-        <!-- Tidshorisont slider -->
-        <div class="form-field full">
-          <label class="form-label">Tidshorisont for implementering</label>
-          <div class="slider-wrap">
-            <input type="range" class="horizon-slider" id="newTimeHorizon" min="0" max="3" step="1" value="1">
-            <span class="horizon-label" id="newTimeHorizonLabel">Uger</span>
-          </div>
-          <div class="slider-ticks">
-            <span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span>
-          </div>
-        </div>
-
-        <!-- Vanskelighed circles -->
-        <div class="form-field">
-          <label class="form-label">Vanskelighed</label>
-          <div class="circle-selector" id="newImplCircles">
-            <button type="button" class="circ-btn green selected" data-val="lav">
-              <span class="dot"></span>Lav
-            </button>
-            <button type="button" class="circ-btn yellow" data-val="middel">
-              <span class="dot"></span>Middel
-            </button>
-            <button type="button" class="circ-btn red" data-val="høj">
-              <span class="dot"></span>Høj
-            </button>
-          </div>
-          <input type="hidden" id="newImpl" value="lav">
-        </div>
-
-        <!-- Estimeret effekt circles -->
-        <div class="form-field">
-          <label class="form-label">Estimeret effekt</label>
-          <div class="circle-selector" id="newEffectCircles">
-            <button type="button" class="circ-btn green selected" data-val="lav">
-              <span class="dot"></span>Lav
-            </button>
-            <button type="button" class="circ-btn yellow" data-val="middel">
-              <span class="dot"></span>Middel
-            </button>
-            <button type="button" class="circ-btn red" data-val="høj">
-              <span class="dot"></span>Høj
-            </button>
-          </div>
-          <input type="hidden" id="newEffect" value="lav">
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeNewModal()">Annuller</button>
-        <button class="btn-save" onclick="saveNewRecommendation()">Gem anbefaling</button>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- FILTER PANEL -->
-<div class="filter-panel">
-  <div class="filter-panel-inner">
-
-    <!-- Row 1: View + Målgruppe + Status -->
-    <div class="fp-row">
-      <div class="fp-group">
-        <span class="fp-label">Vis</span>
-        <button class="fp-btn" id="viewTimelineBtn" onclick="openTimeline()">📅 Tidslinje</button>
-        <button class="fp-btn active" id="viewCardBtn" onclick="switchToCardView()">🃏 Kort</button>
-        <button class="fp-btn" id="viewTableBtn" onclick="switchToTableView()">📊 Tabel</button>
-      </div>
-      <div class="fp-sep"></div>
-      <div class="fp-group">
-        <span class="fp-label">Målgruppe</span>
-        <div id="aud-filters" class="fp-buttons">
-          <button class="fp-btn active" data-aud="all">Alle</button>
-          <button class="fp-btn" data-aud="sponsor">Sponsor</button>
-          <button class="fp-btn" data-aud="fan">Fan</button>
-          <button class="fp-btn" data-aud="frivillig">Frivillig</button>
-        </div>
-      </div>
-      <div class="fp-sep"></div>
-      <div class="fp-group">
-        <span class="fp-label">Status</span>
-        <div id="pri-filters" class="fp-buttons">
-          <button class="fp-btn active" data-pri="all">Alle</button>
-          <button class="fp-btn" data-pri="ongoing">Igangværende</button>
-          <button class="fp-btn" data-pri="done">Afsluttet</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Row 2: Tidshorisont + Vanskelighed + Effekt + Deadline -->
-    <div class="fp-row">
-      <div class="fp-group">
-        <span class="fp-label">Tidshorisont</span>
-        <div id="horizon-filters" class="fp-buttons">
-          <button class="fp-btn active" data-horizon="all">Alle</button>
-          <button class="fp-btn" data-horizon="dage">Dage</button>
-          <button class="fp-btn" data-horizon="uger">Uger</button>
-          <button class="fp-btn" data-horizon="måneder">Måneder</button>
-          <button class="fp-btn" data-horizon="år">År</button>
-        </div>
-      </div>
-      <div class="fp-sep"></div>
-      <div class="fp-group">
-        <span class="fp-label">Vanskelighed</span>
-        <div id="impl-filters" class="fp-buttons">
-          <button class="fp-btn active" data-impl="all">Alle</button>
-          <button class="fp-btn" data-impl="lav"><span class="circle-dot green"></span>Lav</button>
-          <button class="fp-btn" data-impl="middel"><span class="circle-dot yellow"></span>Middel</button>
-          <button class="fp-btn" data-impl="høj"><span class="circle-dot red"></span>Høj</button>
-        </div>
-      </div>
-      <div class="fp-sep"></div>
-      <div class="fp-group">
-        <span class="fp-label">Estimeret effekt</span>
-        <div id="effect-filters" class="fp-buttons">
-          <button class="fp-btn active" data-effect="all">Alle</button>
-          <button class="fp-btn" data-effect="lav"><span class="circle-dot green"></span>Lav</button>
-          <button class="fp-btn" data-effect="middel"><span class="circle-dot yellow"></span>Middel</button>
-          <button class="fp-btn" data-effect="høj"><span class="circle-dot red"></span>Høj</button>
-        </div>
-      </div>
-      <div class="fp-sep"></div>
-      <div class="fp-group">
-        <span class="fp-label">Deadline</span>
-        <div id="deadline-filters" class="fp-buttons">
-          <button class="fp-btn active" data-deadline="all">Alle</button>
-          <button class="fp-btn" data-deadline="has">Har deadline</button>
-          <button class="fp-btn" data-deadline="none">Ingen deadline</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Row 3: Sort + Reset -->
-    <div class="fp-row fp-sort-row">
-      <span class="fp-label">Sortér</span>
-      <select class="sort-select" id="sort-select" onchange="renderCards()">
-        <option value="default">Standard (#)</option>
-        <option value="roi">ROI-indeks (høj → lav)</option>
-        <option value="cost">Estimeret pris (lav → høj)</option>
-        <option value="horizon">Tidshorisont (kort → lang)</option>
-        <option value="deadline">Deadline (tidligst → senest)</option>
-      </select>
-      <button class="btn-reset-filters" onclick="resetFilters()">↺ Nulstil filtre</button>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeNewWorkspaceModal()">Annuller</button>
+      <button class="btn-save" onclick="saveNewWorkspace()">Opret</button>
     </div>
   </div>
 </div>
 
-<div class="main">
-  <div class="cards-view-container" id="cardsViewContainer">
-    <div class="section-title" id="activeTitle">✨ Aktive anbefalinger</div>
-    <div class="cards-grid" id="cardsGrid"></div>
-  </div>
-  <div class="table-view-container" id="tableViewContainer">
-    <table class="data-table" id="dataTable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Titel</th>
-          <th>Målgruppe</th>
-          <th>Status</th>
-          <th>ROI</th>
-          <th>Pris</th>
-          <th>Tidshorisont</th>
-          <th>Vanskelighed</th>
-          <th>Effekt</th>
-          <th>Deadline</th>
-          <th>Handlinger</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+<!-- ===== MODAL: NYT INITIATIV ===== -->
+<div id="newInitiativeModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Nyt initiativ</h2>
+      <button class="close-btn" onclick="closeNewInitiativeModal()">&#x00D7;</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-field full">
+        <label class="form-label">Titel</label>
+        <input class="form-input" id="initTitle" type="text" placeholder="Eksempel: Stat-bar med live resultater">
+      </div>
+      <div class="form-field full">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="initStatus">
+          <option value="ide">Idé</option>
+          <option value="planlagt">Planlagt</option>
+          <option value="igang">Igang</option>
+          <option value="afsluttet">Afsluttet</option>
+        </select>
+      </div>
+      <div class="form-field full">
+        <label class="form-label">Målgruppe</label>
+        <div class="form-checkboxes">
+          <div class="form-checkbox">
+            <input type="checkbox" id="initAudSponsor" value="sponsor">
+            <label for="initAudSponsor">Sponsor</label>
+          </div>
+          <div class="form-checkbox">
+            <input type="checkbox" id="initAudFan" value="fan">
+            <label for="initAudFan">Fan</label>
+          </div>
+          <div class="form-checkbox">
+            <input type="checkbox" id="initAudFrivillig" value="frivillig">
+            <label for="initAudFrivillig">Frivillig</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-field full">
+        <label class="form-label">Kort beskrivelse</label>
+        <input class="form-input" id="initShortDesc" type="text" placeholder="En linje beskrivelse">
+      </div>
+      <div class="form-field full">
+        <label class="form-label">Detaljer</label>
+        <textarea class="form-textarea" id="initDetails" placeholder="Fuldstændig beskrivelse..."></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Påvirkning</label>
+        <input class="form-input" id="initImpact" type="text" placeholder="Eksempel: Højere engagement">
+      </div>
+      <div class="form-field">
+        <label class="form-label">ROI (0–10)</label>
+        <input class="form-input" id="initROI" type="number" min="0" max="10" placeholder="7">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Estimeret pris (DKK)</label>
+        <input class="form-input" id="initCost" type="number" min="0" placeholder="5000">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Deadline</label>
+        <input class="form-input" id="initDeadline" type="date">
+      </div>
+      <div class="form-field full">
+        <label class="form-label">Tidshorisont</label>
+        <div class="slider-wrap">
+          <input type="range" class="horizon-slider" id="initTimeHorizon" min="0" max="3" step="1" value="1">
+          <span class="horizon-label" id="initTimeHorizonLabel">Uger</span>
+        </div>
+        <div class="slider-ticks">
+          <span>Dage</span><span>Uger</span><span>Måneder</span><span>År</span>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Vanskelighed</label>
+        <div class="circle-selector" id="initImplCircles">
+          <button type="button" class="circ-btn green selected" data-val="lav"><span class="dot"></span>Lav</button>
+          <button type="button" class="circ-btn yellow" data-val="middel"><span class="dot"></span>Middel</button>
+          <button type="button" class="circ-btn red" data-val="høj"><span class="dot"></span>Høj</button>
+        </div>
+        <input type="hidden" id="initImpl" value="lav">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Estimeret effekt</label>
+        <div class="circle-selector" id="initEffectCircles">
+          <button type="button" class="circ-btn green selected" data-val="lav"><span class="dot"></span>Lav</button>
+          <button type="button" class="circ-btn yellow" data-val="middel"><span class="dot"></span>Middel</button>
+          <button type="button" class="circ-btn red" data-val="høj"><span class="dot"></span>Høj</button>
+        </div>
+        <input type="hidden" id="initEffect" value="lav">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeNewInitiativeModal()">Annuller</button>
+      <button class="btn-save" onclick="saveNewInitiative()">Gem initiativ</button>
+    </div>
   </div>
 </div>
-
-<footer>
-  <strong>Prosliding.dk</strong> · Anbefalede forbedringer til sponsortiltrækning, fan engagement og frivilligrekruttering
-</footer>
 
 <script>
 // ===== CONSTANTS =====
@@ -1196,503 +775,624 @@ const HORIZON_LABELS = ['Dage', 'Uger', 'Måneder', 'År'];
 const HORIZON_VALUES = ['dage', 'uger', 'måneder', 'år'];
 const HORIZON_ORDER  = { dage: 0, uger: 1, måneder: 2, år: 3 };
 
-// ===== DATA & STATE =====
-let recommendations = JSON.parse(localStorage.getItem('recommendations')) || [];
-let currentFilters = { audience: 'all', priority: 'all', horizon: 'all', impl: 'all', effect: 'all', deadline: 'all' };
-let currentSort = 'default';
-let nextId = recommendations.length > 0 ? Math.max(...recommendations.map(r => r.id)) + 1 : 1;
+const KANBAN_COLS = [
+  { id: 'ide',       label: 'Idé',       dotClass: 'dot-ide' },
+  { id: 'planlagt',  label: 'Planlagt',  dotClass: 'dot-planlagt' },
+  { id: 'igang',     label: 'Igang',     dotClass: 'dot-igang' },
+  { id: 'afsluttet', label: 'Afsluttet', dotClass: 'dot-afsluttet' },
+];
 
-// Migrate old data format (weeks/months → timeHorizon, low/mid → lav/middel)
-recommendations.forEach(r => {
-  if (!r.timeHorizon) {
-    if (r.months > 0) {
-      r.timeHorizon = 'måneder';
-    } else if (r.weeks > 0) {
-      r.timeHorizon = 'uger';
-    } else {
-      r.timeHorizon = 'dage';
-    }
-  }
-  if (!r.impl || r.impl === 'low') r.impl = 'lav';
-  if (r.impl === 'mid') r.impl = 'middel';
-  if (!r.effect) r.effect = 'lav';
-  if (r.deadline === undefined) r.deadline = '';
-});
+// ===== STATE (in-memory only – no localStorage) =====
+let workspaces       = [];
+let nextWorkspaceId  = 1;
+let nextInitiativeId = 1;
+
+let appState = {
+  page:        'dashboard',  // 'dashboard' | 'workspaces' | 'workspace'
+  workspaceId: null,
+  detailView:  'kanban',     // 'list' | 'kanban' | 'timeline'
+};
+
+let currentFilters = {
+  audience: 'all', status: 'all', horizon: 'all',
+  impl: 'all', effect: 'all', deadline: 'all',
+};
+let currentSort       = 'default';
+let newInitiativeWsId = null;
 
 // ===== HELPERS =====
-function implClass(v) {
-  if (v === 'lav') return 'impl-low';
-  if (v === 'middel') return 'impl-mid';
-  if (v === 'høj') return 'impl-high';
-  return 'impl-low';
-}
-function implDotClass(v) {
-  if (v === 'lav') return 'green';
-  if (v === 'middel') return 'yellow';
-  if (v === 'høj') return 'red';
-  return 'green';
-}
-function implLabel(v) {
-  if (v === 'lav') return 'Lav';
-  if (v === 'middel') return 'Middel';
-  if (v === 'høj') return 'Høj';
-  return 'Lav';
-}
-function horizonLabel(v) {
-  if (!v) return 'Uger';
-  return v.charAt(0).toUpperCase() + v.slice(1);
+function implClass(v)    { return v === 'lav' ? 'impl-low' : v === 'middel' ? 'impl-mid' : 'impl-high'; }
+function implDotClass(v) { return v === 'lav' ? 'green' : v === 'middel' ? 'yellow' : 'red'; }
+function implLabel(v)    { return v === 'lav' ? 'Lav' : v === 'middel' ? 'Middel' : 'Høj'; }
+function horizonLabel(v) { if (!v) return 'Uger'; return v.charAt(0).toUpperCase() + v.slice(1); }
+function statusLabel(s) {
+  return { ide: 'Idé', planlagt: 'Planlagt', igang: 'Igang', afsluttet: 'Afsluttet' }[s] || s;
 }
 
-// ===== MODAL =====
-function openNewModal() {
-  document.getElementById('newRecommendationModal').style.display = 'block';
-  clearNewForm();
-}
-function closeNewModal() {
-  document.getElementById('newRecommendationModal').style.display = 'none';
-}
-function clearNewForm() {
-  document.getElementById('newTitle').value      = '';
-  document.getElementById('newShortDesc').value  = '';
-  document.getElementById('newDetails').value    = '';
-  document.getElementById('newImpact').value     = '';
-  document.getElementById('newROI').value        = '7';
-  document.getElementById('newCost').value       = '';
-  document.getElementById('newDeadline').value   = '';
-  document.getElementById('newTimeHorizon').value = '1';
-  document.getElementById('newTimeHorizonLabel').textContent = 'Uger';
-  document.getElementById('newImpl').value   = 'lav';
-  document.getElementById('newEffect').value = 'lav';
-  document.querySelectorAll('#newImplCircles .circ-btn').forEach((btn, i) => btn.classList.toggle('selected', i === 0));
-  document.querySelectorAll('#newEffectCircles .circ-btn').forEach((btn, i) => btn.classList.toggle('selected', i === 0));
-  document.querySelectorAll('.form-checkbox input').forEach(cb => cb.checked = false);
+function getWorkspace(id) { return workspaces.find(ws => ws.id === id); }
+
+function getAllInitiatives() {
+  return workspaces.flatMap(ws =>
+    ws.initiatives.map(i => Object.assign({}, i, { workspaceName: ws.name, workspaceIcon: ws.icon }))
+  );
 }
 
-function saveNewRecommendation() {
-  const title      = document.getElementById('newTitle').value.trim();
-  const shortDesc  = document.getElementById('newShortDesc').value.trim();
-  const details    = document.getElementById('newDetails').value.trim();
-  const impact     = document.getElementById('newImpact').value.trim();
-  const roi        = parseInt(document.getElementById('newROI').value) || 0;
-  const cost       = parseInt(document.getElementById('newCost').value) || 0;
-  const impl       = document.getElementById('newImpl').value;
-  const effect     = document.getElementById('newEffect').value;
-  const deadline   = document.getElementById('newDeadline').value;
-  const horizonIdx = parseInt(document.getElementById('newTimeHorizon').value);
-  const timeHorizon = HORIZON_VALUES[horizonIdx];
+// ===== NAVIGATION =====
+function navigate(page, workspaceId) {
+  appState.page        = page;
+  appState.workspaceId = workspaceId !== undefined ? workspaceId : null;
+  if (page !== 'workspace') {
+    currentFilters = { audience: 'all', status: 'all', horizon: 'all', impl: 'all', effect: 'all', deadline: 'all' };
+    currentSort    = 'default';
+  }
+  renderSidebar();
+  renderMain();
+}
 
-  if (!title) { alert('Tilføj en titel!'); return; }
+// ===== SIDEBAR =====
+function renderSidebar() {
+  document.getElementById('nav-dashboard').classList.toggle('active', appState.page === 'dashboard');
+  document.getElementById('nav-workspaces').classList.toggle('active', appState.page === 'workspaces');
 
-  const audiences = [];
-  if (document.getElementById('newAudSponsor').checked)   audiences.push('sponsor');
-  if (document.getElementById('newAudFan').checked)       audiences.push('fan');
-  if (document.getElementById('newAudFrivillig').checked) audiences.push('frivillig');
+  var list = document.getElementById('sidebar-ws-list');
+  list.innerHTML = '';
+  workspaces.forEach(function(ws) {
+    var el = document.createElement('div');
+    el.className = 'sidebar-ws-item' + (appState.workspaceId === ws.id ? ' active' : '');
+    el.innerHTML =
+      '<span class="sidebar-ws-icon">' + ws.icon + '</span>' +
+      '<span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escHtml(ws.name) + '</span>' +
+      '<span class="sidebar-ws-count">' + ws.initiatives.length + '</span>';
+    el.onclick = (function(id) { return function() { navigate('workspace', id); }; })(ws.id);
+    list.appendChild(el);
+  });
+}
 
-  recommendations.push({
-    id: nextId++,
-    title, shortDesc, details, impact,
-    roi: Math.min(10, Math.max(0, roi)),
-    cost, impl, effect, deadline, timeHorizon,
-    audiences: audiences.length > 0 ? audiences : ['all'],
-    status: 'ongoing',
-    createdAt: new Date().toISOString()
+// ===== MAIN RENDER DISPATCHER =====
+function renderMain() {
+  var mc = document.getElementById('main-content');
+  if (appState.page === 'dashboard')  renderDashboard(mc);
+  else if (appState.page === 'workspaces') renderWorkspacesOverview(mc);
+  else if (appState.page === 'workspace')  renderWorkspaceDetail(mc, appState.workspaceId);
+}
+
+// Simple HTML escape helper
+function escHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ===== A) DASHBOARD =====
+function renderDashboard(container) {
+  var all         = getAllInitiatives();
+  var activeCount = all.filter(function(i){ return i.status !== 'afsluttet'; }).length;
+  var inProgress  = all.filter(function(i){ return i.status === 'igang'; }).length;
+  var totalCost   = all.reduce(function(s,i){ return s + (i.cost||0); }, 0);
+  var avgROI      = all.length > 0
+    ? (all.reduce(function(s,i){ return s + (i.roi||0); }, 0) / all.length).toFixed(1)
+    : '—';
+
+  var now  = new Date();
+  var soon = all
+    .filter(function(i){ return i.deadline && i.status !== 'afsluttet'; })
+    .map(function(i){ return Object.assign({}, i, { daysLeft: Math.ceil((new Date(i.deadline) - now) / 86400000) }); })
+    .filter(function(i){ return i.daysLeft <= 30; })
+    .sort(function(a,b){ return a.daysLeft - b.daysLeft; });
+
+  var soonHtml = soon.length === 0
+    ? '<div class="empty-state" style="padding:1.5rem;text-align:left;">Ingen kommende deadlines inden for 30 dage.</div>'
+    : soon.map(function(i){
+        var left = i.daysLeft <= 0 ? 'Overskredet' : i.daysLeft + ' dage tilbage';
+        return '<div class="dash-deadline-item">' +
+          '<span class="dl-date">&#x1F4C5; ' + escHtml(i.deadline) + '</span>' +
+          '<div><div class="dl-title">' + escHtml(i.title) + '</div>' +
+          '<div class="dl-ws">' + i.workspaceIcon + ' ' + escHtml(i.workspaceName) + ' &middot; ' + left + '</div></div>' +
+          '<span class="status-badge status-' + i.status + '">' + statusLabel(i.status) + '</span>' +
+          '</div>';
+      }).join('');
+
+  var wsHtml;
+  if (workspaces.length === 0) {
+    wsHtml = '<div class="empty-state">Ingen arbejdsområder endnu.<br>' +
+      '<button class="btn-primary" style="margin-top:1rem;" onclick="openNewWorkspaceModal()">+ Nyt arbejdsområde</button></div>';
+  } else {
+    wsHtml = '<div class="ws-grid" style="max-width:900px;">' +
+      workspaces.map(function(ws){
+        var active = ws.initiatives.filter(function(i){ return i.status !== 'afsluttet'; }).length;
+        return '<div class="ws-card" onclick="navigate(\'workspace\',' + ws.id + ')">' +
+          '<div class="ws-card-icon">' + ws.icon + '</div>' +
+          '<div class="ws-card-name">' + escHtml(ws.name) + '</div>' +
+          '<div class="ws-card-desc">' + escHtml(ws.description) + '</div>' +
+          '<div class="ws-card-meta"><strong>' + ws.initiatives.length + '</strong> initiativer &middot; ' + active + ' aktive</div>' +
+          '</div>';
+      }).join('') +
+      '</div>';
+  }
+
+  container.innerHTML =
+    '<div class="topbar">' +
+      '<div>' +
+        '<div class="topbar-title">&#x1F4CA; Dashboard</div>' +
+        '<div class="topbar-sub">Overblik over alle arbejdsområder og initiativer</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="page-body">' +
+      '<div class="dash-stat-grid">' +
+        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F4C1;</div><div class="dsc-value">' + workspaces.length + '</div><div class="dsc-label">Arbejdsområder</div></div>' +
+        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F680;</div><div class="dsc-value">' + activeCount + '</div><div class="dsc-label">Aktive initiativer</div></div>' +
+        '<div class="dash-stat-card"><div class="dsc-icon">&#x26A1;</div><div class="dsc-value">' + inProgress + '</div><div class="dsc-label">Igangværende</div></div>' +
+        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F4C8;</div><div class="dsc-value">' + avgROI + '</div><div class="dsc-label">Gns. ROI</div></div>' +
+        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F4B0;</div><div class="dsc-value">' + (totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0') + '</div><div class="dsc-label">Estimeret pris (DKK)</div></div>' +
+      '</div>' +
+      '<div class="dash-section-title">&#x23F0; Kommende deadlines (inden for 30 dage)</div>' +
+      '<div class="dash-deadline-list">' + soonHtml + '</div>' +
+      '<div class="dash-section-title">&#x1F4C1; Alle arbejdsområder</div>' +
+      wsHtml +
+    '</div>';
+}
+
+// ===== B) WORKSPACES OVERVIEW =====
+function renderWorkspacesOverview(container) {
+  var cardsHtml = workspaces.map(function(ws){
+    var active = ws.initiatives.filter(function(i){ return i.status !== 'afsluttet'; }).length;
+    return '<div class="ws-card" onclick="navigate(\'workspace\',' + ws.id + ')">' +
+      '<div class="ws-card-icon">' + ws.icon + '</div>' +
+      '<div class="ws-card-name">' + escHtml(ws.name) + '</div>' +
+      '<div class="ws-card-desc">' + escHtml(ws.description) + '</div>' +
+      '<div class="ws-card-meta"><strong>' + ws.initiatives.length + '</strong> initiativer &middot; ' + active + ' aktive</div>' +
+      '</div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div class="topbar">' +
+      '<div>' +
+        '<div class="topbar-title">&#x1F4C1; Arbejdsområder</div>' +
+        '<div class="topbar-sub">' + workspaces.length + ' arbejdsområde' + (workspaces.length !== 1 ? 'r' : '') + '</div>' +
+      '</div>' +
+      '<div class="topbar-actions"><button class="btn-primary" onclick="openNewWorkspaceModal()">+ Nyt arbejdsområde</button></div>' +
+    '</div>' +
+    '<div class="page-body">' +
+      '<div class="ws-grid">' +
+        cardsHtml +
+        '<div class="ws-card ws-add-card" onclick="openNewWorkspaceModal()">' +
+          '<div class="ws-add-plus">+</div>' +
+          '<div class="ws-add-label">Nyt arbejdsområde</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+}
+
+// ===== C) WORKSPACE DETAIL =====
+function renderWorkspaceDetail(container, wsId) {
+  var ws = getWorkspace(wsId);
+  if (!ws) { navigate('workspaces'); return; }
+
+  var filtered = getFilteredInitiatives(ws.initiatives);
+  var sorted   = getSortedInitiatives(filtered);
+
+  var view = appState.detailView;
+
+  container.innerHTML =
+    '<div class="topbar">' +
+      '<div style="display:flex;align-items:center;gap:12px;">' +
+        '<span class="ws-detail-icon-big">' + ws.icon + '</span>' +
+        '<div>' +
+          '<div class="ws-detail-name">' + escHtml(ws.name) + '</div>' +
+          '<div class="ws-detail-desc">' + escHtml(ws.description) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="topbar-actions">' +
+        '<button class="btn-primary" onclick="openNewInitiativeModal(' + wsId + ')">+ Nyt initiativ</button>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="detail-toolbar">' +
+      '<div class="view-switcher">' +
+        '<button class="vs-btn' + (view==='list'    ?' active':'') + '" onclick="switchDetailView(\'list\')">&#x2630; Liste</button>' +
+        '<button class="vs-btn' + (view==='kanban'  ?' active':'') + '" onclick="switchDetailView(\'kanban\')">&#x1F4CC; Kanban</button>' +
+        '<button class="vs-btn' + (view==='timeline'?' active':'') + '" onclick="switchDetailView(\'timeline\')">&#x1F4C5; Tidslinje</button>' +
+      '</div>' +
+      '<select class="sort-select" id="sort-select" onchange="onSortChange()">' +
+        '<option value="default"' + (currentSort==='default' ?' selected':'') + '>Standard</option>' +
+        '<option value="roi"'    + (currentSort==='roi'     ?' selected':'') + '>ROI (høj→lav)</option>' +
+        '<option value="cost"'   + (currentSort==='cost'    ?' selected':'') + '>Pris (lav→høj)</option>' +
+        '<option value="horizon"'+ (currentSort==='horizon' ?' selected':'') + '>Tidshorisont</option>' +
+        '<option value="deadline"'+(currentSort==='deadline'?' selected':'') + '>Deadline</option>' +
+      '</select>' +
+    '</div>' +
+
+    buildFilterRowHtml() +
+
+    '<div id="view-container"></div>';
+
+  renderDetailView(sorted, wsId);
+}
+
+function buildFilterRowHtml() {
+  var cf = currentFilters;
+
+  function pills(options, key, dataKey) {
+    return options.map(function(o){
+      return '<button class="fp-btn' + (cf[key]===o.v?' active':'') + '" data-' + dataKey + '="' + o.v + '" onclick="setFilter(\'' + key + '\',this,\'' + dataKey + '\')">' + o.l + '</button>';
+    }).join('');
+  }
+
+  function colorPills(key) {
+    var opts = [
+      { v:'all',    l:'Alle' },
+      { v:'lav',    l:'<span class="circle-dot green"></span>Lav' },
+      { v:'middel', l:'<span class="circle-dot yellow"></span>Middel' },
+      { v:'høj',    l:'<span class="circle-dot red"></span>Høj' },
+    ];
+    return opts.map(function(o){
+      return '<button class="fp-btn' + (cf[key]===o.v?' active':'') + '" data-' + key + '="' + o.v + '" onclick="setFilter(\'' + key + '\',this,\'' + key + '\')">' + o.l + '</button>';
+    }).join('');
+  }
+
+  return '<div class="detail-filter-row">' +
+    '<div class="fp-group"><span class="fp-label">Målgruppe</span>' +
+      pills([{v:'all',l:'Alle'},{v:'sponsor',l:'Sponsor'},{v:'fan',l:'Fan'},{v:'frivillig',l:'Frivillig'}],'audience','aud') +
+    '</div>' +
+    '<div class="fp-sep"></div>' +
+    '<div class="fp-group"><span class="fp-label">Status</span>' +
+      pills([{v:'all',l:'Alle'},{v:'ide',l:'Idé'},{v:'planlagt',l:'Planlagt'},{v:'igang',l:'Igang'},{v:'afsluttet',l:'Afsluttet'}],'status','status') +
+    '</div>' +
+    '<div class="fp-sep"></div>' +
+    '<div class="fp-group"><span class="fp-label">Horisont</span>' +
+      pills([{v:'all',l:'Alle'},{v:'dage',l:'Dage'},{v:'uger',l:'Uger'},{v:'måneder',l:'Måneder'},{v:'år',l:'År'}],'horizon','horizon') +
+    '</div>' +
+    '<div class="fp-sep"></div>' +
+    '<div class="fp-group"><span class="fp-label">Vanskelighed</span>' + colorPills('impl') + '</div>' +
+    '<div class="fp-sep"></div>' +
+    '<div class="fp-group"><span class="fp-label">Effekt</span>' + colorPills('effect') + '</div>' +
+    '<div class="fp-sep"></div>' +
+    '<div class="fp-group"><span class="fp-label">Deadline</span>' +
+      pills([{v:'all',l:'Alle'},{v:'has',l:'Har deadline'},{v:'none',l:'Ingen'}],'deadline','deadline') +
+    '</div>' +
+    '<button class="btn-reset-filters" onclick="resetFilters()">&#x21BA; Nulstil</button>' +
+    '</div>';
+}
+
+function switchDetailView(view) {
+  appState.detailView = view;
+  renderWorkspaceDetail(document.getElementById('main-content'), appState.workspaceId);
+}
+
+function renderDetailView(sorted, wsId) {
+  var vc = document.getElementById('view-container');
+  if (!vc) return;
+  if (appState.detailView === 'list')     renderListView(vc, sorted, wsId);
+  else if (appState.detailView === 'kanban')   renderKanbanView(vc, sorted, wsId);
+  else if (appState.detailView === 'timeline') renderTimelineView(vc, sorted);
+}
+
+// ===== LIST VIEW =====
+function renderListView(container, initiatives, wsId) {
+  if (initiatives.length === 0) {
+    container.innerHTML = '<div class="list-view"><div class="empty-state">Ingen initiativer matcher dine filtre.</div></div>';
+    return;
+  }
+  var rows = initiatives.map(function(i){
+    var aud = i.audiences.filter(function(a){ return a !== 'all'; })
+      .map(function(a){ return a.charAt(0).toUpperCase() + a.slice(1); }).join(', ') || '—';
+    return '<tr class="status-' + i.status + '">' +
+      '<td>' + i.id + '</td>' +
+      '<td><strong>' + escHtml(i.title) + '</strong>' +
+        (i.shortDesc ? '<br><small style="color:var(--text-muted)">' + escHtml(i.shortDesc) + '</small>' : '') +
+      '</td>' +
+      '<td><span class="status-badge status-' + i.status + '">' + statusLabel(i.status) + '</span></td>' +
+      '<td>' + aud + '</td>' +
+      '<td>' + (i.roi||0) + '</td>' +
+      '<td>' + (i.cost||0).toLocaleString('da-DK') + '</td>' +
+      '<td>' + horizonLabel(i.timeHorizon) + '</td>' +
+      '<td><span class="impl-badge ' + implClass(i.impl) + '"><span class="badge-dot ' + implDotClass(i.impl) + '"></span>' + implLabel(i.impl) + '</span></td>' +
+      '<td><span class="impl-badge ' + implClass(i.effect) + '"><span class="badge-dot ' + implDotClass(i.effect) + '"></span>' + implLabel(i.effect) + '</span></td>' +
+      '<td>' + (i.deadline || '—') + '</td>' +
+      '<td style="white-space:nowrap;">' +
+        '<button class="action-btn" onclick="cycleInitiativeStatus(' + wsId + ',' + i.id + ')" title="Næste status">&#x1F504;</button> ' +
+        '<button class="action-btn" onclick="deleteInitiative(' + wsId + ',' + i.id + ')" title="Slet">&#x1F5D1;&#xFE0F;</button>' +
+      '</td>' +
+      '</tr>';
+  }).join('');
+
+  container.innerHTML =
+    '<div class="list-view">' +
+    '<table class="data-table"><thead><tr>' +
+      '<th>#</th><th>Titel</th><th>Status</th><th>Målgruppe</th>' +
+      '<th>ROI</th><th>Pris (DKK)</th><th>Horisont</th>' +
+      '<th>Vanskelighed</th><th>Effekt</th><th>Deadline</th><th>Handlinger</th>' +
+    '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+
+// ===== KANBAN VIEW =====
+function renderKanbanView(container, initiatives, wsId) {
+  var colsHtml = KANBAN_COLS.map(function(col){
+    var cards = initiatives.filter(function(i){ return i.status === col.id; });
+    var cardsHtml = cards.length === 0
+      ? '<div class="kanban-empty">Ingen initiativer</div>'
+      : cards.map(function(i){
+          var dl = i.deadline ? '<span class="impl-badge deadline-badge">&#x1F4C5; ' + escHtml(i.deadline) + '</span>' : '';
+          return '<div class="kanban-card">' +
+            '<div class="kc-title">' + escHtml(i.title) + '</div>' +
+            '<div class="kc-badges">' +
+              '<span class="impl-badge ' + implClass(i.impl) + '"><span class="badge-dot ' + implDotClass(i.impl) + '"></span>' + implLabel(i.impl) + '</span>' +
+              '<span class="impl-badge ' + implClass(i.effect) + '"><span class="badge-dot ' + implDotClass(i.effect) + '"></span>' + implLabel(i.effect) + ' effekt</span>' +
+              '<span class="impl-badge horizon-badge">&#x23F1;&#xFE0F; ' + horizonLabel(i.timeHorizon) + '</span>' +
+              dl +
+            '</div>' +
+            '<div class="kc-footer">' +
+              '<div class="kc-roi">ROI <div class="roi-mini-track"><div class="roi-mini-fill" style="width:' + ((i.roi||0)*10) + '%"></div></div><span>' + (i.roi||0) + '</span></div>' +
+              '<div class="kc-actions">' +
+                '<button class="kc-action-btn" onclick="cycleInitiativeStatus(' + wsId + ',' + i.id + ')" title="Næste status">&#x1F504;</button>' +
+                '<button class="kc-action-btn" onclick="deleteInitiative(' + wsId + ',' + i.id + ')" title="Slet">&#x1F5D1;&#xFE0F;</button>' +
+              '</div>' +
+            '</div>' +
+            '</div>';
+        }).join('');
+
+    return '<div class="kanban-col">' +
+      '<div class="kanban-col-header">' +
+        '<span class="kanban-col-dot ' + col.dotClass + '"></span>' +
+        '<span class="kanban-col-title">' + col.label + '</span>' +
+        '<span class="kanban-col-count">' + cards.length + '</span>' +
+      '</div>' +
+      '<div class="kanban-col-body">' + cardsHtml + '</div>' +
+      '</div>';
+  }).join('');
+
+  container.innerHTML = '<div class="kanban-view"><div class="kanban-board">' + colsHtml + '</div></div>';
+}
+
+// ===== TIMELINE VIEW =====
+function renderTimelineView(container, initiatives) {
+  var sorted = initiatives.slice().sort(function(a, b){
+    if (!a.deadline && !b.deadline)
+      return (HORIZON_ORDER[a.timeHorizon||'uger']||0) - (HORIZON_ORDER[b.timeHorizon||'uger']||0);
+    if (!a.deadline) return 1;
+    if (!b.deadline) return -1;
+    return new Date(a.deadline) - new Date(b.deadline);
   });
 
-  saveData();
-  renderCards();
-  closeNewModal();
-}
+  if (sorted.length === 0) {
+    container.innerHTML = '<div class="timeline-view"><div class="timeline-empty">Ingen initiativer matcher dine filtre.</div></div>';
+    return;
+  }
 
-function saveData() {
-  localStorage.setItem('recommendations', JSON.stringify(recommendations));
+  var itemsHtml = sorted.map(function(i, idx){
+    var side = idx % 2 === 0 ? 't-left' : 't-right';
+    var period = horizonLabel(i.timeHorizon) + (i.deadline ? ' &middot; Deadline: ' + escHtml(i.deadline) : '');
+    return '<div class="timeline-item ' + side + '">' +
+      '<div class="timeline-marker"></div>' +
+      '<div class="timeline-box">' +
+        '<div class="timeline-period">' + period + '</div>' +
+        '<h3>' + escHtml(i.title) + '</h3>' +
+        '<p>' + escHtml(i.shortDesc) + '</p>' +
+        '<div style="margin-top:0.5rem;display:flex;gap:5px;flex-wrap:wrap;">' +
+          '<span class="status-badge status-' + i.status + '">' + statusLabel(i.status) + '</span>' +
+          '<span class="impl-badge ' + implClass(i.impl) + '"><span class="badge-dot ' + implDotClass(i.impl) + '"></span>' + implLabel(i.impl) + '</span>' +
+          '<span class="impl-badge ' + implClass(i.effect) + '"><span class="badge-dot ' + implDotClass(i.effect) + '"></span>' + implLabel(i.effect) + ' effekt</span>' +
+        '</div>' +
+      '</div>' +
+      '</div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div class="timeline-view">' +
+      '<div class="timeline-track">' +
+        '<div class="timeline-line"></div>' +
+        '<div class="timeline-items">' + itemsHtml + '</div>' +
+      '</div>' +
+    '</div>';
 }
 
 // ===== FILTERING =====
-function applyFilters() {
-  function bindGroup(selector, filterKey, dataAttr) {
-    document.querySelectorAll(selector + ' .fp-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll(selector + ' .fp-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        currentFilters[filterKey] = this.dataset[dataAttr];
-        renderCards();
-      });
-    });
+function setFilter(filterKey, btn, dataAttr) {
+  currentFilters[filterKey] = btn.dataset[dataAttr];
+  // Update active state within this group only
+  var group = btn.closest('.fp-group');
+  if (group) {
+    group.querySelectorAll('.fp-btn').forEach(function(b){ b.classList.toggle('active', b === btn); });
   }
-  bindGroup('#aud-filters',      'audience', 'aud');
-  bindGroup('#pri-filters',      'priority', 'pri');
-  bindGroup('#horizon-filters',  'horizon',  'horizon');
-  bindGroup('#impl-filters',     'impl',     'impl');
-  bindGroup('#effect-filters',   'effect',   'effect');
-  bindGroup('#deadline-filters', 'deadline', 'deadline');
+  // Re-render view
+  var ws = getWorkspace(appState.workspaceId);
+  if (!ws) return;
+  renderDetailView(getSortedInitiatives(getFilteredInitiatives(ws.initiatives)), appState.workspaceId);
 }
 
-function resetFilters() {
-  currentFilters = { audience: 'all', priority: 'all', horizon: 'all', impl: 'all', effect: 'all', deadline: 'all' };
-  [['#aud-filters','aud'],['#pri-filters','pri'],['#horizon-filters','horizon'],
-   ['#impl-filters','impl'],['#effect-filters','effect'],['#deadline-filters','deadline']
-  ].forEach(([sel, attr]) => {
-    document.querySelectorAll(sel + ' .fp-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset[attr] === 'all'));
-  });
-  document.getElementById('sort-select').value = 'default';
-  currentSort = 'default';
-  renderCards();
-}
-
-function getFilteredRecommendations() {
-  let f = recommendations;
-  const cf = currentFilters;
-  if (cf.audience !== 'all') f = f.filter(r => r.audiences.includes(cf.audience) || r.audiences.includes('all'));
-  if (cf.priority !== 'all') f = f.filter(r => r.status === cf.priority);
-  if (cf.horizon  !== 'all') f = f.filter(r => r.timeHorizon === cf.horizon);
-  if (cf.impl     !== 'all') f = f.filter(r => r.impl === cf.impl);
-  if (cf.effect   !== 'all') f = f.filter(r => r.effect === cf.effect);
-  if (cf.deadline === 'has')  f = f.filter(r => r.deadline && r.deadline !== '');
-  if (cf.deadline === 'none') f = f.filter(r => !r.deadline || r.deadline === '');
+function getFilteredInitiatives(initiatives) {
+  var f  = initiatives;
+  var cf = currentFilters;
+  if (cf.audience !== 'all') f = f.filter(function(i){ return i.audiences.indexOf(cf.audience) >= 0 || i.audiences.indexOf('all') >= 0; });
+  if (cf.status   !== 'all') f = f.filter(function(i){ return i.status === cf.status; });
+  if (cf.horizon  !== 'all') f = f.filter(function(i){ return i.timeHorizon === cf.horizon; });
+  if (cf.impl     !== 'all') f = f.filter(function(i){ return i.impl === cf.impl; });
+  if (cf.effect   !== 'all') f = f.filter(function(i){ return i.effect === cf.effect; });
+  if (cf.deadline === 'has')  f = f.filter(function(i){ return i.deadline && i.deadline !== ''; });
+  if (cf.deadline === 'none') f = f.filter(function(i){ return !i.deadline || i.deadline === ''; });
   return f;
 }
 
-function getSortedRecommendations(recs) {
-  const sel = document.getElementById('sort-select');
-  if (sel) currentSort = sel.value;
-  const sorted = [...recs];
+function getSortedInitiatives(initiatives) {
+  var sorted = initiatives.slice();
   switch (currentSort) {
-    case 'roi':      sorted.sort((a, b) => b.roi - a.roi); break;
-    case 'cost':     sorted.sort((a, b) => a.cost - b.cost); break;
-    case 'horizon':  sorted.sort((a, b) => (HORIZON_ORDER[a.timeHorizon] || 0) - (HORIZON_ORDER[b.timeHorizon] || 0)); break;
-    case 'deadline': sorted.sort((a, b) => {
+    case 'roi':      sorted.sort(function(a,b){ return (b.roi||0) - (a.roi||0); }); break;
+    case 'cost':     sorted.sort(function(a,b){ return (a.cost||0) - (b.cost||0); }); break;
+    case 'horizon':  sorted.sort(function(a,b){ return (HORIZON_ORDER[a.timeHorizon]||0) - (HORIZON_ORDER[b.timeHorizon]||0); }); break;
+    case 'deadline': sorted.sort(function(a,b){
       if (!a.deadline && !b.deadline) return 0;
       if (!a.deadline) return 1;
       if (!b.deadline) return -1;
       return new Date(a.deadline) - new Date(b.deadline);
     }); break;
-    default: sorted.sort((a, b) => a.id - b.id);
+    default: sorted.sort(function(a,b){ return a.id - b.id; });
   }
   return sorted;
 }
 
-// ===== CARD RENDERING =====
-function renderCards() {
-  const filtered = getFilteredRecommendations();
-  const sorted   = getSortedRecommendations(filtered);
-  const grid     = document.getElementById('cardsGrid');
-  grid.innerHTML = '';
-
-  if (sorted.length === 0) {
-    grid.innerHTML = '<div class="empty-state">Ingen anbefalinger matcher dine filtre.</div>';
-    updateDashboard([]);
-    updateTable([]);
-    return;
-  }
-  sorted.forEach(rec => grid.appendChild(createCardElement(rec)));
-  updateDashboard(sorted);
-  updateTable(sorted);
+function onSortChange() {
+  var sel = document.getElementById('sort-select');
+  if (sel) currentSort = sel.value;
+  var ws = getWorkspace(appState.workspaceId);
+  if (!ws) return;
+  renderDetailView(getSortedInitiatives(getFilteredInitiatives(ws.initiatives)), appState.workspaceId);
 }
 
-function createCardElement(rec) {
-  const card = document.createElement('div');
-  card.className = `card ${rec.status === 'done' ? 'done' : ''}`;
-  card.dataset.id = rec.id;
-
-  const horizonText   = horizonLabel(rec.timeHorizon);
-  const deadlineHtml  = rec.deadline ? `<span class="impl-badge deadline-badge">📅 ${rec.deadline}</span>` : '';
-
-  card.innerHTML = `
-    <div class="card-header" onclick="toggleExpand(${rec.id})">
-      <div class="card-num">${rec.id}</div>
-      <div class="card-header-content">
-        <div class="card-title">${rec.title}</div>
-        <div class="card-tags">
-          ${rec.audiences.map(aud => {
-            if (aud === 'all') return '';
-            const cls   = aud === 'sponsor' ? 'tag-sponsor' : aud === 'fan' ? 'tag-fan' : 'tag-vol';
-            const label = aud === 'sponsor' ? 'Sponsor' : aud === 'fan' ? 'Fan' : 'Frivillig';
-            return `<span class="tag ${cls}">${label}</span>`;
-          }).join('')}
-        </div>
-      </div>
-      <div class="card-header-right">
-        <span class="pri-badge pri-${rec.status}">${rec.status === 'ongoing' ? 'Igangværende' : 'Afsluttet'}</span>
-        <span class="chevron">▼</span>
-      </div>
-    </div>
-
-    <div class="card-roi" onclick="toggleExpand(${rec.id})">
-      <span class="roi-label-txt">ROI</span>
-      <div class="roi-track"><div class="roi-fill" style="width:${rec.roi * 10}%"></div></div>
-      <span class="roi-score">${rec.roi}</span>
-    </div>
-
-    <div class="card-footer-meta">
-      <div class="meta-left">
-        <span class="cost-txt">💰 <span>${rec.cost.toLocaleString('da-DK')} DKK</span></span>
-        <span class="impl-badge ${implClass(rec.impl)}"><span class="badge-dot ${implDotClass(rec.impl)}"></span>${implLabel(rec.impl)}</span>
-        <span class="impl-badge ${implClass(rec.effect)}" title="Effekt"><span class="badge-dot ${implDotClass(rec.effect)}"></span>${implLabel(rec.effect)} effekt</span>
-        <span class="impl-badge horizon-badge">⏱️ ${horizonText}</span>
-        ${deadlineHtml}
-      </div>
-      <div class="card-actions">
-        <button class="action-btn edit-btn"  onclick="toggleEditMode(event, ${rec.id})"       title="Rediger">✎</button>
-        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})"          title="Skift status">🔄</button>
-        <button class="action-btn done-btn"  onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
-      </div>
-    </div>
-
-    <div class="card-body">
-      <div class="short-desc">${rec.shortDesc || ''}</div>
-      <div class="view-section">
-        <div class="detail-text">${rec.details || ''}</div>
-        <div class="impact-block">
-          <div class="impact-label">💡 Påvirkning</div>
-          ${rec.impact || ''}
-        </div>
-      </div>
-      <div class="edit-section">
-        <div class="edit-grid">
-          <div class="edit-field edit-full">
-            <label class="edit-label">Titel</label>
-            <input class="edit-input" value="${rec.title}" data-field="title">
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Kort beskrivelse</label>
-            <input class="edit-input" value="${rec.shortDesc || ''}" data-field="shortDesc">
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Detaljer</label>
-            <textarea class="edit-textarea" data-field="details">${rec.details || ''}</textarea>
-          </div>
-          <div class="edit-field edit-full">
-            <label class="edit-label">Påvirkning</label>
-            <input class="edit-input" value="${rec.impact || ''}" data-field="impact">
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">ROI (0-10)</label>
-            <div class="roi-slider-wrap">
-              <input class="roi-slider" type="range" min="0" max="10" value="${rec.roi}" data-field="roi">
-              <span class="roi-slider-val">${rec.roi}</span>
-            </div>
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Pris (DKK)</label>
-            <input class="edit-input" type="number" value="${rec.cost}" data-field="cost">
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Deadline</label>
-            <input class="edit-input" type="date" value="${rec.deadline || ''}" data-field="deadline">
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Tidshorisont</label>
-            <select class="edit-select" data-field="timeHorizon">
-              <option value="dage"    ${rec.timeHorizon === 'dage'    ? 'selected' : ''}>Dage</option>
-              <option value="uger"    ${rec.timeHorizon === 'uger'    ? 'selected' : ''}>Uger</option>
-              <option value="måneder" ${rec.timeHorizon === 'måneder' ? 'selected' : ''}>Måneder</option>
-              <option value="år"      ${rec.timeHorizon === 'år'      ? 'selected' : ''}>År</option>
-            </select>
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Vanskelighed</label>
-            <select class="edit-select" data-field="impl">
-              <option value="lav"    ${rec.impl === 'lav'    ? 'selected' : ''}>Lav</option>
-              <option value="middel" ${rec.impl === 'middel' ? 'selected' : ''}>Middel</option>
-              <option value="høj"    ${rec.impl === 'høj'    ? 'selected' : ''}>Høj</option>
-            </select>
-          </div>
-          <div class="edit-field">
-            <label class="edit-label">Estimeret effekt</label>
-            <select class="edit-select" data-field="effect">
-              <option value="lav"    ${rec.effect === 'lav'    ? 'selected' : ''}>Lav</option>
-              <option value="middel" ${rec.effect === 'middel' ? 'selected' : ''}>Middel</option>
-              <option value="høj"    ${rec.effect === 'høj'    ? 'selected' : ''}>Høj</option>
-            </select>
-          </div>
-        </div>
-        <button class="edit-save-btn" onclick="saveEditedRecommendation(${rec.id})">Gem ændringer</button>
-      </div>
-    </div>
-  `;
-
-  const roiSlider = card.querySelector('.roi-slider');
-  if (roiSlider) {
-    roiSlider.addEventListener('input', function() {
-      card.querySelector('.roi-slider-val').textContent = this.value;
-    });
-  }
-  return card;
+function resetFilters() {
+  currentFilters = { audience: 'all', status: 'all', horizon: 'all', impl: 'all', effect: 'all', deadline: 'all' };
+  currentSort    = 'default';
+  renderMain();
 }
 
-function toggleExpand(id) {
-  document.querySelector(`[data-id="${id}"]`).classList.toggle('expanded');
+// ===== WORKSPACE CRUD =====
+function openNewWorkspaceModal() {
+  document.getElementById('wsIcon').value = '\uD83D\uDCCB';
+  document.getElementById('wsName').value = '';
+  document.getElementById('wsDesc').value = '';
+  document.getElementById('newWorkspaceModal').style.display = 'block';
+  setTimeout(function(){ document.getElementById('wsName').focus(); }, 50);
 }
 
-function toggleEditMode(event, id) {
-  event.stopPropagation();
-  const card = document.querySelector(`[data-id="${id}"]`);
-  if (!card.classList.contains('expanded')) card.classList.add('expanded');
-  card.classList.toggle('edit-mode');
+function closeNewWorkspaceModal() {
+  document.getElementById('newWorkspaceModal').style.display = 'none';
 }
 
-function saveEditedRecommendation(id) {
-  const card = document.querySelector(`[data-id="${id}"]`);
-  const rec  = recommendations.find(r => r.id === id);
-  card.querySelectorAll('[data-field]').forEach(field => {
-    const fn = field.dataset.field;
-    let val  = field.value;
-    if (fn === 'roi' || fn === 'cost') val = parseInt(val) || 0;
-    rec[fn] = val;
+function saveNewWorkspace() {
+  var name = document.getElementById('wsName').value.trim();
+  if (!name) { alert('Angiv et navn for arbejdsområdet.'); return; }
+  workspaces.push({
+    id:          nextWorkspaceId++,
+    icon:        document.getElementById('wsIcon').value.trim() || '\uD83D\uDCCB',
+    name:        name,
+    description: document.getElementById('wsDesc').value.trim(),
+    initiatives: [],
   });
-  saveData();
-  renderCards();
+  closeNewWorkspaceModal();
+  renderSidebar();
+  renderMain();
 }
 
-function cycleStatus(event, id) {
-  event.stopPropagation();
-  const rec = recommendations.find(r => r.id === id);
-  rec.status = rec.status === 'ongoing' ? 'done' : 'ongoing';
-  saveData();
-  renderCards();
+// ===== INITIATIVE CRUD =====
+function openNewInitiativeModal(wsId) {
+  newInitiativeWsId = wsId;
+  document.getElementById('initTitle').value       = '';
+  document.getElementById('initStatus').value      = 'ide';
+  document.getElementById('initShortDesc').value   = '';
+  document.getElementById('initDetails').value     = '';
+  document.getElementById('initImpact').value      = '';
+  document.getElementById('initROI').value         = '7';
+  document.getElementById('initCost').value        = '';
+  document.getElementById('initDeadline').value    = '';
+  document.getElementById('initTimeHorizon').value = '1';
+  document.getElementById('initTimeHorizonLabel').textContent = 'Uger';
+  document.getElementById('initImpl').value   = 'lav';
+  document.getElementById('initEffect').value = 'lav';
+  document.querySelectorAll('#initImplCircles .circ-btn').forEach(function(b,i){ b.classList.toggle('selected', i===0); });
+  document.querySelectorAll('#initEffectCircles .circ-btn').forEach(function(b,i){ b.classList.toggle('selected', i===0); });
+  document.querySelectorAll('#newInitiativeModal .form-checkbox input').forEach(function(cb){ cb.checked = false; });
+  document.getElementById('newInitiativeModal').style.display = 'block';
+  setTimeout(function(){ document.getElementById('initTitle').focus(); }, 50);
 }
 
-function deleteRecommendation(event, id) {
-  event.stopPropagation();
-  if (confirm('Er du sikker på, at du vil slette denne anbefaling?')) {
-    recommendations = recommendations.filter(r => r.id !== id);
-    saveData();
-    renderCards();
-  }
+function closeNewInitiativeModal() {
+  document.getElementById('newInitiativeModal').style.display = 'none';
+  newInitiativeWsId = null;
 }
 
-// ===== DASHBOARD =====
-function updateDashboard(sorted) {
-  const ongoing  = sorted.filter(r => r.status === 'ongoing').length;
-  const totalCost = sorted.reduce((s, r) => s + r.cost, 0);
-  const avgROI   = sorted.length > 0 ? (sorted.reduce((s, r) => s + r.roi, 0) / sorted.length).toFixed(1) : 0;
-  document.getElementById('d-active').textContent  = sorted.length;
-  document.getElementById('d-ongoing').textContent = ongoing;
-  document.getElementById('d-cost').textContent    = totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0';
-  document.getElementById('d-roi').textContent     = avgROI;
-}
+function saveNewInitiative() {
+  var title = document.getElementById('initTitle').value.trim();
+  if (!title) { alert('Tilføj en titel!'); return; }
+  var ws = getWorkspace(newInitiativeWsId);
+  if (!ws) return;
 
-// ===== TABLE VIEW =====
-function updateTable(sorted) {
-  const tbody = document.getElementById('tableBody');
-  tbody.innerHTML = '';
-  sorted.forEach(rec => {
-    const row = document.createElement('tr');
-    row.className = rec.status === 'done' ? 'done' : '';
-    row.innerHTML = `
-      <td>${rec.id}</td>
-      <td>${rec.title}</td>
-      <td>${rec.audiences.filter(a => a !== 'all').map(a => a.charAt(0).toUpperCase() + a.slice(1)).join(', ') || 'Alle'}</td>
-      <td>${rec.status === 'ongoing' ? 'Igangværende' : 'Afsluttet'}</td>
-      <td>${rec.roi}</td>
-      <td>${rec.cost.toLocaleString('da-DK')} DKK</td>
-      <td>${horizonLabel(rec.timeHorizon)}</td>
-      <td><span class="impl-badge ${implClass(rec.impl)}"><span class="badge-dot ${implDotClass(rec.impl)}"></span>${implLabel(rec.impl)}</span></td>
-      <td><span class="impl-badge ${implClass(rec.effect)}"><span class="badge-dot ${implDotClass(rec.effect)}"></span>${implLabel(rec.effect)}</span></td>
-      <td>${rec.deadline || '—'}</td>
-      <td style="white-space:nowrap;">
-        <button class="action-btn edit-btn"  onclick="toggleEditMode(event, ${rec.id})"       title="Rediger">✎</button>
-        <button class="action-btn reset-btn" onclick="cycleStatus(event, ${rec.id})"          title="Skift status">🔄</button>
-        <button class="action-btn done-btn"  onclick="deleteRecommendation(event, ${rec.id})" title="Slet">🗑️</button>
-      </td>
-    `;
-    tbody.appendChild(row);
+  var audiences = [];
+  if (document.getElementById('initAudSponsor').checked)   audiences.push('sponsor');
+  if (document.getElementById('initAudFan').checked)       audiences.push('fan');
+  if (document.getElementById('initAudFrivillig').checked) audiences.push('frivillig');
+
+  var horizonIdx = parseInt(document.getElementById('initTimeHorizon').value, 10);
+
+  ws.initiatives.push({
+    id:          nextInitiativeId++,
+    title:       title,
+    status:      document.getElementById('initStatus').value,
+    shortDesc:   document.getElementById('initShortDesc').value.trim(),
+    details:     document.getElementById('initDetails').value.trim(),
+    impact:      document.getElementById('initImpact').value.trim(),
+    roi:         Math.min(10, Math.max(0, parseInt(document.getElementById('initROI').value, 10) || 0)),
+    cost:        parseInt(document.getElementById('initCost').value, 10) || 0,
+    impl:        document.getElementById('initImpl').value,
+    effect:      document.getElementById('initEffect').value,
+    deadline:    document.getElementById('initDeadline').value,
+    timeHorizon: HORIZON_VALUES[horizonIdx],
+    audiences:   audiences.length > 0 ? audiences : ['all'],
+    createdAt:   new Date().toISOString(),
   });
+
+  closeNewInitiativeModal();
+  renderSidebar();
+  renderMain();
 }
 
-// ===== VIEW SWITCHING =====
-function switchToCardView() {
-  document.getElementById('viewCardBtn').classList.add('active');
-  document.getElementById('viewTableBtn').classList.remove('active');
-  document.getElementById('cardsViewContainer').style.display = 'block';
-  document.getElementById('tableViewContainer').classList.remove('active');
-  renderCards();
+function cycleInitiativeStatus(wsId, initId) {
+  var ws = getWorkspace(wsId);
+  if (!ws) return;
+  var init = ws.initiatives.filter(function(i){ return i.id === initId; })[0];
+  if (!init) return;
+  var order = ['ide', 'planlagt', 'igang', 'afsluttet'];
+  var idx   = order.indexOf(init.status);
+  init.status = order[(idx + 1) % order.length];
+  renderSidebar();
+  renderMain();
 }
 
-function switchToTableView() {
-  document.getElementById('viewTableBtn').classList.add('active');
-  document.getElementById('viewCardBtn').classList.remove('active');
-  document.getElementById('cardsViewContainer').style.display = 'none';
-  document.getElementById('tableViewContainer').classList.add('active');
-  const sorted = getSortedRecommendations(getFilteredRecommendations());
-  updateTable(sorted);
+function deleteInitiative(wsId, initId) {
+  if (!confirm('Er du sikker på, at du vil slette dette initiativ?')) return;
+  var ws = getWorkspace(wsId);
+  if (!ws) return;
+  ws.initiatives = ws.initiatives.filter(function(i){ return i.id !== initId; });
+  renderSidebar();
+  renderMain();
 }
 
-// ===== TIMELINE =====
-function openTimeline() {
-  const timelineItems = document.getElementById('timelineItems');
-  timelineItems.innerHTML = '';
-
-  const sorted = getSortedRecommendations(getFilteredRecommendations().filter(r => r.status === 'ongoing'));
-
-  if (sorted.length === 0) {
-    timelineItems.innerHTML = '<div style="text-align:center;padding:2rem;color:#999;">Ingen igangværende anbefalinger planlagt.</div>';
-  } else {
-    sorted.forEach((rec, idx) => {
-      const item = document.createElement('div');
-      item.className = `timeline-item ${idx % 2 === 0 ? 'left' : 'right'}`;
-      const dlStr = rec.deadline ? ` · Deadline: ${rec.deadline}` : '';
-      item.innerHTML = `
-        <div class="timeline-marker"></div>
-        <div class="timeline-content-box">
-          <div class="timeline-period">${horizonLabel(rec.timeHorizon)}${dlStr}</div>
-          <h3>${rec.title}</h3>
-          <p>${rec.shortDesc || ''}</p>
-          <div style="margin-top:0.5rem;display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="impl-badge ${implClass(rec.impl)}"><span class="badge-dot ${implDotClass(rec.impl)}"></span>${implLabel(rec.impl)}</span>
-            <span class="impl-badge ${implClass(rec.effect)}"><span class="badge-dot ${implDotClass(rec.effect)}"></span>${implLabel(rec.effect)} effekt</span>
-            <span class="timeline-badge ongoing">Igangværende</span>
-          </div>
-        </div>
-      `;
-      timelineItems.appendChild(item);
-    });
-  }
-
-  document.getElementById('timelineModal').style.display = 'block';
-}
-
-function closeTimeline() {
-  document.getElementById('timelineModal').style.display = 'none';
-}
-
-// ===== CIRCLE & SLIDER SETUP =====
+// ===== FORM CONTROLS SETUP =====
 function setupFormControls() {
-  // Circle selectors
-  [['#newImplCircles', 'newImpl'], ['#newEffectCircles', 'newEffect']].forEach(([sel, hiddenId]) => {
-    document.querySelectorAll(sel + ' .circ-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll(sel + ' .circ-btn').forEach(b => b.classList.remove('selected'));
+  [['#initImplCircles', 'initImpl'], ['#initEffectCircles', 'initEffect']].forEach(function(pair){
+    var sel      = pair[0];
+    var hiddenId = pair[1];
+    document.querySelectorAll(sel + ' .circ-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll(sel + ' .circ-btn').forEach(function(b){ b.classList.remove('selected'); });
         this.classList.add('selected');
         document.getElementById(hiddenId).value = this.dataset.val;
       });
     });
   });
 
-  // Horizon slider
-  const slider = document.getElementById('newTimeHorizon');
-  const label  = document.getElementById('newTimeHorizonLabel');
+  var slider = document.getElementById('initTimeHorizon');
+  var label  = document.getElementById('initTimeHorizonLabel');
   if (slider) {
-    slider.addEventListener('input', function() {
-      label.textContent = HORIZON_LABELS[this.value];
-    });
+    slider.addEventListener('input', function(){ label.textContent = HORIZON_LABELS[this.value]; });
   }
 }
 
-// ===== MODAL OUTSIDE CLICK =====
-window.onclick = function(event) {
-  if (event.target === document.getElementById('newRecommendationModal')) closeNewModal();
-  if (event.target === document.getElementById('timelineModal'))          closeTimeline();
+// ===== OUTSIDE CLICK CLOSES MODALS =====
+window.onclick = function(e) {
+  ['newWorkspaceModal', 'newInitiativeModal'].forEach(function(id){
+    var m = document.getElementById(id);
+    if (e.target === m) m.style.display = 'none';
+  });
 };
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', function() {
   setupFormControls();
-  applyFilters();
-  renderCards();
+  renderSidebar();
+  renderMain();
 });
 </script>
-
 </body>
 </html>
