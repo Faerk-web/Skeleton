@@ -121,6 +121,247 @@
   }
   .btn-reset:hover { background: rgba(255,255,255,0.15); color: white; }
 
+  /* TIMELINE MODAL */
+  .timeline-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+  }
+  .timeline-content {
+    background-color: var(--card-bg);
+    margin: 40px auto;
+    padding: 2rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  .timeline-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .timeline-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .timeline-close:hover { color: var(--text); }
+  
+  .timeline-track {
+    position: relative;
+    padding: 2rem 0;
+  }
+  .timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--border);
+    transform: translateX(-50%);
+  }
+  .timeline-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .timeline-item {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+  }
+  .timeline-item.left { flex-direction: row; }
+  .timeline-item.right { flex-direction: row-reverse; }
+  
+  .timeline-marker {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--navy);
+    border: 3px solid var(--card-bg);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+  
+  .timeline-content-box {
+    flex: 1;
+    padding: 1.5rem;
+    background: #fafbfd;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .timeline-content-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .timeline-content-box p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .timeline-period {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .timeline-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+  }
+  .timeline-badge.now { background: var(--now-bg); color: var(--now-text); }
+  .timeline-badge.soon { background: var(--soon-bg); color: var(--soon-text); }
+  .timeline-badge.ongoing { background: var(--ongoing-bg); color: var(--ongoing-text); }
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+  }
+  .modal-content {
+    background-color: var(--card-bg);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  .modal-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.5px;
+  }
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .close-btn:hover { color: var(--text); }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .form-input, .form-select, .form-textarea {
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+  .form-textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+  
+  .form-checkboxes {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+  .form-checkbox input { cursor: pointer; }
+  .form-checkbox label { cursor: pointer; font-size: 13px; }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 1.5rem;
+    justify-content: flex-end;
+  }
+  .modal-actions button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-save {
+    background: var(--navy);
+    color: var(--gold);
+  }
+  .btn-save:hover { background: var(--navy-light); }
+  .btn-cancel {
+    background: var(--border);
+    color: var(--text);
+  }
+  .btn-cancel:hover { background: var(--text-muted); color: white; }
+
   /* DASHBOARD */
   .dashboard {
     max-width: 1200px;
@@ -566,11 +807,20 @@
   .card-body { animation: slideDown 0.2s ease; }
   @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
+  @media (max-width: 768px) {
+    .timeline-line { left: 20px; }
+    .timeline-marker { left: 20px; }
+    .timeline-item { flex-direction: column !important; }
+    .timeline-item { margin-left: 50px; }
+  }
+
   @media (max-width: 600px) {
     .dashboard { grid-template-columns: repeat(2, 1fr); }
     header, .filter-bar, .sort-bar, .main { padding-left: 1rem; padding-right: 1rem; }
     .header-main { font-size: 26px; }
     .edit-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .modal-content { width: 95%; margin: 20% auto; }
   }
 </style>
 </head>
@@ -584,7 +834,8 @@
       <div class="header-sub">Sponsor-tiltrækning · Fan engagement · Frivilligrekruttering</div>
     </div>
     <div class="header-actions">
-      <button class="btn-reset" onclick="resetAll()">↺ Nulstil alt</button>
+      <button class="btn-reset" onclick="openTimeline()">📅 Timeline</button>
+      <button class="btn-reset" onclick="openNewModal()">+ Ny anbefaling</button>
     </div>
   </div>
 
@@ -638,6 +889,93 @@
       <option value="priority">Prioritet (Nu → Løbende)</option>
     </select>
   </div>
+
+  <div id="timelineModal" class="timeline-modal">
+    <div class="timeline-content">
+      <div class="timeline-header">
+        <h2>📅 Implementeringsplan til 2030</h2>
+        <button class="timeline-close" onclick="closeTimeline()">×</button>
+      </div>
+      <div class="timeline-track">
+        <div class="timeline-line"></div>
+        <div class="timeline-items" id="timelineItems"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="newRecommendationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Ny anbefaling</h2>
+        <button class="close-btn" onclick="closeNewModal()">×</button>
+      </div>
+      <div class="form-grid">
+        <div class="form-field full">
+          <label class="form-label">Titel</label>
+          <input class="form-input" id="newTitle" placeholder="Eksempel: Stat-bar med live resultater" type="text">
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Målgruppe</label>
+          <div class="form-checkboxes">
+            <div class="form-checkbox">
+              <input type="checkbox" id="newAudSponsor" value="sponsor">
+              <label for="newAudSponsor">Sponsor</label>
+            </div>
+            <div class="form-checkbox">
+              <input type="checkbox" id="newAudFan" value="fan">
+              <label for="newAudFan">Fan</label>
+            </div>
+            <div class="form-checkbox">
+              <input type="checkbox" id="newAudFrivillig" value="frivillig">
+              <label for="newAudFrivillig">Frivillig</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Prioritet</label>
+          <select class="form-select" id="newPriority">
+            <option value="now">Nu</option>
+            <option value="soon">Snart</option>
+            <option value="ongoing">Løbende</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Kompleksitet</label>
+          <select class="form-select" id="newComplexity">
+            <option value="low">Lav</option>
+            <option value="mid">Middel</option>
+          </select>
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Estimeret pris</label>
+          <input class="form-input" id="newCost" placeholder="Eksempel: 0–3.000 kr." type="text">
+        </div>
+        <div class="form-field full">
+          <label class="form-label">ROI-indeks</label>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="range" class="roi-slider" id="newROI" min="1" max="10" step="0.5" value="5" oninput="document.getElementById('newROIVal').textContent=this.value+'/10'">
+            <span class="roi-slider-val" id="newROIVal">5/10</span>
+          </div>
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Kort beskrivelse</label>
+          <textarea class="form-textarea" id="newShortDesc" placeholder="Skaber øjeblikkelig troværdighed..."></textarea>
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Detaljeret tekst</label>
+          <textarea class="form-textarea" id="newDetail" placeholder="En synlig stat-bar øverst på forsiden..."></textarea>
+        </div>
+        <div class="form-field full">
+          <label class="form-label">Forventet effekt</label>
+          <textarea class="form-textarea" id="newImpact" placeholder="Øget tillid fra første sekund..."></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeNewModal()">Annuller</button>
+        <button class="btn-save" onclick="saveNewRecommendation()">Opret anbefaling</button>
+      </div>
+    </div>
+  </div>
 </header>
 
 <div class="main">
@@ -667,7 +1005,7 @@ const ORIGINAL_DATA = [
     complexity: "low",
     cost: "0–3.000 kr.",
     shortDesc: "Skaber øjeblikkelig troværdighed. Sponsorer ser dokumentation på 10 sekunder. Giver urgency med OL-nedtælling.",
-    detail: "En synlig stat-bar øverst på forsiden kommunikerer øjeblikkeligt, at dette er et projekt på verdensklasseniveau. Rasmus' top 6-placering på verdensranglisten og Nannas første seniorpodieplads er tal, der taler for sig selv – men kun hvis de er synlige. Kombineret med en live OL-nedtælling skabes der urgency og en grund til at vende tilbage. Sponsorer, der lander på forsiden, skal ikke lede efter dokumentation – den skal møde dem med det samme. Teknisk kan dette løses manuelt (opdateres efter hvert løb) eller via en IBSF API-integration. Manuel opdatering er gratis og tager 5 minutter. API-løsning kræver en udvikler og koster 1.500–3.000 kr. engangs.",
+    detail: "En synlig stat-bar øverst på forsiden kommunikerer øjeblikkeligt, at dette er et projekt på verdensklasseniveau. Rasmus' top 6-placering på verdensranglisten og Nannas første senior-vægt er verdensklasse.",
     impact: "Øget tillid fra første sekund. Lavere bounce rate. Stærkere pitch til potentielle partnere.",
     done: false
   },
@@ -680,7 +1018,7 @@ const ORIGINAL_DATA = [
     complexity: "low",
     cost: "0 kr.",
     shortDesc: "Fjerner usikkerhed og giver salgschefer noget konkret at præsentere internt.",
-    detail: "Den nuværende partnerskabsside beskriver filosofien bag samarbejde, men giver ingen konkret information om hvad et partnerskab indeholder eller koster. Det er en barriere. En potentiel sponsor, der ikke kender projektet, vil ikke tage den første kontakt, hvis de ikke ved hvad de går ind til. Løsningen er tre tydelige pakkeniveauer – fx Startpakken (fra 15.000 kr./år), Team-partner (fra 40.000 kr./år) og Hovedpartner (fra 100.000 kr./år) – med konkrete fordele beskrevet pr. niveau: logoeksponering, sociale medier, foredrag, netværksadgang og co-branding muligheder. Priserne kan angives som \"fra X kr.\" for at bevare fleksibilitet. Det vigtigste er, at en salgschef kan åbne siden og inden for 60 sekunder forstå hvad de får og hvad det koster.",
+    detail: "Den nuværende partnerskabsside beskriver filosofien bag samarbejde, men giver ingen konkret information om hvad et partnerskab indeholder eller koster. Det er en barriere.",
     impact: "Flere indgående sponsorhenvendelser. Kortere salgsproces. Større konvertering fra besøg til dialog.",
     done: false
   },
@@ -693,7 +1031,7 @@ const ORIGINAL_DATA = [
     complexity: "low",
     cost: "0 kr.",
     shortDesc: "Motiverer og præciserer hvad man tilbyder sig til som frivillig.",
-    detail: "Den nuværende frivilligtekst er en direkte kopi af fanklubsteksten, hvilket signalerer at siden ikke er færdigudviklet. En potentiel frivillig, der læser den, får ingen svar på det vigtigste spørgsmål: hvad skal jeg konkret hjælpe med? Frivilligteksten skal erstattes med en dedikeret invitation, der beskriver specifikke roller: sociale medier og content creation, event-support ved løb og arrangementer, vedligehold og udvikling af startbanen i Aarhus, logistik og koordinering, pressekontakt og kommunikationshjælp. For hver rolle beskrives kort hvad det kræver og hvad man får ud af det. Teksten skal slutte med en personlig invitation fra Nanna og Rasmus – ikke en generisk formular.",
+    detail: "Den nuværende frivilligtekst er en direkte kopi af fanklubsteksten, hvilket signalerer at siden ikke er færdigudviklet.",
     impact: "Flere og mere motiverede frivillige. Stærkere fællesskabsfølelse. Mere organisk spredning af projektet.",
     done: false
   },
@@ -706,7 +1044,7 @@ const ORIGINAL_DATA = [
     complexity: "low",
     cost: "0 kr.",
     shortDesc: "Forvandler forsiden fra statisk præsentation til levende fortælling med real-time relevans.",
-    detail: "OL-kvalifikationen er i fuld gang – men det fremgår ikke tydeligt af forsiden. En ny besøgende forstår ikke automatisk dramatikken: at hver eneste konkurrence tæller, at point akkumuleres hen mod en afgørelse, og at Danmark måske for første gang i historien sender to skeleton-atleter til OL. En kort statussektion øverst på forsiden – opdateret efter hvert løb – løser dette. Den behøver ikke være lang: tre linjer om den aktuelle situation, Rasmus' og Nannas nuværende ranking, og hvad der er på spil i de kommende uger. Det skaber en live-følelse og giver fans og sponsorer en grund til at vende tilbage løbende. Tidsforbrug: ca. 15 minutter pr. løbsweekend.",
+    detail: "OL-kvalifikationen er i fuld gang – men det fremgår ikke tydeligt af forsiden.",
     impact: "Øget gentagne besøg. Stærkere emotionel investering fra fans. Mere overbevisende sponsor-pitch.",
     done: false
   },
@@ -719,7 +1057,7 @@ const ORIGINAL_DATA = [
     complexity: "low",
     cost: "0–1.500 kr.",
     shortDesc: "Fjerner gætteri og øger betalingsvilje ved tilmelding til More Than One.",
-    detail: "Fanklubben More Than One præsenteres med en stærk fortælling, men tilmeldingsprocessen beder brugeren om at vælge mellem Basis, Plus og Premium – uden at forklare hvad de tre niveauer indeholder. Det er som at stå foran en menu uden priser eller beskrivelser. En sammenligningstabel løser problemet. Basis kan fx indeholde: digital velkomstpakke, nyhedsbrev og adgang til eksklusivt indhold. Plus tilføjer: merchandise (t-shirt og hue), tidlig adgang til nyheder og mulighed for at deltage i virtuelle Q&A-sessioner med atleterne. Premium tilføjer: personlig tak fra Nanna og Rasmus, invitation til årsarrangement og navn i credits på hjemmesiden. Priserne sættes synligt, og der tilbydes en \"mest populær\"-badge på det midterste niveau for at guide valget.",
+    detail: "Fanklubben More Than One præsenteres med en stærk fortælling, men tilmeldingsprocessen beder brugeren om at vælge mellem Basis, Plus og Premium – uden at forklare hvad de betyder.",
     impact: "Flere tilmeldinger. Højere gennemsnitlig betalingsvilje. Mindre usikkerhed ved konverteringstrinnet.",
     done: false
   },
@@ -732,7 +1070,7 @@ const ORIGINAL_DATA = [
     complexity: "mid",
     cost: "2.000–8.000 kr.",
     shortDesc: "Eliminerer friktion og muliggør impulsdonation med ét klik.",
-    detail: "Den nuværende støtteformular beder brugere om at lave en bankoverførsel eller bestille en faktura. Det er en massiv friktion i 2025, hvor de fleste impulsive donationer dør i det øjeblik, der kræves mere end ét klik. MobilePay er standarden for danske forbrugere og kan integreres via et WordPress-plugin for 2.000–4.000 kr. Stripe tilbyder international kortbetaling og abonnementsbetalinger (til månedlige støttemedlemmer) og koster 1,4–2,9% pr. transaktion uden opstartsgebyr. Bankoverførsel og faktura bevares som sekundære muligheder. Effekten af denne ændring alene vil sandsynligvis fordoble konverteringsraten fra støttesiden. En bruger, der er rørt af en sæsonopdatering og vil støtte med 100 kr. her og nu, skal ikke tvinges til netbanken.",
+    detail: "Den nuværende støtteformular beder brugere om at lave en bankoverførsel eller bestille en faktura. Det er en massiv friktion i 2025.",
     impact: "Sandsynligvis fordobling af konverteringsraten fra støttesiden. Øget impulsdonation. Stabil månedlig indkomst fra abonnementer.",
     done: false
   },
@@ -745,7 +1083,7 @@ const ORIGINAL_DATA = [
     complexity: "mid",
     cost: "0–5.000 kr.",
     shortDesc: "Skaber menneskelig forbindelse – sponsorer investerer i mennesker, ikke kun eksponering.",
-    detail: "Nanna og Rasmus præsenteres primært via deres Instagram-feeds, som er levende og autentiske, men ustrukturerede. Der er ingen dedikeret profiloplevelse, der fortæller deres fulde historie: hvor kommer de fra, hvad driver dem, hvad har de ofret for at nå hertil, og hvad er deres mål ud over OL? En sponsor, der overvejer et partnerskab, vil gerne kende menneskene bag resultaterne. Profilen for hver atlet bør indeholde: et stærkt portræt-billede, en personlig tagline, en kort tidslinje (fx \"Fra foreningsatlet i Aarhus til top 6 i verden på tre sæsoner\"), et direkte citat om motivation og mål, og en beskrivelse af hvad de bringer til et partnerskab udover eksponering – fx personlighed, netværk, foredragskompetence og tilstedeværelse på sociale medier.",
+    detail: "Nanna og Rasmus præsenteres primært via deres Instagram-feeds, som er levende og autentiske, men ustrukturerede.",
     impact: "Stærkere emotionel forbindelse. Mere tid på siden. Bedre forudsætning for sponsorkonvertering.",
     done: false
   },
@@ -758,7 +1096,7 @@ const ORIGINAL_DATA = [
     complexity: "mid",
     cost: "0–500 kr./md.",
     shortDesc: "Bygger vane hos fans og skaber en kommunikationskanal teamet ejer selv.",
-    detail: "Løbsplanen sender i dag fans direkte til IBSF's hjemmeside – og de vender ikke nødvendigvis tilbage til prosliding.dk. En simpel \"Følg næste løb\"-widget med mulighed for e-mail-påmindelse før hvert løb og resultatopdatering bagefter løser dette. Mailchimp er gratis op til 500 abonnenter og integrerer nemt med WordPress. Arbejdsgangen er enkel: fredag aften sendes en kort mail med \"I morgen kl. 13 kører Rasmus i Lillehammer – her er hvad du skal vide.\" Søndag aften sendes et resultat. Det tager 20 minutter og bygger en vane. En voksende e-mailliste er desuden guld værd til crowdfunding-kampagner og sponsor-dokumentation.",
+    detail: "Løbsplanen sender i dag fans direkte til IBSF's hjemmeside – og de vender ikke nødvendigvis tilbage til prosliding.dk.",
     impact: "Gentagne besøg. Voksende community. Direkte kanal til fans uafhængigt af sociale medier.",
     done: false
   },
@@ -771,7 +1109,7 @@ const ORIGINAL_DATA = [
     complexity: "mid",
     cost: "500–2.000 kr.",
     shortDesc: "Konkret mål og synlig fremdrift aktiverer social proof-effekten.",
-    detail: "Crowdfunding beskrives på siden som et koncept, men der er ingen aktiv kampagne, ingen progress bar og intet konkret mål. Det føles som en parkeret idé. En aktiv kampagne kræver tre ting: et specifikt mål (fx \"Hjælp os til træningslejr i Sigulda – mål: 30.000 kr.\"), en synlig progress bar der viser fremgang i realtid, og en kort fortælling om præcis hvad pengene går til og hvad det betyder for sæsonen. Kampagner bør knyttes til konkrete begivenheder: en kommende træningslejr, et nyt udstyrsbehov eller en ekstraordinær mulighed. En progress bar, der nærmer sig målet, udløser social proof-effekten: folk støtter fordi de kan se at andre gør det.",
+    detail: "Crowdfunding beskrives på siden som et koncept, men der er ingen aktiv kampagne, ingen progress bar og intet konkret mål.",
     impact: "Højere konvertering fra passive besøgende. Gentagende bidrag. Stærkere fællesskabsfølelse.",
     done: false
   },
@@ -784,7 +1122,7 @@ const ORIGINAL_DATA = [
     complexity: "low",
     cost: "0 kr.",
     shortDesc: "Reducerer skepsis og validerer projektet eksternt fra første sekund.",
-    detail: "En ny besøgende – og især en potentiel sponsor – ser ingen dokumentation for at andre allerede tror på dette projekt. Der er ingen partnerlogoer, ingen mediecitater og ingen \"som set i\"-sektion. Det er en overset mulighed, fordi selv minimal social proof ændrer dramatisk på tilliden hos nye besøgende. Løsningen er enkel: en logobar med eksisterende partnere (selv 2–3 logoer gør en forskel), et enkelt sponsorcitat, og et medie-badge hvis der har været omtale i fx TV2 Sport, DR Sport eller lokale medier. Partnerlogoer kræver blot en tilladelse pr. e-mail. Hele sektionen kan designes og implementeres på én dag uden teknisk hjælp.",
+    detail: "En ny besøgende – og især en potentiel sponsor – ser ingen dokumentation for at andre allerede tror på dette projekt.",
     impact: "Hurtigere tillid. Stærkere første indtryk. Lavere barriere for sponsorkontakt.",
     done: false
   }
@@ -807,12 +1145,142 @@ function saveData() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
 }
 
-function resetAll() {
-  if (!confirm('Nulstil alle ændringer til original data?')) return;
-  data = JSON.parse(JSON.stringify(ORIGINAL_DATA));
+function openTimeline() {
+  const modal = document.getElementById('timelineModal');
+  const timelineItems = document.getElementById('timelineItems');
+  timelineItems.innerHTML = '';
+
+  const now = data.filter(d => !d.done && d.priority === 'now');
+  const soon = data.filter(d => !d.done && d.priority === 'soon');
+  const ongoing = data.filter(d => !d.done && d.priority === 'ongoing');
+
+  let html = '';
+  let isLeft = true;
+
+  if (now.length > 0) {
+    html += '<div style="text-align:center; margin:1rem 0; font-family: Barlow Condensed; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:2px;">DENNE MÅNED</div>';
+    now.forEach(item => {
+      html += `
+        <div class="timeline-item ${isLeft ? 'left' : 'right'}">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <div class="timeline-period">Nu - Implementér denne måned</div>
+            <h3>${item.title}</h3>
+            <p>${item.shortDesc}</p>
+            <span class="timeline-badge now">Prioritet Nu</span>
+          </div>
+        </div>
+      `;
+      isLeft = !isLeft;
+    });
+  }
+
+  if (soon.length > 0) {
+    html += '<div style="text-align:center; margin:2rem 0 1rem 0; font-family: Barlow Condensed; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:2px;">30–60 DAGE</div>';
+    soon.forEach(item => {
+      html += `
+        <div class="timeline-item ${isLeft ? 'left' : 'right'}">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <div class="timeline-period">Snart - Næste kvarter</div>
+            <h3>${item.title}</h3>
+            <p>${item.shortDesc}</p>
+            <span class="timeline-badge soon">Prioritet Snart</span>
+          </div>
+        </div>
+      `;
+      isLeft = !isLeft;
+    });
+  }
+
+  if (ongoing.length > 0) {
+    html += '<div style="text-align:center; margin:2rem 0 1rem 0; font-family: Barlow Condensed; font-size:14px; font-weight:700; color:var(--gold); letter-spacing:2px;">LØBENDE DRIFT</div>';
+    ongoing.forEach(item => {
+      html += `
+        <div class="timeline-item ${isLeft ? 'left' : 'right'}">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content-box">
+            <div class="timeline-period">Løbende - Vedligehold & udvikling</div>
+            <h3>${item.title}</h3>
+            <p>${item.shortDesc}</p>
+            <span class="timeline-badge ongoing">Løbende drift</span>
+          </div>
+        </div>
+      `;
+      isLeft = !isLeft;
+    });
+  }
+
+  if (html === '') {
+    html = '<div style="text-align:center; padding:2rem; color:var(--text-muted);">Ingen anbefalinger at vise på tidslinjen</div>';
+  }
+
+  timelineItems.innerHTML = html;
+  modal.style.display = 'block';
+}
+
+function closeTimeline() {
+  document.getElementById('timelineModal').style.display = 'none';
+}
+
+function openNewModal() {
+  document.getElementById('newRecommendationModal').style.display = 'block';
+}
+
+function closeNewModal() {
+  document.getElementById('newRecommendationModal').style.display = 'none';
+  document.getElementById('newTitle').value = '';
+  document.getElementById('newAudSponsor').checked = false;
+  document.getElementById('newAudFan').checked = false;
+  document.getElementById('newAudFrivillig').checked = false;
+  document.getElementById('newPriority').value = 'now';
+  document.getElementById('newComplexity').value = 'low';
+  document.getElementById('newCost').value = '';
+  document.getElementById('newROI').value = 5;
+  document.getElementById('newROIVal').textContent = '5/10';
+  document.getElementById('newShortDesc').value = '';
+  document.getElementById('newDetail').value = '';
+  document.getElementById('newImpact').value = '';
+}
+
+function saveNewRecommendation() {
+  const title = document.getElementById('newTitle').value.trim();
+  if (!title) {
+    alert('Indtast venligst en titel');
+    return;
+  }
+
+  const audience = [];
+  if (document.getElementById('newAudSponsor').checked) audience.push('sponsor');
+  if (document.getElementById('newAudFan').checked) audience.push('fan');
+  if (document.getElementById('newAudFrivillig').checked) audience.push('frivillig');
+
+  if (audience.length === 0) {
+    alert('Vælg venligst mindst en målgruppe');
+    return;
+  }
+
+  const newId = data.length > 0 ? Math.max(...data.map(d => d.id)) + 1 : 1;
+  
+  const newRec = {
+    id: newId,
+    title: title,
+    audience: audience,
+    roi: parseFloat(document.getElementById('newROI').value),
+    priority: document.getElementById('newPriority').value,
+    complexity: document.getElementById('newComplexity').value,
+    cost: document.getElementById('newCost').value || '0 kr.',
+    shortDesc: document.getElementById('newShortDesc').value || 'Ny anbefaling',
+    detail: document.getElementById('newDetail').value || 'Ingen detaljer tilgivet endnu',
+    impact: document.getElementById('newImpact').value || 'Ingen forventet effekt specificeret endnu',
+    done: false
+  };
+
+  data.push(newRec);
   saveData();
   renderCards();
   updateDashboard();
+  closeNewModal();
 }
 
 function getAudTags(aud) {
@@ -974,7 +1442,6 @@ function renderCards() {
     doneSection.style.display = 'none';
   }
 
-  // restore expanded/edit state
   expandedCards.forEach(id => {
     const el = document.getElementById('card-'+id);
     if (el) el.classList.add('expanded');
@@ -1007,83 +1474,93 @@ function toggleEdit(id) {
     el.classList.remove('edit-mode');
     editCards.delete(id);
   } else {
-    el.classList.add('expanded','edit-mode');
-    expandedCards.add(id);
+    el.classList.add('edit-mode');
     editCards.add(id);
+  }
+}
+
+function toggleDone(id) {
+  const item = data.find(d => d.id === id);
+  if (item) {
+    item.done = !item.done;
+    saveData();
+    renderCards();
+  }
+}
+
+function resetCard(id) {
+  const idx = data.findIndex(d => d.id === id);
+  if (idx >= 0) {
+    const original = ORIGINAL_DATA.find(d => d.id === id);
+    if (original) {
+      data[idx] = JSON.parse(JSON.stringify(original));
+      saveData();
+      renderCards();
+    }
   }
 }
 
 function saveCard(id) {
   const item = data.find(d => d.id === id);
-  if (!item) return;
-  item.title = document.getElementById('e-title-'+id).value;
-  item.priority = document.getElementById('e-pri-'+id).value;
-  item.complexity = document.getElementById('e-comp-'+id).value;
-  item.cost = document.getElementById('e-cost-'+id).value;
-  item.roi = parseFloat(document.getElementById('e-roi-'+id).value);
-  item.shortDesc = document.getElementById('e-short-'+id).value;
-  item.detail = document.getElementById('e-detail-'+id).value;
-  item.impact = document.getElementById('e-impact-'+id).value;
-  saveData();
-  editCards.delete(id);
-  renderCards();
-  expandedCards.add(id);
-  const el = document.getElementById('card-'+id);
-  if (el) el.classList.add('expanded');
-}
-
-function toggleDone(id) {
-  const item = data.find(d => d.id === id);
-  if (!item) return;
-  item.done = !item.done;
-  expandedCards.delete(id);
-  editCards.delete(id);
-  saveData();
-  renderCards();
-}
-
-function resetCard(id) {
-  const original = ORIGINAL_DATA.find(d => d.id === id);
-  if (!original) return;
-  const idx = data.findIndex(d => d.id === id);
-  data[idx] = JSON.parse(JSON.stringify(original));
-  expandedCards.delete(id);
-  editCards.delete(id);
-  saveData();
-  renderCards();
+  if (item) {
+    item.title = document.getElementById('e-title-'+id).value;
+    item.priority = document.getElementById('e-pri-'+id).value;
+    item.complexity = document.getElementById('e-comp-'+id).value;
+    item.cost = document.getElementById('e-cost-'+id).value;
+    item.roi = parseFloat(document.getElementById('e-roi-'+id).value);
+    item.shortDesc = document.getElementById('e-short-'+id).value;
+    item.detail = document.getElementById('e-detail-'+id).value;
+    item.impact = document.getElementById('e-impact-'+id).value;
+    saveData();
+    editCards.delete(id);
+    renderCards();
+  }
 }
 
 function updateDashboard() {
   const active = data.filter(d => !d.done);
-  const nowCount = active.filter(d => d.priority === 'now').length;
-  const avgRoi = active.length ? (active.reduce((s,d) => s+d.roi,0)/active.length).toFixed(1) : 0;
-  const totalMin = active.reduce((s,d) => s + getMinCost(d.cost), 0);
+  const now = active.filter(d => d.priority === 'now').length;
+  const cost = active.reduce((sum, d) => sum + getMinCost(d.cost), 0);
+  const roi = active.length ? (active.reduce((sum, d) => sum + d.roi, 0) / active.length).toFixed(1) : 0;
+
   document.getElementById('d-active').textContent = active.length;
-  document.getElementById('d-now').textContent = nowCount;
-  document.getElementById('d-cost').textContent = totalMin > 0 ? totalMin.toLocaleString('da-DK')+ ' kr.' : '0 kr.';
-  document.getElementById('d-roi').textContent = avgRoi;
+  document.getElementById('d-now').textContent = now;
+  document.getElementById('d-cost').textContent = cost.toLocaleString('da-DK') + ' kr.';
+  document.getElementById('d-roi').textContent = roi;
 }
 
-// Filter buttons
-document.getElementById('aud-filters').addEventListener('click', e => {
-  const btn = e.target.closest('.fbtn');
-  if (!btn) return;
-  document.querySelectorAll('#aud-filters .fbtn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  audFilter = btn.dataset.aud;
-  renderCards();
-});
-document.getElementById('pri-filters').addEventListener('click', e => {
-  const btn = e.target.closest('.fbtn');
-  if (!btn) return;
-  document.querySelectorAll('#pri-filters .fbtn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  priFilter = btn.dataset.pri;
-  renderCards();
+function setupFilters() {
+  document.querySelectorAll('#aud-filters .fbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#aud-filters .fbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      audFilter = btn.dataset.aud;
+      renderCards();
+    });
+  });
+
+  document.querySelectorAll('#pri-filters .fbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#pri-filters .fbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      priFilter = btn.dataset.pri;
+      renderCards();
+    });
+  });
+}
+
+window.addEventListener('click', function(e) {
+  const modal = document.getElementById('newRecommendationModal');
+  const timelineModal = document.getElementById('timelineModal');
+  if (e.target === modal) closeNewModal();
+  if (e.target === timelineModal) closeTimeline();
 });
 
-loadData();
-renderCards();
+document.addEventListener('DOMContentLoaded', function() {
+  loadData();
+  setupFilters();
+  renderCards();
+});
 </script>
 </body>
 </html>
