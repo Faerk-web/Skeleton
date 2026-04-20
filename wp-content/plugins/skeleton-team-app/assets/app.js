@@ -12,9 +12,9 @@ const KANBAN_COLS = [
 ];
 
 // Config injected via wp_localize_script (skeletonApp.restUrl, skeletonApp.nonce)
-var REST_URL   = (typeof skeletonApp !== 'undefined') ? skeletonApp.restUrl   : '';
-var WP_NONCE   = (typeof skeletonApp !== 'undefined') ? skeletonApp.nonce     : '';
-var CURRENT_USER = (typeof skeletonApp !== 'undefined') ? skeletonApp.currentUser : { name: 'Bruger', email: '' };
+const REST_URL     = (typeof skeletonApp !== 'undefined') ? skeletonApp.restUrl     : '';
+const WP_NONCE     = (typeof skeletonApp !== 'undefined') ? skeletonApp.nonce       : '';
+const CURRENT_USER = (typeof skeletonApp !== 'undefined') ? skeletonApp.currentUser : { name: 'Bruger', email: '' };
 
 // ===== TIMER STATE =====
 var timerInterval = null;
@@ -53,7 +53,7 @@ let workspaces       = [];
 let modalOpen = false;
 
 // Polling interval handle.
-var pollHandle = null;
+let pollHandle = null;
 
 let appState = {
   page:        'dashboard',  // 'dashboard' | 'workspaces' | 'workspace'

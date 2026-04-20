@@ -144,15 +144,17 @@ function skeleton_app_is_team_page() {
 }
 
 function skeleton_app_get_team_url() {
-	// Try to find a page with the [skeleton_app] shortcode.
+	// Find a published page that contains the [skeleton_app] shortcode.
 	$pages = get_posts( array(
 		'post_type'      => 'page',
 		'post_status'    => 'publish',
-		's'              => 'skeleton_app',
-		'posts_per_page' => 1,
+		'posts_per_page' => 50,
+		'fields'         => 'all',
 	) );
-	if ( ! empty( $pages ) ) {
-		return get_permalink( $pages[0]->ID );
+	foreach ( $pages as $page ) {
+		if ( has_shortcode( $page->post_content, 'skeleton_app' ) ) {
+			return get_permalink( $page->ID );
+		}
 	}
 	return home_url( '/team/' );
 }
@@ -413,7 +415,7 @@ function skeleton_app_enqueue_assets() {
 			'nonce'       => wp_create_nonce( 'wp_rest' ),
 			'currentUser' => array(
 				'id'    => $current_user->ID,
-				'name'  => $current_user->display_name ?: $current_user->user_login,
+				'name'  => $current_user->display_name ? $current_user->display_name : $current_user->user_login,
 				'email' => $current_user->user_email,
 			),
 		)
