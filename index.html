@@ -1220,27 +1220,11 @@ function renderDashboard(container) {
       '</div>';
   }
 
-  // Bar chart weekly data (static illustrative)
-  var barData = [
-    { day: 'Man', val: 4,  pct: 57  },
-    { day: 'Tir', val: 7,  pct: 100 },
-    { day: 'Ons', val: 5,  pct: 71  },
-    { day: 'Tor', val: 6,  pct: 86, active: true },
-    { day: 'Fre', val: 3,  pct: 43  },
-    { day: 'Lør', val: 1,  pct: 14  },
-    { day: 'Søn', val: 2,  pct: 28  },
-  ];
-  var barsHtml = barData.map(function(b){
-    return '<div class="bar-item">' +
-      '<div class="bar-val">' + b.val + '</div>' +
-      '<div class="bar-fill' + (b.active ? ' bar-active' : '') + '" style="height:' + b.pct + '%;"></div>' +
-      '<div class="bar-label">' + b.day + '</div>' +
-      '</div>';
-  }).join('');
-
-  // Progress ring (41%)
-  var ringPct  = 41;
-  var ringR    = 46;
+  // Progress ring – computed from real data
+  var totalAll  = all.length;
+  var doneCount = all.filter(function(i){ return i.status === 'afsluttet'; }).length;
+  var ringPct   = totalAll > 0 ? Math.round((doneCount / totalAll) * 100) : 0;
+  var ringR     = 46;
   var ringCirc = 2 * Math.PI * ringR; // ≈ 289
   var ringOff  = ringCirc * (1 - ringPct / 100);
   var ringHtml =
@@ -1257,25 +1241,32 @@ function renderDashboard(container) {
       '<div class="progress-ring-sub">Samlet projektfremgang<br>baseret på afsluttede initiativer</div>' +
     '</div>';
 
-  // Team collaboration widget (static illustrative)
-  var teamMembers = [
-    { initials: 'AB', color: '#166534', name: 'Anders Bjerg',   role: 'Projektleder',  statusClass: 'ts-done',    statusLabel: 'Afsluttet' },
-    { initials: 'MC', color: '#1d4ed8', name: 'Maria Christensen', role: 'Analytiker',  statusClass: 'ts-ongoing', statusLabel: 'I gang' },
-    { initials: 'JP', color: '#9333ea', name: 'Jonas Poulsen',  role: 'Udvikler',      statusClass: 'ts-ongoing', statusLabel: 'I gang' },
-    { initials: 'SN', color: '#b45309', name: 'Sara Nielsen',   role: 'Designer',      statusClass: 'ts-waiting', statusLabel: 'Afventer' },
-  ];
-  var teamHtml = '<div class="team-list">' +
-    teamMembers.map(function(m){
-      return '<div class="team-member">' +
-        '<div class="team-avatar" style="background:' + m.color + ';">' + m.initials + '</div>' +
-        '<div class="team-info">' +
-          '<div class="team-name">' + escHtml(m.name) + '</div>' +
-          '<div class="team-role">' + escHtml(m.role) + '</div>' +
-        '</div>' +
-        '<span class="team-status ' + m.statusClass + '">' + m.statusLabel + '</span>' +
-        '</div>';
-    }).join('') +
-    '</div>';
+  // Recent activity – based on real initiative data (sorted by createdAt)
+  var recentInitiatives = all
+    .slice()
+    .sort(function(a,b){
+      return new Date(b.createdAt||0) - new Date(a.createdAt||0);
+    })
+    .slice(0,5);
+  var activityHtml;
+  if (recentInitiatives.length === 0) {
+    activityHtml = '<div style="padding:1rem 0;color:var(--text-muted);font-size:13px;">Ingen aktivitet endnu.</div>';
+  } else {
+    var statusIcons = { ide: '💡', planlagt: '📅', igang: '⚡', afsluttet: '✅' };
+    activityHtml = '<div class="team-list">' +
+      recentInitiatives.map(function(i){
+        var icon = statusIcons[i.status] || '📋';
+        return '<div class="team-member">' +
+          '<div class="team-avatar" style="background:var(--accent-pale);font-size:16px;">' + icon + '</div>' +
+          '<div class="team-info">' +
+            '<div class="team-name">' + escHtml(i.title) + '</div>' +
+            '<div class="team-role">' + i.workspaceIcon + ' ' + escHtml(i.workspaceName) + '</div>' +
+          '</div>' +
+          '<span class="status-badge status-' + i.status + '">' + statusLabel(i.status) + '</span>' +
+          '</div>';
+      }).join('') +
+      '</div>';
+  }
 
   // Timer widget
   var timerHtml =
@@ -1298,38 +1289,37 @@ function renderDashboard(container) {
       // Stat cards row
       '<div class="dash-stat-grid">' +
         '<div class="dash-stat-card">' +
-          '<div class="dsc-header"><span class="dsc-icon">&#x1F4C1;</span><span class="dsc-trend trend-up">&#x2191; +2</span></div>' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F4C1;</span></div>' +
           '<div class="dsc-value">' + workspaces.length + '</div>' +
           '<div class="dsc-label">Arbejdsområder</div>' +
         '</div>' +
         '<div class="dash-stat-card">' +
-          '<div class="dsc-header"><span class="dsc-icon">&#x1F680;</span><span class="dsc-trend trend-up">&#x2191; +3</span></div>' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F680;</span></div>' +
           '<div class="dsc-value">' + activeCount + '</div>' +
           '<div class="dsc-label">Aktive initiativer</div>' +
         '</div>' +
         '<div class="dash-stat-card">' +
-          '<div class="dsc-header"><span class="dsc-icon">&#x26A1;</span><span class="dsc-trend trend-flat">&#x2192; 0</span></div>' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x26A1;</span></div>' +
           '<div class="dsc-value">' + inProgress + '</div>' +
           '<div class="dsc-label">Igangværende</div>' +
         '</div>' +
         '<div class="dash-stat-card">' +
-          '<div class="dsc-header"><span class="dsc-icon">&#x1F4C8;</span><span class="dsc-trend trend-up">&#x2191; 0.3</span></div>' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F4C8;</span></div>' +
           '<div class="dsc-value">' + avgROI + '</div>' +
           '<div class="dsc-label">Gns. ROI</div>' +
         '</div>' +
         '<div class="dash-stat-card">' +
-          '<div class="dsc-header"><span class="dsc-icon">&#x1F4B0;</span><span class="dsc-trend trend-down">&#x2193;</span></div>' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F4B0;</span></div>' +
           '<div class="dsc-value" style="font-size:26px;">' + (totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0') + '</div>' +
           '<div class="dsc-label">Estimeret pris (DKK)</div>' +
         '</div>' +
       '</div>' +
 
-      // Row 1 widgets: Projektanalytik + Projektfremgang
+      // Row 1 widgets: Seneste aktivitet + Projektfremgang
       '<div class="dash-widget-grid-2">' +
         '<div class="dash-widget">' +
-          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x1F4CA;</span>Projektanalytik</div>' +
-          '<div style="font-size:11px;color:var(--text-muted);margin-bottom:0.75rem;">Initiativer oprettet denne uge</div>' +
-          '<div class="bar-chart">' + barsHtml + '</div>' +
+          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x1F550;</span>Seneste aktivitet</div>' +
+          activityHtml +
         '</div>' +
         '<div class="dash-widget">' +
           '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x1F3AF;</span>Projektfremgang</div>' +
@@ -1337,15 +1327,11 @@ function renderDashboard(container) {
         '</div>' +
       '</div>' +
 
-      // Row 2 widgets: Kommende Deadlines + Hold-samarbejde + Tidsregistrering
-      '<div class="dash-widget-grid">' +
+      // Row 2 widgets: Kommende Deadlines + Tidsregistrering
+      '<div class="dash-widget-grid" style="grid-template-columns:2fr 1fr;">' +
         '<div class="dash-widget">' +
           '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x23F0;</span>Kommende Deadlines</div>' +
           '<div class="dash-deadline-list">' + deadlineHtml + '</div>' +
-        '</div>' +
-        '<div class="dash-widget">' +
-          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x1F465;</span>Hold-samarbejde</div>' +
-          teamHtml +
         '</div>' +
         '<div class="dash-widget">' +
           '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x23F1;&#xFE0F;</span>Tidsregistrering</div>' +
@@ -1811,6 +1797,43 @@ window.onclick = function(e) {
     if (e.target === m) m.style.display = 'none';
   });
 };
+
+// ===== TOAST NOTIFICATIONS (DEL D) =====
+function showToast(msg, type) {
+  var container = document.getElementById('skeleton-toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'skeleton-toast-container';
+    container.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;';
+    document.body.appendChild(container);
+  }
+  var toast = document.createElement('div');
+  var bgColor = type === 'error' ? '#991b1b' : type === 'success' ? '#166534' : '#1f2937';
+  toast.style.cssText = 'background:' + bgColor + ';color:#fff;padding:10px 16px;border-radius:8px;font-family:Barlow,sans-serif;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,0.25);max-width:340px;pointer-events:auto;';
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(function(){
+    if (toast.parentNode) toast.parentNode.removeChild(toast);
+  }, 4000);
+}
+
+// ===== WINDOW EXPORTS – required for inline onclick= in WordPress (DEL C) =====
+window.navigate               = navigate;
+window.openNewWorkspaceModal  = openNewWorkspaceModal;
+window.closeNewWorkspaceModal = closeNewWorkspaceModal;
+window.saveNewWorkspace       = saveNewWorkspace;
+window.openNewInitiativeModal  = openNewInitiativeModal;
+window.closeNewInitiativeModal = closeNewInitiativeModal;
+window.saveNewInitiative       = saveNewInitiative;
+window.switchDetailView        = switchDetailView;
+window.setFilter               = setFilter;
+window.resetFilters            = resetFilters;
+window.onSortChange            = onSortChange;
+window.cycleInitiativeStatus   = cycleInitiativeStatus;
+window.deleteInitiative        = deleteInitiative;
+window.startTimer              = startTimer;
+window.stopTimer               = stopTimer;
+window.showToast               = showToast;
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', function() {
