@@ -7,18 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --accent: #da253c;
-    --accent-pale: #fdeaed;
-    --sidebar-bg: #1e1e1e;
-    --sidebar-width: 240px;
+    --accent: #166534;
+    --accent-hover: #14532d;
+    --accent-pale: #dcfce7;
+    --sidebar-bg: #ffffff;
+    --sidebar-width: 248px;
     --white: #ffffff;
-    --bg: #f5f5f5;
+    --bg: #f5f7fa;
     --card-bg: #ffffff;
-    --text: #1a1a1a;
-    --text-muted: #777;
-    --border: #e0e0e0;
-    --gray-light: #f0f0f0;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --text: #111827;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --gray-light: #f3f4f6;
+    --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
     --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
     --radius: 12px;
     --sponsor-bg: #E6F1FB; --sponsor-text: #0C447C;
@@ -42,6 +43,7 @@
   .sidebar {
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -53,7 +55,7 @@
 
   .sidebar-logo {
     padding: 1.4rem 1.25rem 1.2rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -70,11 +72,11 @@
   .sidebar-logo-text {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 16px; font-weight: 700;
-    color: var(--white); letter-spacing: 0.5px;
+    color: var(--text); letter-spacing: 0.5px;
   }
   .sidebar-logo-sub {
     font-size: 10px;
-    color: rgba(255,255,255,0.38);
+    color: var(--text-muted);
     letter-spacing: 0.5px;
   }
 
@@ -83,7 +85,7 @@
   .nav-section-label {
     font-size: 10px; font-weight: 700;
     letter-spacing: 2px; text-transform: uppercase;
-    color: rgba(255,255,255,0.28);
+    color: var(--text-muted);
     padding: 0.9rem 1.25rem 0.35rem;
   }
 
@@ -91,44 +93,48 @@
     display: flex; align-items: center; gap: 10px;
     padding: 0.6rem 1.25rem;
     cursor: pointer;
-    color: rgba(255,255,255,0.65);
+    color: var(--text-muted);
     font-size: 13.5px; font-weight: 500;
+    border-radius: 8px;
+    margin: 1px 8px;
     transition: background 0.15s, color 0.15s;
     user-select: none;
   }
-  .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
-  .nav-item.active { background: rgba(255,255,255,0.11); color: var(--white); }
+  .nav-item:hover { background: var(--gray-light); color: var(--text); }
+  .nav-item.active { background: var(--accent-pale); color: var(--accent); font-weight: 600; }
   .nav-item.active .nav-icon { color: var(--accent); }
-  .nav-item.disabled { opacity: 0.38; cursor: default; pointer-events: none; }
+  .nav-item.disabled { opacity: 0.45; cursor: default; pointer-events: none; }
   .nav-icon { font-size: 15px; width: 18px; text-align: center; flex-shrink: 0; }
 
   /* Workspace list in sidebar */
   .sidebar-ws-item {
     display: flex; align-items: center; gap: 8px;
-    padding: 0.48rem 1.25rem 0.48rem 2.6rem;
+    padding: 0.42rem 1rem 0.42rem 2.5rem;
     cursor: pointer;
-    color: rgba(255,255,255,0.52);
+    color: var(--text-muted);
     font-size: 12.5px;
+    border-radius: 8px;
+    margin: 1px 8px;
     transition: background 0.15s, color 0.15s;
     user-select: none;
   }
-  .sidebar-ws-item:hover { background: rgba(255,255,255,0.06); color: var(--white); }
-  .sidebar-ws-item.active { color: var(--accent); font-weight: 600; }
+  .sidebar-ws-item:hover { background: var(--gray-light); color: var(--text); }
+  .sidebar-ws-item.active { background: var(--accent-pale); color: var(--accent); font-weight: 600; }
   .sidebar-ws-icon { font-size: 13px; flex-shrink: 0; }
   .sidebar-ws-count {
     margin-left: auto;
     font-size: 10px;
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.45);
+    background: var(--gray-light);
+    color: var(--text-muted);
     padding: 1px 6px; border-radius: 10px;
   }
-  .sidebar-ws-item.active .sidebar-ws-count { background: rgba(218,37,60,0.18); color: var(--accent); }
+  .sidebar-ws-item.active .sidebar-ws-count { background: var(--accent-pale); color: var(--accent); }
 
   .sidebar-add-btn {
     display: flex; align-items: center; gap: 8px;
-    padding: 0.48rem 1.25rem 0.48rem 2.6rem;
+    padding: 0.42rem 1rem 0.42rem 2.5rem;
     cursor: pointer;
-    color: rgba(255,255,255,0.32);
+    color: var(--text-muted);
     font-size: 12px;
     transition: color 0.15s;
     background: none; border: none; width: 100%;
@@ -136,11 +142,117 @@
   }
   .sidebar-add-btn:hover { color: var(--accent); }
 
-  /* ===== MAIN CONTENT ===== */
-  .main-content {
+  .nav-ws-label { flex: 1; }
+  .nav-ws-add-btn {
+    font-size: 16px; font-weight: 400;
+    color: var(--text-muted); margin-right: 2px;
+  }
+  .nav-ws-add-btn:hover { color: var(--accent); }
+
+  /* Workspace grid on dashboard */
+  .dash-ws-grid { max-width: 920px; }
+
+  /* Sidebar download card */
+  .sidebar-download-card {
+    margin: 1rem;
+    background: #111827;
+    border-radius: var(--radius);
+    padding: 1.1rem 1rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .sdc-emoji { font-size: 22px; margin-bottom: 0.4rem; }
+  .sdc-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700;
+    color: #ffffff; margin-bottom: 0.2rem;
+  }
+  .sdc-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 0.75rem; }
+  .sdc-btn {
+    display: block; width: 100%;
+    background: var(--accent); color: #ffffff;
+    border: none; border-radius: 8px;
+    padding: 7px 12px; font-size: 12px; font-weight: 600;
+    font-family: 'Barlow', sans-serif; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sdc-btn:hover { background: var(--accent-hover); }
+
+  /* ===== MAIN WRAPPER + GLOBAL HEADER ===== */
+  .main-wrapper {
     margin-left: var(--sidebar-width);
     flex: 1; display: flex; flex-direction: column;
     min-height: 100vh;
+  }
+
+  .global-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex; align-items: center;
+    gap: 1.25rem;
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .gh-search {
+    flex: 1; max-width: 480px;
+    display: flex; align-items: center;
+    background: var(--gray-light);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0 12px; gap: 8px;
+  }
+  .gh-search-icon { font-size: 13px; color: var(--text-muted); flex-shrink: 0; }
+  .gh-search-input {
+    flex: 1; border: none; background: transparent;
+    font-family: 'Barlow', sans-serif; font-size: 13px;
+    color: var(--text); outline: none;
+    padding: 8px 0;
+  }
+  .gh-search-input::placeholder { color: var(--text-muted); }
+  .gh-search-hint {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-muted);
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 5px; padding: 2px 6px;
+    flex-shrink: 0;
+  }
+  .gh-right {
+    display: flex; align-items: center; gap: 10px;
+    margin-left: auto;
+  }
+  .gh-icon-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    background: var(--white); border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .gh-icon-btn:hover { border-color: var(--accent); background: var(--accent-pale); }
+  .gh-divider { width: 1px; height: 28px; background: var(--border); }
+  .gh-user {
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer; padding: 4px 8px;
+    border-radius: 10px;
+    transition: background 0.15s;
+  }
+  .gh-user:hover { background: var(--gray-light); }
+  .gh-avatar {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+  .gh-user-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .gh-user-email { font-size: 11px; color: var(--text-muted); }
+
+  /* ===== MAIN CONTENT ===== */
+  .main-content {
+    flex: 1; display: flex; flex-direction: column;
+    min-height: 0;
   }
 
   /* ===== TOPBAR ===== */
@@ -150,8 +262,6 @@
     padding: 1rem 2rem;
     display: flex; align-items: center;
     justify-content: space-between; gap: 1rem;
-    position: sticky; top: 0; z-index: 50;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
   .topbar-title {
     font-family: 'Barlow Condensed', sans-serif;
@@ -169,32 +279,141 @@
     font-weight: 600; transition: background 0.2s;
     letter-spacing: 0.3px;
   }
-  .btn-primary:hover { background: #c01f33; }
+  .btn-primary:hover { background: var(--accent-hover); }
 
   /* ===== PAGE BODY ===== */
-  .page-body { padding: 2rem; flex: 1; }
+  .page-body { padding: 1.75rem 2rem; flex: 1; }
 
   /* ===== DASHBOARD ===== */
   .dash-stat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 14px; margin-bottom: 2rem;
+    gap: 14px; margin-bottom: 1.75rem;
   }
   .dash-stat-card {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem 1.4rem;
     box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
   }
-  .dsc-icon { font-size: 22px; margin-bottom: 0.4rem; }
+  .dsc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+  .dsc-icon { font-size: 20px; }
+  .dsc-trend {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 8px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 3px;
+  }
+  .trend-up   { background: #dcfce7; color: #166534; }
+  .trend-down { background: #fee2e2; color: #991b1b; }
+  .trend-flat { background: var(--gray-light); color: var(--text-muted); }
   .dsc-value {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 34px; font-weight: 700;
-    color: var(--accent); line-height: 1;
+    color: var(--text); line-height: 1;
   }
   .dsc-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
+  /* Dashboard widget grid */
+  .dash-widget-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin-bottom: 1.75rem;
+  }
+  .dash-widget-grid-2 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px; margin-bottom: 1.75rem;
+  }
+  .dash-widget {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    box-shadow: var(--shadow);
+  }
+  .dash-widget-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px; font-weight: 700;
+    color: var(--text); margin-bottom: 1.1rem;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .dash-widget-title-icon { font-size: 16px; }
+
+  /* Bar chart widget */
+  .bar-chart {
+    display: flex; align-items: flex-end;
+    gap: 8px; height: 110px;
+  }
+  .bar-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 4px;
+  }
+  .bar-fill {
+    width: 100%; background: var(--accent-pale);
+    border-radius: 5px 5px 0 0;
+    transition: background 0.2s;
+    min-height: 4px;
+  }
+  .bar-fill.bar-active { background: var(--accent); }
+  .bar-label { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+  .bar-val { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-top: 2px; }
+
+  /* Progress ring */
+  .progress-ring-wrap {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.75rem;
+  }
+  .progress-ring-sub { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+  /* Team collaboration */
+  .team-list { display: flex; flex-direction: column; gap: 10px; }
+  .team-member {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .team-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+  .team-info { flex: 1; min-width: 0; }
+  .team-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .team-role { font-size: 11px; color: var(--text-muted); }
+  .team-status {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    flex-shrink: 0;
+  }
+  .ts-done    { background: #dcfce7; color: #166534; }
+  .ts-ongoing { background: #fef9c3; color: #854d0e; }
+  .ts-waiting { background: #f3f4f6; color: #6b7280; }
+
+  /* Timer widget */
+  .timer-display {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px; font-weight: 700;
+    color: var(--text); text-align: center;
+    letter-spacing: 3px; line-height: 1;
+    margin: 0.75rem 0;
+  }
+  .timer-label { font-size: 11px; color: var(--text-muted); text-align: center; margin-bottom: 1rem; }
+  .timer-controls { display: flex; gap: 8px; justify-content: center; }
+  .timer-btn {
+    padding: 8px 20px; border-radius: 8px; border: none;
+    font-family: 'Barlow', sans-serif; font-size: 13px;
+    font-weight: 600; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .timer-play { background: var(--accent); color: white; }
+  .timer-play:hover { background: var(--accent-hover); }
+  .timer-stop { background: var(--gray-light); color: var(--text); border: 1px solid var(--border); }
+  .timer-stop:hover { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+
+  /* Deadline list clean style */
   .dash-section-title {
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 13px; font-weight: 700;
@@ -204,20 +423,27 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .dash-deadline-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 2rem; }
+  .dash-deadline-list { display: flex; flex-direction: column; gap: 8px; }
   .dash-deadline-item {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 8px; padding: 0.75rem 1rem;
-    display: flex; align-items: center; gap: 12px;
-    box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 10px;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border);
   }
+  .dash-deadline-item:last-child { border-bottom: none; }
+  .dl-task-icon {
+    width: 32px; height: 32px;
+    background: var(--accent-pale);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .dl-info { flex: 1; min-width: 0; }
+  .dl-title { font-size: 13px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dl-ws { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
   .dl-date {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 14px; font-weight: 700;
-    color: var(--accent); white-space: nowrap; min-width: 95px;
+    font-size: 11px; font-weight: 600;
+    color: var(--text-muted); white-space: nowrap;
   }
-  .dl-title { font-size: 13px; font-weight: 600; flex: 1; }
-  .dl-ws { font-size: 11px; color: var(--text-muted); }
 
   /* ===== WORKSPACES OVERVIEW ===== */
   .ws-grid {
@@ -345,7 +571,7 @@
     background: var(--white); border-radius: var(--radius);
     overflow: hidden; box-shadow: var(--shadow);
   }
-  .data-table thead { background: #2a2a2a; }
+  .data-table thead { background: #111827; }
   .data-table th {
     color: var(--white); padding: 0.9rem 1rem;
     text-align: left; font-weight: 700;
@@ -570,7 +796,7 @@
     font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
   }
   .btn-save   { background: var(--accent); color: var(--white); }
-  .btn-save:hover { background: #c01f33; }
+  .btn-save:hover { background: var(--accent-hover); }
   .btn-cancel { background: var(--gray-light); color: var(--text); border: 1px solid var(--border) !important; }
   .btn-cancel:hover { background: var(--border); }
 
@@ -582,13 +808,16 @@
   @media (max-width: 900px) { :root { --sidebar-width: 200px; } }
   @media (max-width: 680px) {
     .sidebar { display: none; }
-    .main-content { margin-left: 0; }
+    .main-wrapper { margin-left: 0; }
     .kanban-board { flex-direction: column; }
     .kanban-col { width: 100%; }
     .timeline-line { left: 22px; }
     .timeline-marker { left: 22px; }
     .timeline-item { flex-direction: column !important; margin-left: 46px; }
     .form-grid { grid-template-columns: 1fr; }
+    .dash-widget-grid, .dash-widget-grid-2 { grid-template-columns: 1fr; }
+    .global-header { padding: 0.75rem 1rem; }
+    .gh-user-info { display: none; }
   }
 </style>
 </head>
@@ -607,7 +836,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-section-label">Navigation</div>
+      <div class="nav-section-label">Menu</div>
 
       <div class="nav-item active" id="nav-dashboard" onclick="navigate('dashboard')">
         <span class="nav-icon">&#x1F4CA;</span>
@@ -615,7 +844,8 @@
       </div>
       <div class="nav-item" id="nav-workspaces" onclick="navigate('workspaces')">
         <span class="nav-icon">&#x1F4C1;</span>
-        <span>Arbejdsområder</span>
+        <span class="nav-ws-label">Arbejdsområder</span>
+        <span class="nav-ws-add-btn" onclick="event.stopPropagation();openNewWorkspaceModal();" title="Nyt arbejdsområde">+</span>
       </div>
 
       <!-- Dynamic workspace list injected by JS -->
@@ -626,7 +856,7 @@
         <span>Nyt arbejdsområde</span>
       </button>
 
-      <div style="margin-top:2rem;">
+      <div style="margin-top:1.5rem;">
         <div class="nav-section-label">System</div>
         <div class="nav-item disabled">
           <span class="nav-icon">&#x2699;&#xFE0F;</span>
@@ -634,12 +864,46 @@
         </div>
       </div>
     </nav>
+
+    <!-- Download app card -->
+    <div class="sidebar-download-card">
+      <div class="sdc-emoji">&#x1F4F1;</div>
+      <div class="sdc-title">Download vores app</div>
+      <div class="sdc-sub">Få adgang overalt</div>
+      <button class="sdc-btn">Download nu</button>
+    </div>
   </aside>
 
-  <!-- ===== MAIN CONTENT ===== -->
-  <div class="main-content" id="main-content">
-    <!-- Rendered dynamically by JS -->
-  </div>
+  <!-- ===== MAIN WRAPPER ===== -->
+  <div class="main-wrapper">
+
+    <!-- Global header (static) -->
+    <header class="global-header">
+      <div class="gh-search">
+        <span class="gh-search-icon">&#x1F50D;</span>
+        <input class="gh-search-input" type="text" placeholder="Søg efter initiativer, arbejdsområder...">
+        <span class="gh-search-hint">&#x2318;F</span>
+      </div>
+      <div class="gh-right">
+        <button class="gh-icon-btn" title="Notifikationer">&#x1F514;</button>
+        <button class="gh-icon-btn" title="Beskeder">&#x2709;&#xFE0F;</button>
+        <div class="gh-divider"></div>
+        <div class="gh-user">
+          <div class="gh-avatar">AB</div>
+          <div class="gh-user-info">
+            <div class="gh-user-name">Anders Bjerg</div>
+            <div class="gh-user-email">anders@skeleton.dk</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic page content -->
+    <div class="main-content" id="main-content">
+      <!-- Rendered dynamically by JS -->
+    </div>
+
+  </div><!-- end .main-wrapper -->
 
 </div><!-- end .app-layout -->
 
@@ -782,6 +1046,36 @@ const KANBAN_COLS = [
   { id: 'afsluttet', label: 'Afsluttet', dotClass: 'dot-afsluttet' },
 ];
 
+// ===== TIMER STATE =====
+var timerInterval = null;
+var timerSeconds  = 0;
+var timerRunning  = false;
+
+function timerPad(n) { return n < 10 ? '0' + String(n) : String(n); }
+function timerFormat(s) {
+  var h = Math.floor(s / 3600);
+  var m = Math.floor((s % 3600) / 60);
+  var sec = s % 60;
+  return (h > 0 ? timerPad(h) + ':' : '') + timerPad(m) + ':' + timerPad(sec);
+}
+function startTimer() {
+  if (timerRunning) return;
+  timerRunning = true;
+  timerInterval = setInterval(function() {
+    timerSeconds++;
+    var el = document.getElementById('timer-display');
+    if (el) el.textContent = timerFormat(timerSeconds);
+    var lbl = document.getElementById('timer-status-label');
+    if (lbl) lbl.textContent = 'Tidsregistrering kører…';
+  }, 1000);
+}
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  var lbl = document.getElementById('timer-status-label');
+  if (lbl) lbl.textContent = timerSeconds > 0 ? timerFormat(timerSeconds) + ' registreret' : 'Klar til start';
+}
+
 // ===== STATE (in-memory only – no localStorage) =====
 let workspaces       = [];
 let nextWorkspaceId  = 1;
@@ -883,24 +1177,37 @@ function renderDashboard(container) {
     .filter(function(i){ return i.daysLeft <= 30; })
     .sort(function(a,b){ return a.daysLeft - b.daysLeft; });
 
-  var soonHtml = soon.length === 0
-    ? '<div class="empty-state" style="padding:1.5rem;text-align:left;">Ingen kommende deadlines inden for 30 dage.</div>'
-    : soon.map(function(i){
+  // Format Danish date
+  var dkMonths = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+  function fmtDkDate(iso) {
+    if (!iso) return '';
+    var parts = iso.split('-');
+    var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    return d.getDate() + '. ' + dkMonths[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  // Deadline list (clean format)
+  var deadlineHtml = soon.length === 0
+    ? '<div style="padding:1rem 0;color:var(--text-muted);font-size:13px;">Ingen kommende deadlines inden for 30 dage.</div>'
+    : soon.slice(0,5).map(function(i){
         var left = i.daysLeft <= 0 ? 'Overskredet' : i.daysLeft + ' dage tilbage';
         return '<div class="dash-deadline-item">' +
-          '<span class="dl-date">&#x1F4C5; ' + escHtml(i.deadline) + '</span>' +
-          '<div><div class="dl-title">' + escHtml(i.title) + '</div>' +
-          '<div class="dl-ws">' + i.workspaceIcon + ' ' + escHtml(i.workspaceName) + ' &middot; ' + left + '</div></div>' +
-          '<span class="status-badge status-' + i.status + '">' + statusLabel(i.status) + '</span>' +
+          '<div class="dl-task-icon">&#x1F4CB;</div>' +
+          '<div class="dl-info">' +
+            '<div class="dl-title">' + escHtml(i.title) + '</div>' +
+            '<div class="dl-ws">' + i.workspaceIcon + ' ' + escHtml(i.workspaceName) + ' &middot; ' + left + '</div>' +
+          '</div>' +
+          '<div class="dl-date">' + fmtDkDate(i.deadline) + '</div>' +
           '</div>';
       }).join('');
 
+  // Workspace cards
   var wsHtml;
   if (workspaces.length === 0) {
     wsHtml = '<div class="empty-state">Ingen arbejdsområder endnu.<br>' +
       '<button class="btn-primary" style="margin-top:1rem;" onclick="openNewWorkspaceModal()">+ Nyt arbejdsområde</button></div>';
   } else {
-    wsHtml = '<div class="ws-grid" style="max-width:900px;">' +
+    wsHtml = '<div class="ws-grid dash-ws-grid">' +
       workspaces.map(function(ws){
         var active = ws.initiatives.filter(function(i){ return i.status !== 'afsluttet'; }).length;
         return '<div class="ws-card" onclick="navigate(\'workspace\',' + ws.id + ')">' +
@@ -913,6 +1220,72 @@ function renderDashboard(container) {
       '</div>';
   }
 
+  // Bar chart weekly data (static illustrative)
+  var barData = [
+    { day: 'Man', val: 4,  pct: 57  },
+    { day: 'Tir', val: 7,  pct: 100 },
+    { day: 'Ons', val: 5,  pct: 71  },
+    { day: 'Tor', val: 6,  pct: 86, active: true },
+    { day: 'Fre', val: 3,  pct: 43  },
+    { day: 'Lør', val: 1,  pct: 14  },
+    { day: 'Søn', val: 2,  pct: 28  },
+  ];
+  var barsHtml = barData.map(function(b){
+    return '<div class="bar-item">' +
+      '<div class="bar-val">' + b.val + '</div>' +
+      '<div class="bar-fill' + (b.active ? ' bar-active' : '') + '" style="height:' + b.pct + '%;"></div>' +
+      '<div class="bar-label">' + b.day + '</div>' +
+      '</div>';
+  }).join('');
+
+  // Progress ring (41%)
+  var ringPct  = 41;
+  var ringR    = 46;
+  var ringCirc = 2 * Math.PI * ringR; // ≈ 289
+  var ringOff  = ringCirc * (1 - ringPct / 100);
+  var ringHtml =
+    '<div class="progress-ring-wrap">' +
+      '<svg width="120" height="120" viewBox="0 0 120 120">' +
+        '<circle cx="60" cy="60" r="' + ringR + '" fill="none" stroke="var(--border)" stroke-width="12"/>' +
+        '<circle cx="60" cy="60" r="' + ringR + '" fill="none" stroke="var(--accent)" stroke-width="12"' +
+          ' stroke-dasharray="' + ringCirc.toFixed(1) + '"' +
+          ' stroke-dashoffset="' + ringOff.toFixed(1) + '"' +
+          ' stroke-linecap="round" transform="rotate(-90 60 60)"/>' +
+        '<text x="60" y="55" text-anchor="middle" font-size="20" font-weight="700" fill="var(--text)" font-family="Barlow Condensed, sans-serif">' + ringPct + '%</text>' +
+        '<text x="60" y="72" text-anchor="middle" font-size="10" fill="var(--text-muted)" font-family="Barlow, sans-serif">Afsluttet</text>' +
+      '</svg>' +
+      '<div class="progress-ring-sub">Samlet projektfremgang<br>baseret på afsluttede initiativer</div>' +
+    '</div>';
+
+  // Team collaboration widget (static illustrative)
+  var teamMembers = [
+    { initials: 'AB', color: '#166534', name: 'Anders Bjerg',   role: 'Projektleder',  statusClass: 'ts-done',    statusLabel: 'Afsluttet' },
+    { initials: 'MC', color: '#1d4ed8', name: 'Maria Christensen', role: 'Analytiker',  statusClass: 'ts-ongoing', statusLabel: 'I gang' },
+    { initials: 'JP', color: '#9333ea', name: 'Jonas Poulsen',  role: 'Udvikler',      statusClass: 'ts-ongoing', statusLabel: 'I gang' },
+    { initials: 'SN', color: '#b45309', name: 'Sara Nielsen',   role: 'Designer',      statusClass: 'ts-waiting', statusLabel: 'Afventer' },
+  ];
+  var teamHtml = '<div class="team-list">' +
+    teamMembers.map(function(m){
+      return '<div class="team-member">' +
+        '<div class="team-avatar" style="background:' + m.color + ';">' + m.initials + '</div>' +
+        '<div class="team-info">' +
+          '<div class="team-name">' + escHtml(m.name) + '</div>' +
+          '<div class="team-role">' + escHtml(m.role) + '</div>' +
+        '</div>' +
+        '<span class="team-status ' + m.statusClass + '">' + m.statusLabel + '</span>' +
+        '</div>';
+    }).join('') +
+    '</div>';
+
+  // Timer widget
+  var timerHtml =
+    '<div id="timer-display" class="timer-display">' + timerFormat(timerSeconds) + '</div>' +
+    '<div id="timer-status-label" class="timer-label">' + (timerRunning ? 'Tidsregistrering kører…' : (timerSeconds > 0 ? timerFormat(timerSeconds) + ' registreret' : 'Klar til start')) + '</div>' +
+    '<div class="timer-controls">' +
+      '<button class="timer-btn timer-play" onclick="startTimer()">&#x25B6; Afspil</button>' +
+      '<button class="timer-btn timer-stop" onclick="stopTimer()">&#x25A0; Stop</button>' +
+    '</div>';
+
   container.innerHTML =
     '<div class="topbar">' +
       '<div>' +
@@ -921,17 +1294,69 @@ function renderDashboard(container) {
       '</div>' +
     '</div>' +
     '<div class="page-body">' +
+
+      // Stat cards row
       '<div class="dash-stat-grid">' +
-        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F4C1;</div><div class="dsc-value">' + workspaces.length + '</div><div class="dsc-label">Arbejdsområder</div></div>' +
-        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F680;</div><div class="dsc-value">' + activeCount + '</div><div class="dsc-label">Aktive initiativer</div></div>' +
-        '<div class="dash-stat-card"><div class="dsc-icon">&#x26A1;</div><div class="dsc-value">' + inProgress + '</div><div class="dsc-label">Igangværende</div></div>' +
-        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F4C8;</div><div class="dsc-value">' + avgROI + '</div><div class="dsc-label">Gns. ROI</div></div>' +
-        '<div class="dash-stat-card"><div class="dsc-icon">&#x1F4B0;</div><div class="dsc-value">' + (totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0') + '</div><div class="dsc-label">Estimeret pris (DKK)</div></div>' +
+        '<div class="dash-stat-card">' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F4C1;</span><span class="dsc-trend trend-up">&#x2191; +2</span></div>' +
+          '<div class="dsc-value">' + workspaces.length + '</div>' +
+          '<div class="dsc-label">Arbejdsområder</div>' +
+        '</div>' +
+        '<div class="dash-stat-card">' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F680;</span><span class="dsc-trend trend-up">&#x2191; +3</span></div>' +
+          '<div class="dsc-value">' + activeCount + '</div>' +
+          '<div class="dsc-label">Aktive initiativer</div>' +
+        '</div>' +
+        '<div class="dash-stat-card">' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x26A1;</span><span class="dsc-trend trend-flat">&#x2192; 0</span></div>' +
+          '<div class="dsc-value">' + inProgress + '</div>' +
+          '<div class="dsc-label">Igangværende</div>' +
+        '</div>' +
+        '<div class="dash-stat-card">' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F4C8;</span><span class="dsc-trend trend-up">&#x2191; 0.3</span></div>' +
+          '<div class="dsc-value">' + avgROI + '</div>' +
+          '<div class="dsc-label">Gns. ROI</div>' +
+        '</div>' +
+        '<div class="dash-stat-card">' +
+          '<div class="dsc-header"><span class="dsc-icon">&#x1F4B0;</span><span class="dsc-trend trend-down">&#x2193;</span></div>' +
+          '<div class="dsc-value" style="font-size:26px;">' + (totalCost > 0 ? totalCost.toLocaleString('da-DK') : '0') + '</div>' +
+          '<div class="dsc-label">Estimeret pris (DKK)</div>' +
+        '</div>' +
       '</div>' +
-      '<div class="dash-section-title">&#x23F0; Kommende deadlines (inden for 30 dage)</div>' +
-      '<div class="dash-deadline-list">' + soonHtml + '</div>' +
+
+      // Row 1 widgets: Projektanalytik + Projektfremgang
+      '<div class="dash-widget-grid-2">' +
+        '<div class="dash-widget">' +
+          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x1F4CA;</span>Projektanalytik</div>' +
+          '<div style="font-size:11px;color:var(--text-muted);margin-bottom:0.75rem;">Initiativer oprettet denne uge</div>' +
+          '<div class="bar-chart">' + barsHtml + '</div>' +
+        '</div>' +
+        '<div class="dash-widget">' +
+          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x1F3AF;</span>Projektfremgang</div>' +
+          ringHtml +
+        '</div>' +
+      '</div>' +
+
+      // Row 2 widgets: Kommende Deadlines + Hold-samarbejde + Tidsregistrering
+      '<div class="dash-widget-grid">' +
+        '<div class="dash-widget">' +
+          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x23F0;</span>Kommende Deadlines</div>' +
+          '<div class="dash-deadline-list">' + deadlineHtml + '</div>' +
+        '</div>' +
+        '<div class="dash-widget">' +
+          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x1F465;</span>Hold-samarbejde</div>' +
+          teamHtml +
+        '</div>' +
+        '<div class="dash-widget">' +
+          '<div class="dash-widget-title"><span class="dash-widget-title-icon">&#x23F1;&#xFE0F;</span>Tidsregistrering</div>' +
+          timerHtml +
+        '</div>' +
+      '</div>' +
+
+      // Workspace overview
       '<div class="dash-section-title">&#x1F4C1; Alle arbejdsområder</div>' +
       wsHtml +
+
     '</div>';
 }
 
